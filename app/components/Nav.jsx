@@ -1,35 +1,42 @@
 import Image from 'next/image';
 import logo from './imgs/netflix-logo.png'
 import Profile  from './imgs/profile.png';
-import { Search, Bell } from './icons/icons'
+import { Search, Bell, Arrow } from './icons/icons'
 
 export const Nav = () => {
   return (
-    <div className='flex w-full justify-between items-center'>
-      <Image 
-        src={logo} 
-        alt='Netflix home' 
-        className='w-24 h-8'
-      />
-      {/* menu */}
-      <div className='text-sm flex'>
-        <span>홈</span>
-        <span>시리즈</span>
-        <span>영화</span>
-        <span>NEW! 요즘 대세 콘텐츠</span>
-        <span>내가 찜한 리스트</span>
-        <span>언어별로 찾아보기</span>
+    <div className='flex w-full justify-between items-center mt-4 px-14'>
+      <div className='flex mr-1.5 items-center'>
+        <Image 
+          src={logo} 
+          alt='Netflix home' 
+          className='w-20 h-8 mr-4'
+        />
+        {/* menu */}
+        <div className='text-sm flex justify-between max-w-7xl text-sm font-medium'>
+          <span className='ml-5 text-sm'>홈</span>
+          <span className='ml-5 text-sm'>시리즈</span>
+          <span className='ml-5 text-sm'>영화</span>
+          <span className='ml-5 text-sm'>NEW! 요즘 대세 콘텐츠</span>
+          <span className='ml-5 text-sm'>내가 찜한 리스트</span>
+          <span className='ml-5 text-sm'>언어별로 찾아보기</span>
+        </div>
       </div>
+
       {/* icons */}
-      <div className='flex'>
+      <div className='flex justify-evenly w-52 items-center'>
         <Search />
-        <span>키즈</span>
+        <span className='text-sm font-medium'>키즈</span>
         <Bell />
         <Image
           className='w-8'
           src={Profile} 
           alt='profile' 
         />
+        <div className='hover:rotate-180 transition duration-300 ease-in-out'>
+          <Arrow />
+        </div>
+
       </div>
     </div>
   );
