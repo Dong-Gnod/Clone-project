@@ -2,16 +2,22 @@ import Image from 'next/image';
 import logo from './imgs/netflix-logo.png'
 import Profile  from './imgs/profile.png';
 import { Search, Bell, Arrow } from './icons/icons'
+import Link from 'next/link';
+
 
 export const Nav = () => {
   return (
     <div className='flex w-full justify-between items-center mt-4 px-14 relative z-[100]'>
       <div className='flex mr-1.5 items-center'>
-        <Image 
-          src={logo} 
-          alt='Netflix home' 
-          className='w-20 h-8 mr-4'
-        />
+        <Link href="/">
+          <Image 
+            src={logo} 
+            alt='Netflix home' 
+            className='w-20 h-8 mr-4'
+          />
+        </Link>
+
+
         {/* menu */}
         <div className='text-sm flex justify-between max-w-7xl text-sm font-medium'>
           <span className='ml-5 text-sm'>홈</span>

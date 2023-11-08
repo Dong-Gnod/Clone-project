@@ -31,3 +31,43 @@ export const ArrowRight = () => {
 </svg>
 
 }
+
+export const One = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/1.png" alt="one" />
+}
+
+export const Two = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/2.png" alt="two" />
+}
+
+export const Three = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/3.png" alt="three" />
+}
+
+export const Four = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/4.png" alt="four" />
+}
+
+export const Five = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/5.png" alt="five" />
+}
+
+export const Six = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/6.png" alt="six" />
+}
+
+export const Seven = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/7.png" alt="seven" />
+}
+
+export const Eight = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/8.png" alt="eight" />
+}
+
+export const Nine = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/9.png" alt="nine" />
+}
+
+export const Ten = () => {
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/10.png" alt="ten" />
+}
