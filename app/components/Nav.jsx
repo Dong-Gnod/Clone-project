@@ -9,7 +9,7 @@ export const Nav = () => {
   return (
     <div className='flex w-full justify-between items-center mt-4 px-14 relative z-[100]'>
       <div className='flex mr-1.5 items-center'>
-        <Link href="/">
+        <Link href="/main">
           <Image 
             src={logo} 
             alt='Netflix home' 
@@ -20,7 +20,7 @@ export const Nav = () => {
 
         {/* menu */}
         <div className='text-sm flex justify-between max-w-7xl text-sm font-medium'>
-          <span className='ml-5 text-sm'>홈</span>
+          <Link href="/main"><span className='ml-5 text-sm'>홈</span></Link>
           <span className='ml-5 text-sm'>시리즈</span>
           <span className='ml-5 text-sm'>영화</span>
           <span className='ml-5 text-sm'>NEW! 요즘 대세 콘텐츠</span>

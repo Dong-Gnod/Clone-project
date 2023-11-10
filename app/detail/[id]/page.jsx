@@ -2,6 +2,7 @@
 import Movie from '../../components/movie';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Nav } from './../../components/nav';
 
 
 export default function Detail(props){
@@ -29,6 +30,7 @@ export default function Detail(props){
   }, []);
   return (
     <>
+    <Nav />
     {movies && <Movie
         key={movies.id}
         id={movies.id}

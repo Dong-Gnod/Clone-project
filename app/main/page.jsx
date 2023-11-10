@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import Movie from '../components/movie';
 import Link from 'next/link';
+import Header from './../components/header';
+import { Nav } from './../components/nav';
 
 export default function Main() {
   const [movies, setMovies] = useState([]);
@@ -28,20 +30,32 @@ export default function Main() {
     console.log(movies);
 
   return (
-    <>
+    <div>
+      <Nav />
+      <div className='top-0'>
+        <Header
+          id={headerImage.id}
+          title={headerImage.title}
+          headerImage={headerImage.backdrop_path}
+        />
+      </div>
+      <div className='flex justify-between'>
       {movies.map((movie) => {
         return(
-          <Link key={movie.id} href={`detail/${movie.id}`}>
-          <Movie
-            key={movie.id}
-            id={movie.id}
-            posterImg={movie.poster_path}
-            bigPoster={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-            title={movie.title}
-          />
-        </Link>
+          <div>
+            <Link key={movie.id} href={`detail/${movie.id}`} className='w-72 m-1 flex justify-between'>
+              <Movie
+                key={movie.id}
+                id={movie.id}
+                posterImg={movie.poster_path}
+                title={movie.title}
+              />
+            </Link>
+          </div>
+
         )
       })}
-    </>
+    </div>
+    </div>
   );
 }
