@@ -9,6 +9,7 @@ export default function Main() {
   const [movies, setMovies] = useState([]);
   const [headerImage, setHeaderImage] = useState([]);
 
+
   const options = {
     method: 'GET',
     headers: {
@@ -18,7 +19,7 @@ export default function Main() {
   };
 
   useEffect(() => {
-    fetch('https://api.themoviedb.org/4/account/6540ac1f4557a0013ac0020d/movie/recommendations?page=1&language=ko-ko', options)
+    fetch('https://api.themoviedb.org/4/account/6540ac1f4557a0013ac0020d/movie/recommendations?page=1&language=ko-KO', options)
     .then(response => response.json())
     .then((response) => {
     setMovies(response.results);
@@ -29,33 +30,64 @@ export default function Main() {
     }, []);
     console.log(movies);
 
-  return (
-    <div>
-      <Nav />
-      <div className='top-0'>
-        <Header
-          id={headerImage.id}
-          title={headerImage.title}
-          headerImage={headerImage.backdrop_path}
-        />
-      </div>
-      <div className='flex justify-between'>
-      {movies.map((movie) => {
-        return(
-          <div>
-            <Link key={movie.id} href={`detail/${movie.id}`} className='w-72 m-1 flex justify-between'>
-              <Movie
-                key={movie.id}
-                id={movie.id}
-                posterImg={movie.poster_path}
-                title={movie.title}
-              />
-            </Link>
-          </div>
+  useEffect(()=> {
+    fetch('https://api.themoviedb.org/3/genre/movie/list?language=ko', options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+  });
 
-        )
-      })}
-    </div>
+  return (
+    <div className='w-full'>
+      <Nav />
+      <div className='w-full'>
+        <Link key={headerImage.id} href={`detail/${headerImage.id}`}>
+          <Header
+            key={headerImage.id}
+            id={headerImage.id}
+            title={headerImage.title}
+            headerImage={headerImage.backdrop_path}
+          />
+        </Link>
+      </div>
+      <div>
+          <h1>인기 콘텐츠</h1>
+          <div className='flex justify-between relative w-full mb-2.5'>
+            {movies.map((movie) => {
+              return(
+                <div key={movie.id}>
+                  <Link key={movie.id} href={`detail/${movie.id}`}>
+                    <Movie
+                      key={movie.id}
+                      id={movie.id}
+                      posterImg={movie.backdrop_path}
+                      title={movie.title}
+                    />
+                  </Link>
+                </div>
+              )
+            }).sort((a, b) => b.popularity - a.popularity).slice(0, 10)}
+          </div>
+          <div>
+          <h1>지금 뜨는 콘텐츠</h1>
+          <div className='flex justify-between relative'>
+            {movies.map((movie) => {
+              return(
+                <div key={movie.id}>
+                  <Link key={movie.id} href={`detail/${movie.id}`}>
+                    <Movie
+                      key={movie.id}
+                      id={movie.id}
+                      posterImg={movie.poster_path}
+                      title={movie.title}
+                    />
+                  </Link>
+                </div>
+              )
+            }).sort((a, b) => b.vote_average - a.vote_average)}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

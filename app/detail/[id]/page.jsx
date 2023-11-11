@@ -6,10 +6,10 @@ import { Nav } from './../../components/nav';
 
 
 export default function Detail(props){
-  const [movies, setMovies] = useState();
-  const [headerImage, setHeaderImage] = useState({});
+  const [movie, setMovie] = useState([]);
   const params = useParams();
   console.log(props);
+  console.log(params);
   const options = {
     method: 'GET',
     headers: {
@@ -19,24 +19,25 @@ export default function Detail(props){
   };
   
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/${props.params.id}`, options)
+    fetch(`https://api.themoviedb.org/3/movie/${props.params.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=ko-KO&append_to_response=images`, options)
     .then(response => response.json())
     .then((response) => {
-      setMovies(response.results);
-      setHeaderImage(response.results[Math.floor(Math.random() * response.results.length - 1)]);
+      setMovie(response);
       console.log('렌더링');
+
     })
     .catch(err => console.error(err));
   }, []);
+  console.log(movie.backdrop_path);
+
   return (
     <>
     <Nav />
-    {movies && <Movie
-        key={movies.id}
-        id={movies.id}
-        posterImg={`https://image.tmdb.org/t/p/original/${movies.poster_path}`}
-        bigPoster={`https://image.tmdb.org/t/p/original/${headerImage.backdrop_path}`}
-        title={movies.title}
+    {movie && <Movie
+        key={movie.id}
+        id={movie.id}
+        bigPoster={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+        title={movie.title}
       />}
     </>
   )

@@ -16,6 +16,10 @@
   }
 }
 
+*{
+  box-sizing: border-box;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(20, 20, 20);
