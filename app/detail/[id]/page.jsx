@@ -12,6 +12,7 @@ export default function Detail(props){
   const params = useParams();
   const ref = useRef(null);
   const videoKey = [];
+  const [genres, setGenres] = useState([]);
   console.log(props);
   console.log(params);
   
@@ -30,36 +31,62 @@ export default function Detail(props){
     .then((response) => {
       setMovie(response);
       setVideos(response.videos.results);
+      setGenres(response.genres);
       console.log('렌더링');
     })
     .catch(err => console.error(err));
   }, []);
   console.log(movie);
   console.log(videos);
+  console.log(movie.genres);
   return (
     <>
     <Nav />
-    {movie && <Header
+    <div className='w-full h-screen text-black font-semibold'>
+      {/* 이미지 */}
+      {movie && <Header
         key={movie.id}
         id={movie.id}
         headerImage={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
         title={movie.title}
       />}
 
-      <h1>{movie.title}</h1>
-      {videos.map((video) => {
-        if(video.type === "Trailer"){
-          videoKey.push(video.key);
-          console.log(videoKey);
-        } else if(videoKey.length === 0){
-          ref.current.style.textContent = '영상이 없습니다.'
-        }
-      })}
-        <Link href={`https://www.youtube.com/watch?v=${videoKey[0]}`} className='bg-play'>
-          <Play />
-          <span ref={ref} className='text-black'>예고편 재생</span>
-        </Link>
-      <p>{movie.overview}</p>
+        <div className='bg-gray-400/50 p-3 rounded-md z-[100] w-2/4 flex justify-center flex-col mx-auto relative bottom-[15%] translate-y-[-50%]'>
+          <h1 className='text-center text-3xl'>{movie.title}</h1>
+          <div className='flex justify-between items-center mb-2'>
+            <div className='flex text-xl w-[100%]'>
+              <h1>장르:</h1>
+              <span className='flex justify-between'>
+              {genres.map((genre, index) => {
+                return (
+                  <p key={index} className='ml-2'>{genre.name}</p>
+                )
+              })}
+              </span>
+            </div>
+
+            {/* 예고편 */}
+            {videos.map((video) => {
+              if(video.type === "Trailer"){
+                videoKey.push(video.key);
+                console.log(videoKey);
+              } else if(videoKey.length === 0){
+                ref.current.style.textContent = '영상이 없습니다.'
+              }
+            })}
+            <div className=' bg-play w-[20%] items-center p-3 rounded-md'>
+              <Link href={`https://www.youtube.com/watch?v=${videoKey[0]}`} className='flex justify-center top-[50%]'>
+              <Play />
+                <span ref={ref} className='text-black items-center'>예고편 재생</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* 줄거리 */}
+          <p>{movie.overview}</p>
+        </div>
+      </div>
+    
     </>
   )
 }
