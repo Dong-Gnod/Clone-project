@@ -52,10 +52,10 @@ export default function Main() {
       </div>
       <div>
           <h1>인기 콘텐츠</h1>
-          <div className='flex justify-between relative w-full mb-2.5'>
+          <div className='flex justify-between relative'>
             {movies.map((movie) => {
               return(
-                <div key={movie.id}>
+                <div key={movie.id} className='mb-2.5 ml-2.5'>
                   <Link key={movie.id} href={`detail/${movie.id}`}>
                     <Movie
                       key={movie.id}
