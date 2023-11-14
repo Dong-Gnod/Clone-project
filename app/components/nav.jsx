@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import logo from './imgs/netflix-logo.png'
-import Profile  from './imgs/profile.png';
+import logo from './images/netflix-logo.png'
+import Profile  from './images/profile.png';
 import { Search, Bell, Arrow } from './icons/icons'
 import Link from 'next/link';
 
