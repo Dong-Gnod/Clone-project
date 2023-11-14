@@ -28,19 +28,21 @@ export default function Main() {
     })
     .catch(err => console.error(err));
     }, []);
+
+    useEffect(() => {
+      fetch('https://api.themoviedb.org/3/genre/movie/list?language=ko', options)
+      .then(response => response.json())
+      .then((response) => {
+      setGenre(response.genres);
+      console.log('렌더링 g');
+      })
+      .catch(err => console.error(err));
+      }, []);
+
     console.log(movies);
+    console.log(genre);
 
-  useEffect(()=> {
-    fetch('https://api.themoviedb.org/3/genre/movie/list?language=ko', options)
-  .then(response => response.json())
-  .then((response) => {
-    setGenre(response.genres)
-    console.log('렌더링 genre');
-  })
-  .catch(err => console.error(err));
-  },[]);
-  console.log(genre);
-
+  
   return (
     <div className='w-full h-full'>
       <Nav />
@@ -65,14 +67,13 @@ export default function Main() {
           <div className='flex justify-between relative'>
             {movies.map((movie) => {
               return(
-                <div key={movie.id} className='mb-2.5 ml-2.5 w-72'>
-                  <Link key={movie.id} href={`detail/${movie.id}`} className='w-72'>
+                <div key={movie.id} className='mb-2.5 ml-2.5'>
+                  <Link key={movie.id} href={`detail/${movie.id}`}>
                     <Movie
                       key={movie.id}
                       id={movie.id}
                       posterImg={movie.backdrop_path}
                       title={movie.title}
-                      className='w-72'
                     />
                   </Link>
                 </div>
@@ -86,7 +87,7 @@ export default function Main() {
           <div className='flex justify-between relative'>
             {movies.map((movie) => {
               return(
-                <div key={movie.id} className='w-36'>
+                <div key={movie.id}>
                   <Link key={movie.id} href={`detail/${movie.id}`}>
                     <Movie
                       key={movie.id}
@@ -102,11 +103,11 @@ export default function Main() {
         </div>
 
         <div className='mb-5'>
-          {/* <h1>{genre[0].name}</h1> */}
+          <h1 className='ml-2.5'>{genre ? genre[0].name : null}</h1>
           <div className='flex'>
           {movies.map((movie) => (
             movie.genre_ids.includes(genre[0].id) ? 
-              <div key={movie.id} className='ml-2.5 w-36'>
+              <div key={movie.id} className='ml-2.5 w-72'>
                 <Movie
                   key={movie.id}
                   id={movie.id}
@@ -119,11 +120,11 @@ export default function Main() {
         </div>
 
         <div className='mb-5'>
-          {/* <h1>{genre[1].name}</h1> */}
+          <h1 className='ml-2.5'>{genre ? genre[1].name : null}</h1>
           <div className='flex'>
           {movies.map((movie) => (
             movie.genre_ids.includes(genre[1].id) ? 
-              <div key={movie.id} className='ml-2.5 w-36'>
+              <div key={movie.id} className='ml-2.5 w-72'>
                 <Movie
                   key={movie.id}
                   id={movie.id}
