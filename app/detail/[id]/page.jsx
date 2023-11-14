@@ -52,7 +52,7 @@ export default function Detail(props){
       />}
 
         <div className='bg-gray-400/50 p-3 rounded-md z-[100] w-2/4 flex justify-center flex-col mx-auto relative bottom-[15%] translate-y-[-50%]'>
-          <h1 className='text-center text-3xl'>{movie.title}</h1>
+          <h1 className='text-center text-3xl font-black'>{movie.title}</h1>
           <div className='flex justify-between items-center mb-2'>
             <div className='flex text-xl w-[100%]'>
               <h1>장르:</h1>

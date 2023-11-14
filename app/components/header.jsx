@@ -8,7 +8,6 @@ export default function Header({id, title, headerImage}){
         alt="header-image"
       />
       </div>
-
     </>
   )
 }
