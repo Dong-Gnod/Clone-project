@@ -10,7 +10,7 @@ export default function Nav(){
     <div className='flex w-full justify-between items-center mt-4 px-14 fixed'>
       <div className='flex mr-1.5 items-center'>
         <Link href="/main">
-          <img 
+          <Image 
             src={logo} 
             alt='Netflix home' 
             className='w-20 h-8 mr-4'
