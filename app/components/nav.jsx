@@ -5,7 +5,7 @@ import { Search, Bell, Arrow } from './icons/icons'
 import Link from 'next/link';
 
 
-export const Nav = () => {
+export default function Nav(){
   return (
     <div className='flex w-full justify-between items-center mt-4 px-14 fixed'>
       <div className='flex mr-1.5 items-center'>

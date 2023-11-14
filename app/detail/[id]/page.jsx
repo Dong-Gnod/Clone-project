@@ -1,7 +1,7 @@
 'use client'
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import Nav from '../../components/nav';
+import Nav from '@/app/components/nav';
 import Header from '../../components/header';
 import { Play } from '../../components/icons/icons';
 import Link from 'next/link';
