@@ -1,9 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react';
-import Movie from '../components/movie';
+import Movie from '../components/Movie';
 import Link from 'next/link';
 import Header from './../components/header';
-import { Nav } from './../components/nav';
+import Nav from '../components/Nav';
 
 export default function Main() {
   const [movies, setMovies] = useState([]);
