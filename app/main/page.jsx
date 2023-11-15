@@ -31,6 +31,7 @@ export default function Main() {
     }, []);
 
     console.log(movies);
+    console.log(movies.genre_ids);
 
   return (
     <div className='w-full h-full'>
@@ -94,21 +95,10 @@ export default function Main() {
         <div className='mt-5 mb-5'>
           <h1>장르별</h1>
           <div className='flex justify-between'>
-            {movies.map((movie) => {
-              return (
-                <div key={movie.id} className='ml-2.5'>
-                  <Link key={movie.id} href={`detail/${movie.id}`}>
+            
                     <Genres
-                      key={movie.id}
-                      id={movie.id}
-                      posterImg={movie.backdrop_path}
-                      title={movie.title}
-                      genreIds={movie.genre_ids}
+                      movies={movies}
                     />  
-                  </Link>
-                </div>
-              )
-            })}
           </div>
         </div>
 
