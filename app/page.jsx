@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function Home() {
   
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between py-0 w-80 bg-main">
+    <main className="flex min-h-screen flex-col py-0 w-full bg-main">
       <div className='w-full m-0'>
         <Link href="/main">
           <Image 
@@ -15,16 +15,18 @@ export default function Home() {
             className='w-20 h-8 m-5'
           />
         </Link>
-        
-        <div className='flex flex-col'>
-          <h1 className='text-center'>로그인</h1>
-          <input type="email" placeholder='이메일 주소' />
-          <input type="password" placeholder='비밀번호' />
-          <div>
-            <button>로그인</button>
-            <button>회원가입</button>
+        <div className='relative items-center justify-center'>
+          <div className='flex flex-col bg-gray-400/50 p-3 rounded-md w-80 mx-auto my-auto'>
+            <h1 className='text-center'>로그인</h1>
+            <input type="email" placeholder='이메일 주소' />
+            <input type="password" placeholder='비밀번호' />
+            <div>
+              <button>로그인</button>
+              <button>회원가입</button>
+            </div>
           </div>
         </div>
+        
       </div>
     </main>
   )
