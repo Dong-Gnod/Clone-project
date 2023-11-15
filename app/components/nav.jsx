@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function Nav(){
   return (
-    <div className='flex w-full justify-between items-center mt-4 px-14 fixed'>
+    <div className='flex w-full justify-between items-center mt-4 px-14 fixed z-[100]'>
       <div className='flex mr-1.5 items-center'>
         <Link href="/main">
           <Image 

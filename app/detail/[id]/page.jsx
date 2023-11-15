@@ -8,11 +8,12 @@ import Link from 'next/link';
 
 export default function Detail(props){
   const [movie, setMovie] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [videos, setVideos] = useState([]);
   const params = useParams();
   const ref = useRef(null);
   const videoKey = [];
-  const [genres, setGenres] = useState([]);
+
   console.log(props);
   console.log(params);
   
@@ -21,7 +22,7 @@ export default function Detail(props){
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: process.env.NEXT_PUBLIC_API_KEY
+      Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY
     }
   };
   
@@ -70,8 +71,6 @@ export default function Detail(props){
               if(video.type === "Trailer"){
                 videoKey.push(video.key);
                 console.log(videoKey);
-              } else if(videoKey.length === 0){
-                ref.current.style.textContent = '영상이 없습니다.'
               }
             })}
             <div className=' bg-play w-[20%] items-center p-3 rounded-md'>

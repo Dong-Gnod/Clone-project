@@ -1,7 +1,7 @@
 export default function Header({id, title, headerImage}){
   return (
     <>
-      <div className='w-full h-screen overflow-hidden'>
+      <div className='w-screen h-screen overflow-hidden text-center'>
       <img 
         id={id} 
         src={`https://image.tmdb.org/t/p/original/${headerImage}`} 
