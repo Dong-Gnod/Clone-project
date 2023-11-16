@@ -14,8 +14,6 @@ export default function Detail(props){
   const ref = useRef(null);
   const videoKey = [];
 
-  console.log(props);
-  console.log(params);
   
 
   const options = {
@@ -33,13 +31,9 @@ export default function Detail(props){
       setMovie(response);
       setVideos(response.videos.results);
       setGenres(response.genres);
-      console.log('렌더링');
     })
     .catch(err => console.error(err));
   }, []);
-  console.log(movie);
-  console.log(videos);
-  console.log(movie.genres);
   return (
     <>
     <Nav />
@@ -70,7 +64,6 @@ export default function Detail(props){
             {videos.map((video) => {
               if(video.type === "Trailer"){
                 videoKey.push(video.key);
-                console.log(videoKey);
               }
             })}
             <div className=' bg-play w-[20%] items-center p-3 rounded-md'>

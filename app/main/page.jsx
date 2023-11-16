@@ -25,13 +25,10 @@ export default function Main() {
     .then((response) => {
     setMovies(response.results);
     setHeaderImage(response.results[Math.floor(Math.random() * response.results.length - 1)]);
-    console.log('렌더링');
     })
     .catch(err => console.error(err));
     }, []);
 
-    console.log(movies);
-    console.log(movies.genre_ids);
 
   return (
     <div className='w-full h-full'>
