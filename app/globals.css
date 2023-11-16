@@ -16,6 +16,13 @@
   }
 }
 
+@font-face {
+  font-family: 'Roboto Mono', monospace;
+  src: url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap');
+  font-weight: normal;
+  font-style: normal;
+}
+
 *{
   box-sizing: border-box;
 }
@@ -24,4 +31,5 @@ body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(20, 20, 20);
   height: 100vh;
+  font-family: 'Roboto Mono', monospace;
 }

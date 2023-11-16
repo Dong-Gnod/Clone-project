@@ -24,7 +24,7 @@ export default function Genres({movies}){
     }, []);
     console.log(genres);
   return(
-    <div>
+    <div className='font-RobotoMono'>
       {genres.map((genre) => {
           return(
           <div key={genre.id}>

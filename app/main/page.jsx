@@ -31,7 +31,7 @@ export default function Main() {
 
 
   return (
-    <div className='w-full h-full'>
+    <div className='w-full h-full font-RobotoMono'>
       <Nav />
       <div className='w-full'>
         <Link key={headerImage.id} href={`detail/${headerImage.id}`}>

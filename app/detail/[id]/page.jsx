@@ -37,7 +37,7 @@ export default function Detail(props){
   return (
     <>
     <Nav />
-    <div className='w-full h-screen text-black font-semibold'>
+    <div className='w-full h-screen text-black font-semibold font-RobotoMono'>
       {/* 이미지 */}
       {movie && <Header
         key={movie.id}

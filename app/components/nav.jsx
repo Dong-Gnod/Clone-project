@@ -12,7 +12,7 @@ export default function Nav(){
   }
 
   return (
-    <div className='flex w-full justify-between items-center mt-4 px-14 fixed z-[100]'>
+    <div className='flex w-full justify-between items-center mt-4 px-14 fixed z-[100] font-RobotoMono'>
       <div className='flex mr-1.5 items-center bg-gray-400/50 px-5 rounded-md'>
         <Link href="/main">
           <Image 

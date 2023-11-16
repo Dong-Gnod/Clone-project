@@ -17,6 +17,9 @@ module.exports = {
         'play': 'rgba(255, 255, 255)',
         'detailInfo': 'rgba(255, 255, 255, 0.75)',
       },
+      fontFamily: {
+        RobotoMono:['Roboto Mono'],
+      }
     },
   },
   plugins: [],
