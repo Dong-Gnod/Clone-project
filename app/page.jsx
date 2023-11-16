@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import logo from './components/images/logo.png'
 import Image from 'next/image';
 
@@ -14,7 +13,7 @@ export default function Home() {
           alt='Netflix home' 
           className='w-20 h-20 m-5'
         />
-        
+
         <div className='relative items-center justify-center'>
           <div className='flex flex-col bg-gray-400/50 p-3 rounded-md w-80 mx-auto my-auto'>
             <h1 className='text-center'>로그인</h1>

@@ -22,26 +22,7 @@ export default function Nav(){
           <Link href="/main"><span className='ml-5 text-sm'>홈</span></Link>
           <span className='ml-5 text-sm'>시리즈</span>
           <span className='ml-5 text-sm'>영화</span>
-          <span className='ml-5 text-sm'>NEW! 요즘 대세 콘텐츠</span>
-          <span className='ml-5 text-sm'>내가 찜한 리스트</span>
-          <span className='ml-5 text-sm'>언어별로 찾아보기</span>
         </div>
-      </div>
-
-      {/* icons */}
-      <div className='flex justify-evenly w-52 items-center'>
-        <Search />
-        <span className='text-sm font-medium'>키즈</span>
-        <Bell />
-        <Image
-          className='w-8'
-          src={Profile} 
-          alt='profile' 
-        />
-        <div className='hover:rotate-180 transition duration-300 ease-in-out'>
-          <Arrow />
-        </div>
-
       </div>
     </div>
   );
