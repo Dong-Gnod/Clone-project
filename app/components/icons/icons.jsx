@@ -33,43 +33,43 @@ export const ArrowRight = () => {
 }
 
 export const One = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/1.png" alt="one" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/1.png" alt="one" class='w-36 h-52 mr-64' />
 }
 
 export const Two = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/2.png" alt="two" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/2.png" alt="two" class='w-36 h-52 mr-72' />
 }
 
 export const Three = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/3.png" alt="three" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/3.png" alt="three" class='w-36 h-52 mr-72' />
 }
 
 export const Four = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/4.png" alt="four" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/4.png" alt="four" class='w-36 h-52 mr-72' />
 }
 
 export const Five = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/5.png" alt="five" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/5.png" alt="five" class='w-36 h-52 mr-72' />
 }
 
 export const Six = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/6.png" alt="six" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/6.png" alt="six" class='w-36 h-52 mr-72' />
 }
 
 export const Seven = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/7.png" alt="seven" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/7.png" alt="seven" class='w-36 h-52 mr-72' />
 }
 
 export const Eight = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/8.png" alt="eight" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/8.png" alt="eight" class='w-36 h-52 mr-72' />
 }
 
 export const Nine = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/9.png" alt="nine" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/9.png" alt="nine" class='w-36 h-52 mr-72' />
 }
 
 export const Ten = () => {
-  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/10.png" alt="ten" />
+  return <img src="https://www.netflix.com/tudum/top10/images/big_numbers/10.png" alt="ten" class='w-36 h-52 mr-64' />
 }
 
 export const Play = () => {

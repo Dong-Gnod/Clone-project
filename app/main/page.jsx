@@ -20,7 +20,7 @@ export default function Main() {
   };
 
   useEffect(() => {
-    fetch('https://api.themoviedb.org/3/discover/movie?certification_country=asia%2Cus&include_adult=false&include_video=true&language=ko-KO&page=2&region=asia%2Cus&sort_by=popularity.desc', options)
+    fetch('https://api.themoviedb.org/3/discover/movie?certification_country=asia%2Cus&include_adult=false&include_video=true&language=ko-KO&page=5&region=asia%2Cus&sort_by=popularity.desc', options)
     .then(response => response.json())
     .then((response) => {
     setMovies(response.results);
@@ -28,7 +28,7 @@ export default function Main() {
     })
     .catch(err => console.error(err));
     }, []);
-
+console.log();
 
   return (
     <div className='w-full h-full font-RobotoMono'>
@@ -54,7 +54,7 @@ export default function Main() {
           <div className='flex justify-between relative'>
             {movies.map((movie) => {
               return(
-                <div key={movie.id} className='mb-2.5 ml-2.5'>
+                <div key={movie.id} className='mb-7 ml-2.5'>
                   <Link key={movie.id} href={`detail/${movie.id}`}>
                     <Movie
                       key={movie.id}
@@ -69,33 +69,21 @@ export default function Main() {
           </div>
         </div>
 
-        <div className='mb-5'>
+        <div className='mb-7'>
           <h1 className='ml-2.5'>인기 콘텐츠</h1>
           <div className='flex justify-between relative'>
-            {movies.map((movie) => {
-              return(
-                <div key={movie.id} className='ml-2.5'>
-                  <Link key={movie.id} href={`detail/${movie.id}`}>
-                    <TopTen
-                      key={movie.id}
-                      id={movie.id}
-                      posterImg={movie.poster_path}
-                      title={movie.title}
-                    />
-                  </Link>
-                </div>
-              )
-            }).sort((a, b) => b.popularity - a.vote_average).slice(0, 10)}
+            <TopTen
+              movies={movies}
+            />
           </div>
         </div>
         
-        <div className='mt-5 mb-5'>
+        <div className='mt-5 mb-7'>
           <h1>장르별</h1>
           <div className='flex justify-between'>
-            
-                    <Genres
-                      movies={movies}
-                    />  
+            <Genres
+              movies={movies}
+            />  
           </div>
         </div>
 
