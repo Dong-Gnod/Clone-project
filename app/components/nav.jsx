@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import logo from './images/netflix-logo.png'
+import logo from './images/logo.png'
 import Profile  from './images/profile.png';
 import { Search, Bell, Arrow } from './icons/icons'
 import Link from 'next/link';
@@ -13,7 +13,7 @@ export default function Nav(){
           <Image 
             src={logo} 
             alt='Netflix home' 
-            className='w-20 h-8 mr-4'
+            className='w-20 h-20 mr-4'
           />
         </Link>
 

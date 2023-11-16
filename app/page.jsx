@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import logo from './components/images/netflix-logo.png'
+import logo from './components/images/logo.png'
 import Image from 'next/image';
 
 
@@ -8,13 +8,13 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col py-0 w-full bg-main">
       <div className='w-full m-0'>
-        <Link href="/main">
-          <Image 
-            src={logo} 
-            alt='Netflix home' 
-            className='w-20 h-8 m-5'
-          />
-        </Link>
+
+        <Image 
+          src={logo} 
+          alt='Netflix home' 
+          className='w-20 h-20 m-5'
+        />
+        
         <div className='relative items-center justify-center'>
           <div className='flex flex-col bg-gray-400/50 p-3 rounded-md w-80 mx-auto my-auto'>
             <h1 className='text-center'>로그인</h1>
