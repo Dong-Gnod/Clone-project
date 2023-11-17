@@ -22,13 +22,6 @@ export default function Genres({movies}){
     .catch(err => console.error(err));
     }, []);
 
-    function countIndex({id}){
-      if(id === id){
-        setIndex(index + 1);
-        console.log(index);
-      }
-    }
-
   return(
     <div className='font-RobotoMono'>
       {genres.map((genre) => {
@@ -39,12 +32,15 @@ export default function Genres({movies}){
             <ul className='flex flex-wrap'>
             {movies
               .filter((movie) => {
-                return movie.genre_ids.includes(genre.id);
+                const a = [];
+                return (
+                  movie.genre_ids.includes(genre.id)
+                );
               })
               .map((movie, index) => {
                 return(
                   <Link href={`detail/${movie.id}`} key={movie.id}>
-                    <li index={`${countIndex}`}>
+                    <li>
                       <h1 className='ml-2.5 bg-gray-600/50 p-3 rounded-md'>{movie.title}</h1>
                       <div className='w-72 ml-2.5 mb-7'>
                         <img
