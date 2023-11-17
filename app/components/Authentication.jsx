@@ -16,16 +16,16 @@ export const Authentication = () => {
   return (
     <>
       {user && (
-        <button
-          className='top-2 right-2 text-white'
-          onClick={() => {
-            signOut();
-            // localStorage.removeItem('user');
-            router.push('/');
-          }}
-        >
-          LogOut
-        </button>
+          <button
+            className='text-white z-[100] w-15 absolute top-[2%] right-[2%]  bg-gray-900/50 p-3 rounded-md'
+            onClick={() => {
+              signOut();
+              // localStorage.removeItem('user');
+              router.push('/');
+            }}
+          >
+            LogOut
+          </button>
       )}
       
     </>

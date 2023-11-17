@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 export default function Genres({movies}){
   const [genres, setGenres] = useState([]);
+  const [index, setIndex] = useState(0);
 
   const options = {
     method: 'GET',
@@ -20,33 +21,44 @@ export default function Genres({movies}){
     })
     .catch(err => console.error(err));
     }, []);
-    console.log(genres);
+
+    function countIndex({id}){
+      if(id === id){
+        setIndex(index + 1);
+        console.log(index);
+      }
+    }
+
   return(
     <div className='font-RobotoMono'>
       {genres.map((genre) => {
+          console.log(genre);
           return(
           <div key={genre.id}>
-            <h1>{genre.name}</h1>
-            <div className='flex'>
+            <h1 className='ml-2.5 mb-1.5 text-3xl font-bold'>{genre.name}</h1>
+            <ul className='flex flex-wrap'>
             {movies
               .filter((movie) => {
                 return movie.genre_ids.includes(genre.id);
               })
-              .map((movie) => {
+              .map((movie, index) => {
                 return(
                   <Link href={`detail/${movie.id}`} key={movie.id}>
-                    <h1>{movie.title}</h1>
-                    <div className='w-72 ml-2.5 mb-7'>
-                      <img
-                        id={movie.id}
-                        src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`} 
-                        alt="Image"
-                      />
-                    </div>
+                    <li index={`${countIndex}`}>
+                      <h1 className='ml-2.5 bg-gray-600/50 p-3 rounded-md'>{movie.title}</h1>
+                      <div className='w-72 ml-2.5 mb-7'>
+                        <img
+                          id={movie.id}
+                          src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`} 
+                          alt="Image"
+                        />
+                      </div>
+                    </li>
                   </Link>
                 )
-              })}
-            </div>
+              }
+              )}
+            </ul>
           </div>
           )
         })}

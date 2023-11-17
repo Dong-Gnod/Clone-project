@@ -46,7 +46,7 @@ export default function Detail(props){
         title={movie.title}
       />}
 
-        <div className='bg-gray-400/50 p-3 rounded-md z-[100] w-2/4 flex justify-center flex-col mx-auto relative bottom-[15%] translate-y-[-50%]'>
+        <div className='bg-gray-400/50 p-10 rounded-md z-[100] w-2/4 flex justify-center flex-col mx-auto relative bottom-[15%] translate-y-[-60%]'>
           <h1 className='text-center text-3xl font-black'>{movie.title}</h1>
           <div className='flex justify-between items-center mb-2'>
             <div className='flex text-xl w-[100%]'>
@@ -66,7 +66,7 @@ export default function Detail(props){
                 videoKey.push(video.key);
               }
             })}
-            <div className=' bg-play w-[20%] items-center p-3 rounded-md'>
+            <div className=' bg-play w-[20%] items-center p-10 rounded-md'>
               <Link href={`https://www.youtube.com/watch?v=${videoKey[0]}`} className='flex justify-center top-[50%]'>
               <Play />
                 <span ref={ref} className='text-black items-center'>예고편 재생</span>

@@ -1,7 +1,7 @@
 export default function Movie ({id, posterImg, title}){
   return (
     <div className='w-72'>
-      <h1>{title}</h1>
+      <h1 className='bg-gray-600/50 p-3 rounded-md'>{title}</h1>
       <div>
           <img
             id={id}

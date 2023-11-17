@@ -16,6 +16,7 @@ export default function Home() {
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState('');
   const { signIn } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
 
   const handleGoogleLoginButtonClick = async () => {
@@ -33,7 +34,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col py-0 w-full bg-main font-RobotoMono">
-      <div className='w-full m-0'>
+      <div className='w-full m-0 min-h-screen'>
 
         <Image 
           src={logo} 
@@ -41,38 +42,41 @@ export default function Home() {
           className='w-20 h-20 m-5'
         />
 
-        <div className='relative items-center justify-center text-black'>
-          <div className='flex flex-col bg-gray-400/50 p-3 rounded-md w-80 mx-auto my-auto'>
-            <h1 className='text-center'>로그인</h1>
-            <div>
+        <div className='relative items-center justify-center text-black mx-auto translate-y-[55%]'>
+          <div className='flex flex-col bg-gray-700/70 p-3 rounded-md w-80 mx-auto'>
+            <h1 className='text-center m-5 text-white'>DFLIX</h1>
+            <div className='text-center mb-3'>
               <input 
                 type="text" 
-                placeholder='이메일 주소' 
+                placeholder='ID' 
                 value={id} 
                 onChange={e => setId(e.target.value)}
+                className='rounded-md p-2'
               />
             </div>
-            <div>
+            <div className='text-center  mb-3'>
               <input 
                 type="password" 
-                placeholder='비밀번호' 
+                placeholder='Password' 
                 value={pw} 
-                onChange={e => setPw(e.target.value)} 
+                onChange={e => setPw(e.target.value)}
+                className='rounded-md p-2'
               />
             </div>
 
             {!isLogin && (
-              <div>
+              <div className='text-center mb-3'>
                 <input 
                   type="password" 
-                  placeholder='비밀번호 확인' 
+                  placeholder='Password Check' 
                   value={pwConfirm} 
-                  onChange={e => setPwConfirm(e.target.value)} 
+                  onChange={e => setPwConfirm(e.target.value)}
+                  className='rounded-md p-2'
                 />
               </div>
             )}
             
-            <div className='flex justify-between'>
+            <div className='flex justify-evenly mb-3'>
               <button
                 onClick={async () => {
                   if (isLogin) {
@@ -133,17 +137,26 @@ export default function Home() {
                   window.alert("회원가입에 완료했습니다");
                   router.push("/");
 
-                  if (user) return router.push('/main');
+                  if (user) return router.push('/');
                   router.push('/');
                 }}
+                className='hover:border-solid hover:border-2 hover:text-red-600 hover:border-red-600 hover:rounded-md text-white p-2'
               >
                 {isLogin ? '로그인' : '회원가입'}
               </button>
-              <button onClick={() => setLogin(!isLogin)}>
-                {isLogin ? '회원가입 하러가기' : '로그인 하러가기'}
+              <button 
+              onClick={() => {setLogin(!isLogin)}}
+              className='hover:border-solid hover:border-2 hover:text-red-600 hover:border-red-600 hover:rounded-md text-white p-2 text-center'
+              >
+                {isLogin ? '회원가입' : '로그인하러 가기'}
               </button>
             </div>
-            <button onClick={handleGoogleLoginButtonClick}>구글 로그인</button>
+            <button 
+              onClick={handleGoogleLoginButtonClick}
+              className='hover:border-solid hover:border-2 hover:text-red-600 hover:border-red-600 hover:rounded-md text-white p-2'
+            >
+              구글 로그인
+            </button>
           </div>
         </div>
         
