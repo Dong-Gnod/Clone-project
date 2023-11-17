@@ -5,9 +5,10 @@ import logo from './components/images/logo.png'
 import Image from 'next/image';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { firestore } from "@/firebase";
+import { auth, firestore } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { useAuth } from './store/useAuth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 export default function Home() {
   const [isLogin, setLogin] = useState(true);
@@ -16,6 +17,19 @@ export default function Home() {
   const [pwConfirm, setPwConfirm] = useState('');
   const { signIn } = useAuth();
   const router = useRouter();
+
+  const handleGoogleLoginButtonClick = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const { user } = result;
+    const newUser = {
+      id: user.uid,
+      email: user.email.split('@')[0],
+    }
+    signIn(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser));
+    router.push('/main');
+  }
 
   return (
     <main className="flex min-h-screen flex-col py-0 w-full bg-main font-RobotoMono">
@@ -115,7 +129,7 @@ export default function Home() {
                   };
                   await addDoc(collection(firestore, "users"), newUser);
                   // localStorage.setItem("user", JSON.stringify(newUser));
-                  signIn(useUser);
+                  signIn(newUser);
                   window.alert("회원가입에 완료했습니다");
                   router.push("/");
 
@@ -129,6 +143,7 @@ export default function Home() {
                 {isLogin ? '회원가입 하러가기' : '로그인 하러가기'}
               </button>
             </div>
+            <button onClick={handleGoogleLoginButtonClick}>구글 로그인</button>
           </div>
         </div>
         
