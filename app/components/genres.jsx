@@ -44,7 +44,6 @@ export default function Genres({movies}){
                       />
                     </div>
                   </Link>
-
                 )
               })}
             </div>

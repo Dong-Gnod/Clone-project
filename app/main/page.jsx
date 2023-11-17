@@ -6,10 +6,12 @@ import Header from './../components/header';
 import Nav from '../components/nav';
 import Genres from '../components/genres';
 import TopTen from '../components/topTen';
+import { useAuth } from './../store/useAuth';
 
 export default function Main() {
   const [movies, setMovies] = useState([]);
   const [headerImage, setHeaderImage] = useState([]);
+  const { user } = useAuth();
 
   const options = {
     method: 'GET',
@@ -20,7 +22,7 @@ export default function Main() {
   };
 
   useEffect(() => {
-    fetch('https://api.themoviedb.org/3/discover/movie?certification_country=asia%2Cus&include_adult=false&include_video=true&language=ko-KO&page=5&region=asia%2Cus&sort_by=popularity.desc', options)
+    fetch('https://api.themoviedb.org/3/discover/movie?certification_country=asia%2Cus&include_adult=false&include_video=true&language=ko-KO&page=6&region=asia%2Cus&sort_by=popularity.desc', options)
     .then(response => response.json())
     .then((response) => {
     setMovies(response.results);
@@ -28,7 +30,14 @@ export default function Main() {
     })
     .catch(err => console.error(err));
     }, []);
-console.log();
+
+  if(!user){
+    return(
+      <div>
+        <Link href={'/'}>로그인</Link>을 해주세요
+      </div>
+    )
+  }
 
   return (
     <div className='w-full h-full font-RobotoMono'>
