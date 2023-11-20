@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 
 export default function Genres({movies}){
   const [genres, setGenres] = useState([]);
-  const [index, setIndex] = useState(0);
 
   const options = {
     method: 'GET',
@@ -21,7 +20,7 @@ export default function Genres({movies}){
     })
     .catch(err => console.error(err));
     }, []);
-
+    
   return(
     <div className='font-RobotoMono'>
       {genres.map((genre) => {

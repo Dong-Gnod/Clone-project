@@ -1,8 +1,6 @@
 import Link from 'next/link';
-import { Eight, Five, Four, Nine, One, Seven, Six, Ten, Three, Two } from '../components/icons/icons';
 
 export default function TopTen ({movies}){
-  const numbers = [One, Two, Three, Four, Five];
   return (
     <div className='w-full relative'>
         <div>
