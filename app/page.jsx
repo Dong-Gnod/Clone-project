@@ -158,8 +158,9 @@ export default function Home() {
                 onClick={() => {
                   setLogin(!isLogin);
                 }}
-                className="hover:border-solid hover:border-2 hover:text-red-600 hover:border-red-600 hover:rounded-md text-white p-2 text-center">
-                {isLogin && "회원가입"}
+                className="hover:border-solid hover:border-2 hover:text-red-600 hover:border-red-600 hover:rounded-md text-white p-2 text-center"
+                style={{ display: isLogin ? "block" : "none" }}>
+                {isLogin ? "회원가입" : null}
               </button>
             </div>
             <button
