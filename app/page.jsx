@@ -123,7 +123,9 @@ export default function Home() {
                   );
                   const targetUsers = [];
                   storedUser.forEach((doc) => targetUsers.push(doc.data()));
-                  if (targetUsers.length > 0) {
+                  if (id === "" || pw === "") {
+                    alert("아이디 또는 비밀번호를 입력해주세요");
+                  } else if (targetUsers.length > 0) {
                     window.alert(
                       "중복된 계정 정보 이름이 있습니다. 이름을 변경해주세요."
                     );
@@ -135,14 +137,19 @@ export default function Home() {
                     name: id,
                     pw,
                   };
-                  await addDoc(collection(firestore, "users"), newUser);
-                  // localStorage.setItem("user", JSON.stringify(newUser));
-                  signIn(newUser);
-                  window.alert("회원가입에 완료했습니다");
-                  router.push("/");
 
-                  if (user) return router.push("/");
-                  router.push("/");
+                  if (id === "" || pw === "") {
+                    return;
+                  } else {
+                    await addDoc(collection(firestore, "users"), newUser);
+                    // localStorage.setItem("user", JSON.stringify(newUser));
+                    signIn(newUser);
+                    window.alert("회원가입에 완료했습니다");
+                    router.push("/");
+
+                    if (user) return router.push("/");
+                    router.push("/");
+                  }
                 }}
                 className="hover:border-solid hover:border-2 hover:text-red-600 hover:border-red-600 hover:rounded-md text-white p-2">
                 {isLogin ? "로그인" : "회원가입"}
