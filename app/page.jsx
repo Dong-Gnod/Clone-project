@@ -147,12 +147,12 @@ export default function Home() {
                     signIn(newUser);
                     window.alert("회원가입에 완료했습니다");
                     router.push("/main");
-
-                    if (user) return router.push("/main");
-                    router.push("/");
                   }
+                  if (user) return router.push("/main");
+                  router.push("/");
                 }}
-                className="hover:border-solid hover:border-2 hover:text-red-600 hover:border-red-600 hover:rounded-md text-white p-2">
+                className="hover:border-solid hover:border-2 hover:text-red-600 hover:border-red-600 hover:rounded-md text-white p-2"
+                style={{ width: !isLogin && "100%" }}>
                 {isLogin ? "로그인" : "회원가입"}
               </button>
               <button
@@ -160,7 +160,9 @@ export default function Home() {
                   setLogin(!isLogin);
                 }}
                 className="hover:border-solid hover:border-2 hover:text-red-600 hover:border-red-600 hover:rounded-md text-white p-2 text-center"
-                style={{ display: isLogin ? "block" : "none" }}>
+                style={{
+                  display: isLogin ? "inline-block" : "none",
+                }}>
                 {isLogin ? "회원가입" : null}
               </button>
             </div>
