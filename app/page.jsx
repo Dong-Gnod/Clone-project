@@ -74,6 +74,10 @@ export default function Home() {
             <div className="flex justify-evenly mb-3">
               <button
                 onClick={async () => {
+                  if (id === "" || pw === "") {
+                    alert("아이디 또는 비밀번호를 입력해주세요");
+                    return;
+                  }
                   if (isLogin) {
                     const storedUser = await getDocs(
                       query(
@@ -83,6 +87,7 @@ export default function Home() {
                     );
                     const targetUsers = [];
                     storedUser.forEach((doc) => targetUsers.push(doc.data()));
+
                     if (targetUsers.length === 0) {
                       window.alert("해당 계정으로 가입된 정보가 없습니다");
                       return;
@@ -96,15 +101,11 @@ export default function Home() {
                       window.alert("비밀번호가 다릅니다.");
                       return;
                     }
-                    if (id === "" || pw === "") {
-                      alert("아이디 또는 비밀번호를 입력해주세요");
-                    } else {
-                      window.alert("로그인에 성공했습니다.");
-                      signIn(targetUser);
-                      // localStorage.setItem("user", JSON.stringify(targetUser));
-                      router.push("/main");
-                    }
 
+                    window.alert("로그인에 성공했습니다.");
+                    signIn(targetUser);
+                    // localStorage.setItem("user", JSON.stringify(targetUser));
+                    router.push("/main");
                     return;
                   }
 
@@ -145,9 +146,9 @@ export default function Home() {
                     // localStorage.setItem("user", JSON.stringify(newUser));
                     signIn(newUser);
                     window.alert("회원가입에 완료했습니다");
-                    router.push("/");
+                    router.push("/main");
 
-                    if (user) return router.push("/");
+                    if (user) return router.push("/main");
                     router.push("/");
                   }
                 }}
