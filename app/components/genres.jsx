@@ -24,16 +24,29 @@ export default function Genres({ movies }) {
   return (
     <div className="font-RobotoMono">
       {genres.map((genre) => {
+        const movieArray = [];
+        const categories = {
+          genreId: genre.id,
+          genreName: genre.name,
+          movieList: [],
+        };
         return (
           <div key={genre.id}>
             <h1 className="ml-2.5 mb-1.5 text-3xl font-bold">{genre.name}</h1>
             <ul className="flex flex-wrap">
               {movies
                 .filter((movie) => {
-                  const a = [];
-                  return movie.genre_ids.includes(genre.id);
+                  if (movie.genre_ids.includes(genre.id)) {
+                    categories.movieList.push({
+                      movieId: movie.id,
+                      movieTitle: movie.title,
+                    });
+                    return movieArray.push(categories);
+                  }
+                  return movieArray;
                 })
-                .map((movie, index) => {
+                .map((movie) => {
+                  if (movieArray === 0) return;
                   return (
                     <Link href={`detail/${movie.id}`} key={movie.id}>
                       <li>
