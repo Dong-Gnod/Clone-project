@@ -31,7 +31,7 @@ export default function Genres({ movies }) {
                 ? null
                 : genre.name}
             </h1>
-            <ul className="flex flex-wrap">
+            <ul className="flex">
               {movies
                 .filter((movie) => {
                   return movie.genre_ids.includes(genre.id);

@@ -7,11 +7,37 @@ import Nav from "../components/nav";
 import Genres from "../components/genres";
 import TopTen from "../components/topTen";
 import { useAuth } from "./../store/useAuth";
+import { ArrowLeft, ArrowRight } from "../components/icons/icons";
+
+const TOTAL_SLIDE = 6;
 
 export default function Main() {
   const [movies, setMovies] = useState([]);
   const [headerImage, setHeaderImage] = useState([]);
   const { user } = useAuth();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slideRef = useRef(null);
+
+  const nextSlide = () => {
+    if (currentSlide >= TOTAL_SLIDE) {
+      setCurrentSlide(0);
+    } else {
+      setCurrentSlide(currentSlide + 1);
+    }
+  };
+
+  const prevSlide = () => {
+    if (currentSlide === 0) {
+      setCurrentSlide(TOTAL_SLIDE);
+    } else {
+      setCurrentSlide(currentSlide - 1);
+    }
+  };
+
+  useEffect(() => {
+    slideRef.current.style.transition = "all 0.5s ease-in-out";
+    slideRef.current.style.transform = `translateX(-${currentSlide}00%)`;
+  }, [currentSlide]);
 
   const options = {
     method: "GET",
@@ -69,11 +95,12 @@ export default function Main() {
       </div>
 
       <div className="translate-y-[-2%] overflow-x-hidden max-w-screen-3xl relative">
-        <div className="mb-5">
+        {currentSlide}
+        <div className="mb-5 overflow-x-hidden" ref={slideRef}>
           <h1 className="ml-2.5 text-3xl font-bold mb-1.5 bg-gray-600/50 p-3 rounded-md w-[15%]">
             지금 뜨는 콘텐츠
           </h1>
-          <ul className="flex justify-between relative flex-wrap">
+          <ul className="flex justify-between relative">
             {movies
               .map((movie) => {
                 return (
@@ -92,6 +119,10 @@ export default function Main() {
               .sort((a, b) => b.vote_average - a.vote_average)
               .slice(0, 10)}
           </ul>
+        </div>
+        <div>
+          <ArrowLeft onClick={prevSlide} />
+          <ArrowRight onClick={nextSlide} />
         </div>
 
         <div className="mb-7">
