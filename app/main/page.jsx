@@ -9,35 +9,10 @@ import TopTen from "../components/topTen";
 import { useAuth } from "./../store/useAuth";
 import { ArrowLeft, ArrowRight } from "../components/icons/icons";
 
-const TOTAL_SLIDE = 6;
-
 export default function Main() {
   const [movies, setMovies] = useState([]);
   const [headerImage, setHeaderImage] = useState([]);
   const { user } = useAuth();
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const slideRef = useRef(null);
-
-  const nextSlide = () => {
-    if (currentSlide >= TOTAL_SLIDE) {
-      setCurrentSlide(0);
-    } else {
-      setCurrentSlide(currentSlide + 1);
-    }
-  };
-
-  const prevSlide = () => {
-    if (currentSlide === 0) {
-      setCurrentSlide(TOTAL_SLIDE);
-    } else {
-      setCurrentSlide(currentSlide - 1);
-    }
-  };
-
-  useEffect(() => {
-    slideRef.current.style.transition = "all 0.5s ease-in-out";
-    slideRef.current.style.transform = `translateX(-${currentSlide}00%)`;
-  }, [currentSlide]);
 
   const options = {
     method: "GET",
@@ -49,7 +24,7 @@ export default function Main() {
 
   useEffect(() => {
     fetch(
-      "https://api.themoviedb.org/3/discover/movie?certification_country=asia%2Cus&include_adult=false&include_video=true&language=ko-KO&page=10&region=asia%2Cus&sort_by=popularity.desc",
+      "https://api.themoviedb.org/3/discover/movie?certification=asia&include_adult=false&include_video=true&language=ko-KO&page=10&sort_by=popularity.desc",
       options
     )
       .then((response) => response.json())
@@ -95,8 +70,7 @@ export default function Main() {
       </div>
 
       <div className="translate-y-[-2%] overflow-x-hidden max-w-screen-3xl relative">
-        {currentSlide}
-        <div className="mb-5 overflow-x-hidden" ref={slideRef}>
+        <div className="mb-5 overflow-x-hidden">
           <h1 className="ml-2.5 text-3xl font-bold mb-1.5 bg-gray-600/50 p-3 rounded-md w-[15%]">
             지금 뜨는 콘텐츠
           </h1>
@@ -121,8 +95,8 @@ export default function Main() {
           </ul>
         </div>
         <div>
-          <ArrowLeft onClick={prevSlide} />
-          <ArrowRight onClick={nextSlide} />
+          <ArrowLeft />
+          <ArrowRight />
         </div>
 
         <div className="mb-7">

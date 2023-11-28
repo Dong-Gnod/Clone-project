@@ -21,9 +21,13 @@ export default function TopTen({ movies }) {
 
                     <div className="w-36 flex flex-col ml-3 bg-gray-600/50 p-3 rounded-md">
                       <h3 className="border-b-2 p-2 text-white text-center mb-3 font-extrabold">
-                        {movie.title}
+                        {movie.title.slice(0, 12)}
                       </h3>
-                      <p className="line-clamp-6">{movie.overview}</p>
+                      <p className="line-clamp-5">
+                        {movie.overview === null
+                          ? "설명이 없습니다."
+                          : movie.overview}
+                      </p>
                     </div>
                   </li>
                 </Link>

@@ -40,8 +40,10 @@ export default function Genres({ movies }) {
                   return (
                     <Link href={`detail/${movie.id}`} key={movie.id}>
                       <li className="item">
-                        <h1 className="ml-2.5 bg-gray-600/50 p-3 rounded-md">
-                          {movie.title}
+                        <h1
+                          className="ml-2.5 bg-gray-600/50 p-3 rounded-md"
+                          maxLength="15">
+                          {movie.title.slice(0, 16)}
                         </h1>
                         <div className="w-72 ml-2.5 mb-7">
                           <img
