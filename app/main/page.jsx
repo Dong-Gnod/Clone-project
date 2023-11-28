@@ -50,7 +50,7 @@ export default function Main() {
   return (
     <div className="w-full h-full font-RobotoMono">
       <Nav />
-      <div className="w-full">
+      <div className="w-full flex justify-center">
         <Link key={headerImage.id} href={`detail/${headerImage.id}`}>
           <Header
             key={headerImage.id}
