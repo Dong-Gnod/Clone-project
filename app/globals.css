@@ -17,13 +17,13 @@
 }
 
 @font-face {
-  font-family: 'Roboto Mono', monospace;
-  src: url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap');
+  font-family: "Roboto Mono", monospace;
+  src: url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap");
   font-weight: normal;
   font-style: normal;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
@@ -31,10 +31,37 @@ body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(20, 20, 20);
   height: 100vh;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
 }
 
-.active{
+#slide-box {
+  width: 100rem;
+  margin: 0 auto;
+}
+
+.btnBox {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  height: 12rem;
+  transform: translateY(-100%);
+}
+
+.slideBtn {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  width: 3.75rem;
+  height: 12rem;
+  align-items: center;
+}
+
+.slideBtn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.active {
   border: 2px solid black;
   padding: 2rem;
 }

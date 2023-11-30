@@ -69,34 +69,15 @@ export default function Main() {
         </Link>
       </div>
 
+      {/* Main Contents */}
       <div className="translate-y-[-2%] overflow-x-hidden max-w-screen-3xl relative">
-        <div className="mb-5 overflow-x-hidden">
+        <div className="mb-5 h-full">
           <h1 className="ml-2.5 text-3xl font-bold mb-1.5 bg-gray-600/50 p-3 rounded-md w-[15%]">
             지금 뜨는 콘텐츠
           </h1>
-          <ul className="flex justify-between relative">
-            {movies
-              .map((movie) => {
-                return (
-                  <li key={movie.id} className="mb-7 ml-2.5">
-                    <Link key={movie.id} href={`detail/${movie.id}`}>
-                      <Movie
-                        key={movie.id}
-                        id={movie.id}
-                        posterImg={movie.backdrop_path}
-                        title={movie.title}
-                      />
-                    </Link>
-                  </li>
-                );
-              })
-              .sort((a, b) => b.vote_average - a.vote_average)
-              .slice(0, 10)}
-          </ul>
-        </div>
-        <div>
-          <ArrowLeft />
-          <ArrowRight />
+          <div className="h-48">
+            <Movie movies={movies} />
+          </div>
         </div>
 
         <div className="mb-7">
