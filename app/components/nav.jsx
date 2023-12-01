@@ -14,6 +14,11 @@ export default function Nav() {
           <Link href="/main">
             <li className="ml-5 text-sm">홈</li>
           </Link>
+          <Link href="/moviePage">
+            <li className="ml-5 text-sm">영화</li>
+          </Link>
+
+          <li className="ml-5 text-sm">시리즈</li>
         </ul>
       </div>
     </div>

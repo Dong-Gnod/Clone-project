@@ -33,10 +33,13 @@ export default function Movie({ movies }) {
   console.log(slideRef.current);
 
   return (
-    <div className="w-full h-48 absolute">
+    <div className="flex justify-between w-full h-48 absolute">
+      <button className="slideBtn z-50" onClick={prevSlide}>
+        <ArrowLeft />
+      </button>
       <div
         id="slide-box"
-        className="flex flex-col relative h-48 mx-auto"
+        className="flex w-screen overflow-hidden h-48"
         ref={boxRef}>
         <ul className="flex justify-between absolute h-full" ref={slideRef}>
           {movies
@@ -61,14 +64,9 @@ export default function Movie({ movies }) {
             .slice(0, 18)}
         </ul>
       </div>
-      <div className="btnBox z-[100] flex justify-between w-full">
-        <button className="slideBtn" onClick={prevSlide}>
-          <ArrowLeft />
-        </button>
-        <button className="slideBtn" onClick={nextSlide}>
-          <ArrowRight />
-        </button>
-      </div>
+      <button className="slideBtn z-[100]" onClick={nextSlide}>
+        <ArrowRight />
+      </button>
     </div>
   );
 }

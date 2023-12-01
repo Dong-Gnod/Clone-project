@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+
+import { useEffect } from "react";
 import Movie from "../components/movie";
 import Link from "next/link";
 import Header from "./../components/header";
@@ -7,37 +8,44 @@ import Nav from "../components/nav";
 import Genres from "../components/genres";
 import TopTen from "../components/topTen";
 import { useAuth } from "./../store/useAuth";
-import { ArrowLeft, ArrowRight } from "../components/icons/icons";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMovie } from "../util/http.server.js";
 
 export default function Main() {
-  const [movies, setMovies] = useState([]);
-  const [headerImage, setHeaderImage] = useState([]);
+  // const [movies, setMovies] = useState([]);
+  // const [headerImage, setHeaderImage] = useState([]);
   const { user } = useAuth();
+  const { data } = useQuery({
+    queryKey: ["movies", "headerImage"],
+    queryFn: fetchMovie,
+  });
 
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY,
-    },
-  };
+  console.log(data);
 
-  useEffect(() => {
-    fetch(
-      "https://api.themoviedb.org/3/discover/movie?certification=asia&include_adult=false&include_video=true&language=ko-KO&page=10&sort_by=popularity.desc",
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        setMovies(response.results);
-        setHeaderImage(
-          response.results[
-            Math.floor(Math.random() * response.results.length - 1)
-          ]
-        );
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // const options = {
+  //   method: "GET",
+  //   headers: {
+  //     accept: "application/json",
+  //     Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY,
+  //   },
+  // };
+
+  // useEffect(() => {
+  //   fetch(
+  //     "https://api.themoviedb.org/3/discover/movie?certification=asia&include_adult=false&include_video=true&language=ko-KO&page=10&sort_by=popularity.desc",
+  //     options
+  //   )
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       setMovies(response.results);
+  //       setHeaderImage(
+  //         response.results[
+  //           Math.floor(Math.random() * response.results.length - 1)
+  //         ]
+  //       );
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   if (!user) {
     return (
@@ -71,25 +79,25 @@ export default function Main() {
 
       {/* Main Contents */}
       <div className="translate-y-[-2%] overflow-x-hidden max-w-screen-3xl relative">
-        <div className="mb-5 h-full">
+        <div className="w-screen mb-5 h-full">
           <h1 className="ml-2.5 text-3xl font-bold mb-1.5 bg-gray-600/50 p-3 rounded-md w-[15%]">
             지금 뜨는 콘텐츠
           </h1>
-          <div className="h-48">
-            <Movie movies={movies} />
+          <div className="w-full h-48">
+            <Movie movies={data} />
           </div>
         </div>
 
         <div className="mb-7">
-          <h1 className="ml-2.5 text-3xl font-bold mb-1.5">인기 콘텐츠</h1>
+          <h1 className="ml-2.5 text-3xl font-bold mb-7">인기 콘텐츠</h1>
           <div className="flex justify-between relative mt-12">
-            <TopTen movies={movies} />
+            <TopTen movies={data} />
           </div>
         </div>
 
         <div className="mt-28 mb-7">
           <div className="flex justify-between">
-            <Genres movies={movies} />
+            <Genres movies={data} />
           </div>
         </div>
       </div>

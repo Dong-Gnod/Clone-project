@@ -4,37 +4,41 @@ export default function TopTen({ movies }) {
   return (
     <div className="w-full relative">
       <div>
-        <ul className="flex justify-between ml-36 top-[10%] flex-wrap">
+        <ul className="flex ml-36 top-[10%] flex-wrap">
           {movies
             .map((movie) => {
+              if (movie.overview.length === 0) return;
               return (
                 <Link
                   key={movie.id}
                   href={`detail/${movie.id}`}
                   className="mr-12">
-                  <li className="flex w-full mb-20 mr-15">
-                    <img
-                      src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                      alt="Image"
-                      className="w-36"
-                    />
+                  {movie.overview === null ? null : (
+                    <li className="grid grid-rows-2 grid-cols-5 w-96 h-72 mt-16 mb-20 mr-16 bg-gray-600/50 rounded-md">
+                      <img
+                        src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                        alt="Image"
+                        className="w-36 h-60 relative -top-20 col-start-1 col-end-3"
+                      />
 
-                    <div className="w-36 flex flex-col ml-3 bg-gray-600/50 p-3 rounded-md">
-                      <h3 className="border-b-2 p-2 text-white text-center mb-3 font-extrabold">
-                        {movie.title.slice(0, 12)}
-                      </h3>
-                      <p className="line-clamp-5">
-                        {movie.overview === null
-                          ? "설명이 없습니다."
-                          : movie.overview}
+                      {/* <div className=" mt-24 flex flex-col "> */}
+                      <div className="col-start-3 col-end-6 items-center text-center">
+                        <h3 className="h-8 border-b-2 mt-10 mr-2 pb-10 text-white text-center font-extrabold whitespace-nowrap overflow-hidden text-ellipsis align-middle">
+                          {movie.title}
+                        </h3>
+                      </div>
+
+                      <p className="col-start-1 col-end-6 h-28 p-3 pt-8 leading-relaxed text-ellipsis">
+                        <div className="line-clamp-3">{movie.overview}</div>
                       </p>
-                    </div>
-                  </li>
+                      {/* </div> */}
+                    </li>
+                  )}
                 </Link>
               );
             })
             .sort((a, b) => b.popularity - a.popularity)
-            .slice(0, 8)}
+            .slice(0, 9)}
         </ul>
       </div>
     </div>
