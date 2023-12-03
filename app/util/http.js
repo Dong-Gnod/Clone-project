@@ -11,10 +11,6 @@ export async function fetchMovie() {
     "https://api.themoviedb.org/3/discover/movie?certification=asia&include_adult=false&include_video=true&language=ko-KO&page=10&sort_by=popularity.desc",
     options
   );
-  const result = await response.json();
-  const movies = result.results;
-  const headerImage =
-    result.results[Math.floor(Math.random() * response.results.length - 1)];
 
   if (!response.ok) {
     const error = new Error("Data를 가져오는 중에 오류가 났어요.");
@@ -23,5 +19,12 @@ export async function fetchMovie() {
     throw error;
   }
 
-  return movies;
+  const result = await response.json();
+  const movies = result.results;
+  console.log(movies);
+
+  const randomIndex = Math.floor(Math.random() * response.results.length - 1);
+  const randomMovie = await movies[randomIndex];
+
+  return { movies, headerImage: randomMovie };
 }

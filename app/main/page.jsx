@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import Movie from "../components/movie";
 import Link from "next/link";
 import Header from "./../components/header";
@@ -9,16 +8,24 @@ import Genres from "../components/genres";
 import TopTen from "../components/topTen";
 import { useAuth } from "./../store/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import { fetchMovie } from "../util/http.server.js";
+import { fetchMovie } from "../util/http.js";
 
 export default function Main() {
   // const [movies, setMovies] = useState([]);
   // const [headerImage, setHeaderImage] = useState([]);
   const { user } = useAuth();
-  const { data } = useQuery({
+  const { data, isPending, isError, error } = useQuery({
     queryKey: ["movies", "headerImage"],
     queryFn: fetchMovie,
   });
+
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
 
   console.log(data);
 
@@ -55,11 +62,13 @@ export default function Main() {
     );
   }
 
+  const headerImage = data.headerImage;
+
   return (
     <div className="w-full h-full font-RobotoMono">
       <Nav />
       <div className="w-full flex justify-center">
-        <Link key={headerImage.id} href={`detail/${headerImage.id}`}>
+        <Link key={headerImage.id} href={`detail/${data.headerImage.id}`}>
           <Header
             key={headerImage.id}
             id={headerImage.id}
@@ -84,20 +93,20 @@ export default function Main() {
             지금 뜨는 콘텐츠
           </h1>
           <div className="w-full h-48">
-            <Movie movies={data} />
+            <Movie movies={data.movies} />
           </div>
         </div>
 
         <div className="mb-7">
           <h1 className="ml-2.5 text-3xl font-bold mb-7">인기 콘텐츠</h1>
           <div className="flex justify-between relative mt-12">
-            <TopTen movies={data} />
+            <TopTen movies={data.movies} />
           </div>
         </div>
 
         <div className="mt-28 mb-7">
           <div className="flex justify-between">
-            <Genres movies={data} />
+            <Genres movies={data.movies} />
           </div>
         </div>
       </div>
