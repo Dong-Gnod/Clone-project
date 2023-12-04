@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Authentication } from "./components/Authentication";
-import ReactQueryProvider from "./ReactQueryProvider";
+import ReactQueryProvider from "./util/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={inter.className}>
         <Authentication />
         <ReactQueryProvider>{children}</ReactQueryProvider>

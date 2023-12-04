@@ -23,7 +23,7 @@ export async function fetchMovie() {
   const movies = result.results;
   console.log(movies);
 
-  const randomIndex = Math.floor(Math.random() * response.results.length - 1);
+  const randomIndex = Math.floor(Math.random() * movies.results.length - 1);
   const randomMovie = await movies[randomIndex];
 
   return { movies, headerImage: randomMovie };
