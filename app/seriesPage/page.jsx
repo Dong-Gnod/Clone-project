@@ -36,7 +36,9 @@ export default function SeriesPage() {
 
   return (
     <>
-      <Nav />
+      <div>
+        <Nav />
+      </div>
       <Genres movies={series} />
     </>
   );
