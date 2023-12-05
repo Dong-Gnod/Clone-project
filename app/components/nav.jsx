@@ -17,8 +17,9 @@ export default function Nav() {
           <Link href="/moviePage">
             <li className="ml-5 text-sm">영화</li>
           </Link>
-
-          <li className="ml-5 text-sm">시리즈</li>
+          <Link href="/seriesPage">
+            <li className="ml-5 text-sm">시리즈</li>
+          </Link>
         </ul>
       </div>
     </div>

@@ -1,26 +1,25 @@
+"use client";
+
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchGenres } from "../util/http";
 
 export default function Genres({ movies }) {
-  const [genres, setGenres] = useState([]);
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["genres"],
+    queryFn: fetchGenres,
+  });
 
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY,
-    },
-  };
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
 
-  useEffect(() => {
-    fetch("https://api.themoviedb.org/3/genre/movie/list?language=ko", options)
-      .then((response) => response.json())
-      .then((response) => {
-        setGenres(response.genres);
-      })
-      .catch((err) => console.error(err));
-  }, []);
-  console.log(genres);
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
+
+  const genres = data.genres.genres;
+
   return (
     <div className="font-RobotoMono">
       {genres.map((genre) => {
@@ -43,7 +42,7 @@ export default function Genres({ movies }) {
                         <h1
                           className="ml-2.5 bg-gray-600/50 p-3 rounded-md"
                           maxLength="15">
-                          {movie.title.slice(0, 16)}
+                          {movie.title || movie.name}
                         </h1>
                         <div className="w-72 ml-2.5 mb-7">
                           <img

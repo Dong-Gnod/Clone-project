@@ -11,11 +11,9 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchMovie } from "../util/http.js";
 
 export default function Main() {
-  // const [movies, setMovies] = useState([]);
-  // const [headerImage, setHeaderImage] = useState([]);
   const { user } = useAuth();
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["movies", "headerImage"],
+    queryKey: ["movieList"],
     queryFn: fetchMovie,
   });
 
@@ -29,30 +27,8 @@ export default function Main() {
 
   console.log(data);
 
-  // const options = {
-  //   method: "GET",
-  //   headers: {
-  //     accept: "application/json",
-  //     Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY,
-  //   },
-  // };
-
-  // useEffect(() => {
-  //   fetch(
-  //     "https://api.themoviedb.org/3/discover/movie?certification=asia&include_adult=false&include_video=true&language=ko-KO&page=10&sort_by=popularity.desc",
-  //     options
-  //   )
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       setMovies(response.results);
-  //       setHeaderImage(
-  //         response.results[
-  //           Math.floor(Math.random() * response.results.length - 1)
-  //         ]
-  //       );
-  //     })
-  //     .catch((err) => console.error(err));
-  // }, []);
+  const movies = data.movieList.results;
+  const headerImage = movies[Math.floor(Math.random() * movies.length - 1)];
 
   if (!user) {
     return (
@@ -62,13 +38,11 @@ export default function Main() {
     );
   }
 
-  const headerImage = data.headerImage;
-
   return (
     <div className="w-full h-full font-RobotoMono">
       <Nav />
       <div className="w-full flex justify-center">
-        <Link key={headerImage.id} href={`detail/${data.headerImage.id}`}>
+        <Link key={headerImage.id} href={`detail/${headerImage.id}`}>
           <Header
             key={headerImage.id}
             id={headerImage.id}
@@ -93,20 +67,20 @@ export default function Main() {
             지금 뜨는 콘텐츠
           </h1>
           <div className="w-full h-48">
-            <Movie movies={data.movies} />
+            <Movie movies={movies} />
           </div>
         </div>
 
         <div className="mb-7">
           <h1 className="ml-2.5 text-3xl font-bold mb-7">인기 콘텐츠</h1>
           <div className="flex justify-between relative mt-12">
-            <TopTen movies={data.movies} />
+            <TopTen movies={movies} />
           </div>
         </div>
 
         <div className="mt-28 mb-7">
           <div className="flex justify-between">
-            <Genres movies={data.movies} />
+            <Genres movies={movies} />
           </div>
         </div>
       </div>

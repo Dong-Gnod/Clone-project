@@ -2,16 +2,16 @@
 
 import Genres from "../components/genres";
 import { useQuery } from "@tanstack/react-query";
-import { fetchMovie } from "../util/http.js";
+import { fetchSeries } from "../util/http.js";
 import { useAuth } from "../store/useAuth";
 import Link from "next/link";
 import Nav from "../components/nav";
 
-export default function MoviePage() {
+export default function SeriesPage() {
   const { user } = useAuth();
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["movieList"],
-    queryFn: fetchMovie,
+    queryKey: ["series"],
+    queryFn: fetchSeries,
   });
 
   if (isPending) {
@@ -24,7 +24,7 @@ export default function MoviePage() {
 
   console.log(data);
 
-  const movies = data.movieList.results;
+  const series = data.series.results;
 
   if (!user) {
     return (
@@ -37,7 +37,7 @@ export default function MoviePage() {
   return (
     <>
       <Nav />
-      <Genres movies={movies} />
+      <Genres movies={series} />
     </>
   );
 }
