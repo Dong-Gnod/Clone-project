@@ -39,15 +39,10 @@ export default function Genres({ movies }) {
                   return (
                     <Link href={`detail/${movie.id}`} key={movie.id}>
                       <li className="item mx-auto">
-                        <h1
-                          className="ml-2.5 bg-gray-600/50 p-3 rounded-md"
-                          maxLength="15">
-                          {movie.title || movie.name}
-                        </h1>
-                        <div className="w-72 ml-2.5 mb-7">
+                        <div className="w-36 ml-2.5 mb-7">
                           <img
                             id={movie.id}
-                            src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+                            src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
                             alt="Image"
                           />
                         </div>

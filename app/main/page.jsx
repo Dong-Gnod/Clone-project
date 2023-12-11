@@ -4,31 +4,38 @@ import Movie from "../components/movie";
 import Link from "next/link";
 import Header from "./../components/header";
 import Nav from "../components/nav";
-import Genres from "../components/genres";
 import TopTen from "../components/topTen";
 import { useAuth } from "./../store/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import { fetchMovie } from "../util/http.js";
+import { fetchMovie, fetchSeries } from "../util/http.js";
+import Series from "./../components/series";
 
 export default function Main() {
   const { user } = useAuth();
-  const { data, isPending, isError, error } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ["movieList"],
     queryFn: fetchMovie,
   });
+
+  // const { seriesList, status, error } = useQuery({
+  //   queryKey: ["series"],
+  //   queryFn: fetchSeries,
+  // });
 
   if (isPending) {
     return <span>Loading...</span>;
   }
 
   if (isError) {
-    return <span>Error: {error.message}</span>;
+    return <span>Error: {isError.message || error.message}</span>;
   }
-
+  console.log(isError);
   console.log(data);
 
   const movies = data.movieList.results;
   const headerImage = movies[Math.floor(Math.random() * movies.length - 1)];
+
+  // const series = seriesList.series.result;
 
   if (!user) {
     return (
@@ -80,7 +87,7 @@ export default function Main() {
 
         <div className="mt-28 mb-7">
           <div className="flex justify-between">
-            <Genres movies={movies} />
+            <Series series={series} />
           </div>
         </div>
       </div>
