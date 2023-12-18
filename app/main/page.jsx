@@ -6,36 +6,30 @@ import Header from "./../components/header";
 import Nav from "../components/nav";
 import TopTen from "../components/topTen";
 import { useAuth } from "./../store/useAuth";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { fetchMovie, fetchSeries } from "../util/http.js";
 import Series from "./../components/series";
 
 export default function Main() {
   const { user } = useAuth();
-  const { data, isPending, isError } = useQuery({
+
+  const moviesQuery = useQuery({
     queryKey: ["movieList"],
     queryFn: fetchMovie,
   });
 
-  // const { seriesList, status, error } = useQuery({
-  //   queryKey: ["series"],
-  //   queryFn: fetchSeries,
-  // });
+  const seriesQuery = useQuery({
+    queryKey: ["series"],
+    queryFn: fetchSeries,
+  });
+  console.log(moviesQuery);
+  console.log(seriesQuery);
 
-  if (isPending) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {isError.message || error.message}</span>;
-  }
-  console.log(isError);
-  console.log(data);
-
-  const movies = data.movieList.results;
+  const movies = data.movieList;
+  console.log(movies);
   const headerImage = movies[Math.floor(Math.random() * movies.length - 1)];
 
-  // const series = seriesList.series.result;
+  const seriesContent = seriesList.series.result;
 
   if (!user) {
     return (
@@ -87,7 +81,7 @@ export default function Main() {
 
         <div className="mt-28 mb-7">
           <div className="flex justify-between">
-            <Series series={series} />
+            <Series series={seriesContent} />
           </div>
         </div>
       </div>
