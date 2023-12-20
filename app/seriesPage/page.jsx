@@ -12,7 +12,7 @@ import Header from "../components/header";
 export default function SeriesPage() {
   const { user } = useAuth();
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["series"],
+    queryKey: ["seriesList"],
     queryFn: fetchSeries,
   });
 
@@ -26,7 +26,7 @@ export default function SeriesPage() {
 
   console.log(data);
 
-  const series = data.series.results;
+  const series = data.seriesList.results;
   const headerImage = series[Math.floor(Math.random() * series.length - 1)];
 
   if (!user) {

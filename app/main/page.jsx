@@ -6,30 +6,31 @@ import Header from "./../components/header";
 import Nav from "../components/nav";
 import TopTen from "../components/topTen";
 import { useAuth } from "./../store/useAuth";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fetchMovie, fetchSeries } from "../util/http.js";
 import Series from "./../components/series";
 
 export default function Main() {
   const { user } = useAuth();
-
-  const moviesQuery = useQuery({
+  const movieItems = useQuery({
     queryKey: ["movieList"],
     queryFn: fetchMovie,
   });
 
-  const seriesQuery = useQuery({
-    queryKey: ["series"],
+  const seriesItems = useQuery({
+    queryKey: ["seriesList"],
     queryFn: fetchSeries,
   });
-  console.log(moviesQuery);
-  console.log(seriesQuery);
 
-  const movies = data.movieList;
+  if (!movieItems.data) {
+    return;
+  }
+
+  const movies = movieItems.data.movieList.results;
   console.log(movies);
   const headerImage = movies[Math.floor(Math.random() * movies.length - 1)];
 
-  const seriesContent = seriesList.series.result;
+  const seriesContent = seriesItems.data.seriesList.results;
 
   if (!user) {
     return (

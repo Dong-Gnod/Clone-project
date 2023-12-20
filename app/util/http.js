@@ -12,12 +12,12 @@ export async function fetchMovie() {
     options
   );
 
-  if (!response.ok) {
-    const error = new Error("Data를 가져오는 중에 오류가 났어요.");
-    error.code = response.status;
-    error.info = await response.json();
-    throw error;
-  }
+  // if (!response.ok) {
+  //   const error = new Error("Data를 가져오는 중에 오류가 났어요.");
+  //   error.code = response.status;
+  //   error.info = await response.json();
+  //   throw error;
+  // }
 
   const movieList = await response.json();
 
@@ -71,7 +71,7 @@ export async function fetchSeries() {
     throw error;
   }
 
-  const series = await response.json();
+  const seriesList = await response.json();
 
-  return { series };
+  return { seriesList };
 }
