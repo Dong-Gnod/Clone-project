@@ -24,7 +24,7 @@ export default function TopTen({ movies }) {
                       {/* <div className=" mt-24 flex flex-col "> */}
                       <div className="col-start-3 col-end-6 items-center text-center">
                         <h3 className="h-8 border-b-2 mt-10 mr-2 pb-10 text-white text-center font-extrabold whitespace-nowrap overflow-hidden text-ellipsis align-middle">
-                          {movie.title}
+                          {movie.title || movie.name}
                         </h3>
                       </div>
 

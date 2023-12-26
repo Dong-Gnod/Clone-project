@@ -30,7 +30,7 @@ export default function Main() {
   console.log(movies);
   const headerImage = movies[Math.floor(Math.random() * movies.length - 1)];
 
-  const seriesContent = seriesItems.data.seriesList.results;
+  const series = seriesItems.data.seriesList.results;
 
   if (!user) {
     return (
@@ -64,25 +64,39 @@ export default function Main() {
 
       {/* Main Contents */}
       <div className="translate-y-[-2%] overflow-x-hidden max-w-screen-3xl relative">
-        <div className="w-screen mb-5 h-full">
-          <h1 className="ml-2.5 text-3xl font-bold mb-1.5 bg-gray-600/50 p-3 rounded-md w-[15%]">
-            지금 뜨는 콘텐츠
-          </h1>
-          <div className="w-full h-48">
-            <Movie movies={movies} />
+        <div>
+          <div className="w-screen mb-5 h-full">
+            <h1 className="ml-2.5 text-3xl font-bold mb-1.5 bg-gray-600/50 p-3 rounded-md w-[15%]">
+              지금 뜨는 콘텐츠
+            </h1>
+            <div className="w-full h-48">
+              <Movie movies={movies} />
+            </div>
+          </div>
+
+          <div className="mb-7">
+            <h1 className="ml-2.5 text-3xl font-bold mb-7">인기 콘텐츠</h1>
+            <div className="flex justify-between relative mt-12">
+              <TopTen movies={movies} />
+            </div>
           </div>
         </div>
 
-        <div className="mb-7">
-          <h1 className="ml-2.5 text-3xl font-bold mb-7">인기 콘텐츠</h1>
-          <div className="flex justify-between relative mt-12">
-            <TopTen movies={movies} />
+        <div>
+          <div className="w-screen mb-5 h-full">
+            <h1 className="ml-2.5 text-3xl font-bold mb-1.5 bg-gray-600/50 p-3 rounded-md w-[15%]">
+              지금 뜨는 콘텐츠
+            </h1>
+            <div className="w-full h-48">
+              <Series series={series} />
+            </div>
           </div>
-        </div>
 
-        <div className="mt-28 mb-7">
-          <div className="flex justify-between">
-            <Series series={seriesContent} />
+          <div className="mb-7">
+            <h1 className="ml-2.5 text-3xl font-bold mb-7">인기 콘텐츠</h1>
+            <div className="flex justify-between relative mt-12">
+              <TopTen movies={series} />
+            </div>
           </div>
         </div>
       </div>

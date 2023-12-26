@@ -1,7 +1,7 @@
 "use client";
 
 import { addDoc, collection, where, getDocs, query } from "firebase/firestore";
-import logo from "./components/images/logo.png";
+import logo from "@/public/logo.png";
 import Image from "next/image";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -37,7 +37,7 @@ export default function Home() {
       <div className="w-full m-0 min-h-screen">
         <Image src={logo} alt="Netflix home" className="w-20 h-20 m-5" />
 
-        <div className="relative items-center justify-center text-black mx-auto translate-y-[55%]">
+        <form className="relative items-center justify-center text-black mx-auto translate-y-[55%]">
           <div className="flex flex-col bg-gray-700/70 p-3 rounded-md w-80 mx-auto">
             <h1 className="text-center m-5 text-white">DFLIX</h1>
             <div className="text-center mb-3">
@@ -172,7 +172,7 @@ export default function Home() {
               구글 로그인
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </main>
   );
