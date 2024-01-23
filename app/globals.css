@@ -3,65 +3,56 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 20, 20, 20;
-    --background-end-rgb: 20, 20, 20;
-  }
+	:root {
+		--foreground-rgb: 255, 255, 255;
+		--background-start-rgb: 20, 20, 20;
+		--background-end-rgb: 20, 20, 20;
+	}
 }
 
 @font-face {
-  font-family: "Roboto Mono", monospace;
-  src: url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap");
-  font-weight: normal;
-  font-style: normal;
+	font-family: 'Roboto Mono', monospace;
+	src: url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap');
+	font-weight: normal;
+	font-style: normal;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background-color: rgb(20, 20, 20);
-  height: 100vh;
-  font-family: "Roboto Mono", monospace;
+	color: rgb(var(--foreground-rgb));
+	background-color: rgb(20, 20, 20);
+	height: 100vh;
+	font-family: 'Roboto Mono', monospace;
 }
 
 #slide-box {
-  width: 100rem;
-  margin: 0 auto;
+	width: 100rem;
+	margin: 0 auto;
 }
 
-/* .btnBox {
-  display: flex;
-  position: relative;
-  justify-content: space-between;
-  align-items: center;
-  height: 12rem;
-  transform: translateY(-100%);
-} */
-
 .slideBtn {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  width: 3.75rem;
-  height: 13.5rem;
-  align-items: center;
+	display: flex;
+	position: relative;
+	justify-content: center;
+	width: 3.75rem;
+	height: 13.5rem;
+	align-items: center;
 }
 
 .slideBtn:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+	background-color: rgba(255, 255, 255, 0.5);
 }
 
 .active {
-  border: 2px solid black;
-  padding: 2rem;
+	border: 2px solid black;
+	padding: 2rem;
 }
