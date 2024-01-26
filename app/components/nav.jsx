@@ -18,10 +18,7 @@ export default function Nav() {
 	return (
 		<motion.nav
 			style={{ backgroundColor }}
-			className="flex w-full justify-between items-center fixed z-[100] font-RobotoMono"
-			onScroll={(e) => {
-				console.log('onWheel');
-			}}>
+			className="flex w-full justify-between items-center fixed z-[100] font-RobotoMono">
 			<div className="flex items-center w-full px-5">
 				<Link href="/main">
 					<Image src={logo} alt="Netflix home" className="w-20 h-20" />
