@@ -45,8 +45,12 @@ export default function Main() {
 	}
 
 	return (
-		<div className="w-full h-full font-RobotoMono">
-			<Nav />
+		<div
+			className="w-full h-full font-RobotoMono"
+			onWheel={() => {
+				console.log('onWheel');
+			}}>
+			<Nav style={{ backgroundColor: 'black' }} />
 			<div className="w-full flex justify-center">
 				<Link key={headerImage.id} href={`detail/${headerImage.id}`}>
 					<Header
