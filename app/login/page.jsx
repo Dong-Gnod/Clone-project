@@ -32,7 +32,7 @@ export default function Login() {
 		<main className="flex items-center justify-center flex-col w-screeen h-screen font-RobotoMono">
 			<div className="flex flex-col bg-black bg-opacity-75 p-9 rounded-md w-96 mx-auto flex-col">
 				<h1 className="text-center m-5 text-white">DFLIX</h1>
-				<form className=" relative items-center justify-center text-black">
+				<form className="relative items-center justify-center text-black">
 					<div className="text-center mb-3">
 						<input
 							type="text"

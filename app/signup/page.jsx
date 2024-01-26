@@ -14,33 +14,46 @@ export default function Signup() {
 	const router = useRouter();
 
 	return (
-		<main className="flex items-center justify-center flex-col w-screeen h-screen bg-main font-RobotoMono">
-			<div className="flex flex-col items-center justify-center bg-black bg-opacity-75 p-9 rounded-md w-96 mx-auto flex-col">
-				<h1>회원가입</h1>
-				<form className="flex flex-col text-black">
-					<input
-						className="mb-2"
-						type="text"
-						placeholder="ID"
-						value={id}
-						onChange={(e) => setId(e.target.value)}
-					/>
-					<input
-						className="mb-2"
-						type="password"
-						placeholder="Password"
-						value={pw}
-						onChange={(e) => setPw(e.target.value)}
-					/>
-					<input
-						className="mb-2"
-						type="password"
-						placeholder="Password Check"
-						value={pwConfirm}
-						onChange={(e) => setPwConfirm(e.target.value)}
-					/>
+		<main className="flex items-center justify-center flex-col w-screeen h-screen font-RobotoMono bg-main">
+			<button
+				className="bg-red-600 hover:bg-opacity-25 text-white p-2 absolute top-5 right-5"
+				onClick={() => {
+					router.back();
+				}}>
+				로그인
+			</button>
+			<div className="flex flex-col bg-black bg-opacity-75 p-9 rounded-md w-96 mx-auto ">
+				<h1 className="text-center m-5 text-white">회원가입</h1>
+				<form className="relative items-center justify-center text-black">
+					<div className="text-center mb-3">
+						<input
+							className="rounded-md p-2 w-full"
+							type="text"
+							placeholder="ID"
+							value={id}
+							onChange={(e) => setId(e.target.value)}
+						/>
+					</div>
+					<div className="text-center mb-3">
+						<input
+							className="rounded-md p-2 w-full"
+							type="password"
+							placeholder="Password"
+							value={pw}
+							onChange={(e) => setPw(e.target.value)}
+						/>
+					</div>
+					<div className="text-center mb-3">
+						<input
+							className="rounded-md p-2 w-full"
+							type="password"
+							placeholder="Password Check"
+							value={pwConfirm}
+							onChange={(e) => setPwConfirm(e.target.value)}
+						/>
+					</div>
 					<button
-						className="bg-red-600 hover:bg-opacity-25 text-white p-2"
+						className="w-full bg-red-600 hover:bg-opacity-25 text-white p-2"
 						onClick={async (e) => {
 							e.preventDefault();
 							if (pw !== pwConfirm) {
