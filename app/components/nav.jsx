@@ -26,7 +26,7 @@ export default function Nav() {
 				{/* menu */}
 				{user ? (
 					<>
-						<ul className="text-sm flex justify-between w-full font-medium">
+						<ul className="text-sm flex justify-start w-full font-medium">
 							<Link href="/main">
 								<li className="ml-5 text-sm">홈</li>
 							</Link>

@@ -1,77 +1,58 @@
-export async function fetchMovie() {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY,
-    },
-  };
+const options = {
+	method: 'GET',
+	headers: {
+		accept: 'application/json',
+		Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY,
+	},
+};
 
-  const response = await fetch(
-    "https://api.themoviedb.org/3/discover/movie?certification=asia&include_adult=false&include_video=true&language=ko-KO&page=1&sort_by=popularity.desc",
-    options
-  );
-
-  // if (!response.ok) {
-  //   const error = new Error("Data를 가져오는 중에 오류가 났어요.");
-  //   error.code = response.status;
-  //   error.info = await response.json();
-  //   throw error;
-  // }
-
-  const movieList = await response.json();
-
-  return { movieList };
+export async function getGenresList() {
+	const response = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=ko', options);
+	const genres = await response.json();
+	return { genres };
 }
 
-export async function fetchGenres() {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY,
-    },
-  };
+// Movies
 
-  const response = await fetch(
-    "https://api.themoviedb.org/3/genre/movie/list?language=ko",
-    options
-  );
-
-  if (!response.ok) {
-    const error = new Error("Data를 가져오는 중에 오류가 났어요.");
-    error.code = response.status;
-    error.info = await response.json();
-    throw error;
-  }
-
-  const genres = await response.json();
-
-  return { genres };
+export async function getMovie() {
+	const response = await fetch(
+		'https://api.themoviedb.org/3/discover/movie?certification=asia&include_adult=false&include_video=true&language=ko-KO&page=10&sort_by=popularity.desc',
+		options
+	);
+	const movieList = await response.json();
+	return { movieList };
 }
 
-export async function fetchSeries() {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY,
-    },
-  };
+export async function getNowPlayMovie() {
+	const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?language=ko-KO&page=2', options);
+	const nowPlayMovie = await response.json();
+	return { nowPlayMovie };
+}
 
-  const response = await fetch(
-    "https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=true&language=ko-KO&page=1&sort_by=popularity.desc",
-    options
-  );
+export async function getUpcomingMovie() {
+	const response = await fetch('https://api.themoviedb.org/3/movie/upcoming?language=ko-KO&page=1', options);
+	const upcomingMovie = await response.json();
+	return { upcomingMovie };
+}
 
-  if (!response.ok) {
-    const error = new Error("Data를 가져오는 중에 오류가 났어요.");
-    error.code = response.status;
-    error.info = await response.json();
-    throw error;
-  }
+// Series
+export async function getSeries() {
+	const response = await fetch(
+		'https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=true&language=ko-KO&page=10&sort_by=popularity.desc',
+		options
+	);
+	const seriesList = await response.json();
+	return { seriesList };
+}
 
-  const seriesList = await response.json();
+export async function getOnTheAir() {
+	const response = await fetch('https://api.themoviedb.org/3/tv/on_the_air?language=ko-KO&page=1', options);
+	const onTheAir = await response.json();
+	return { onTheAir };
+}
 
-  return { seriesList };
+export async function getAiringToday() {
+	const response = await fetch('https://api.themoviedb.org/3/tv/airing_today?language=en-US&page=1', options);
+	const airingToday = await response.json();
+	return { airingToday };
 }
