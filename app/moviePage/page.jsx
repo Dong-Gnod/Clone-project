@@ -1,19 +1,17 @@
 'use client';
 
-import Genres from '../components/genres';
+import Genres from '../components/Genres';
 import { useQuery } from '@tanstack/react-query';
-import { fetchMovie } from '../assets/api.js';
-import { useAuth } from '../store/useAuth';
+import { getMovie } from '../assets/api.js';
 import Link from 'next/link';
-import Nav from '../components/nav';
-import Header from '../components/header';
-import Movie from '../components/movie';
+import Nav from '../components/Nav';
+import Header from '../components/Header';
+import Movie from '../components/Movie';
 
 export default function MoviePage() {
-	const { user } = useAuth();
 	const { data, isPending, isError, error } = useQuery({
 		queryKey: ['movieList'],
-		queryFn: fetchMovie,
+		queryFn: getMovie,
 	});
 
 	if (isPending) {
@@ -28,14 +26,6 @@ export default function MoviePage() {
 
 	const movies = data.movieList.results;
 	const headerImage = movies[Math.floor(Math.random() * movies.length - 1)];
-
-	if (!user) {
-		return (
-			<div>
-				<Link href={'/'}>로그인</Link>을 해주세요
-			</div>
-		);
-	}
 
 	return (
 		<>

@@ -7,7 +7,7 @@ import { fetchGenres } from '../assets/api';
 export default function Genres({ movies }) {
 	const { data, isPending, isError, error } = useQuery({
 		queryKey: ['genres'],
-		queryFn: fetchGenres,
+		queryFn: getGenresList,
 	});
 
 	if (isPending) {

@@ -1,19 +1,17 @@
 'use client';
 
-import Genres from '../components/genres';
+import Genres from '../components/Genres';
 import { useQuery } from '@tanstack/react-query';
-import { fetchSeries } from '../assets/api.js';
-import { useAuth } from '../store/useAuth';
+import { getSeries } from '../assets/api.js';
 import Link from 'next/link';
-import Nav from '../components/nav';
+import Nav from '../components/Nav';
 import Series from '../components/series';
-import Header from '../components/header';
+import Header from '../components/Header';
 
 export default function SeriesPage() {
-	const { user } = useAuth();
 	const { data, isPending, isError, error } = useQuery({
 		queryKey: ['seriesList'],
-		queryFn: fetchSeries,
+		queryFn: getSeries,
 	});
 
 	if (isPending) {
@@ -28,14 +26,6 @@ export default function SeriesPage() {
 
 	const series = data.seriesList.results;
 	const headerImage = series[Math.floor(Math.random() * series.length - 1)];
-
-	if (!user) {
-		return (
-			<div>
-				<Link href={'/'}>로그인</Link>을 해주세요
-			</div>
-		);
-	}
 
 	return (
 		<div className="flex flex-col">

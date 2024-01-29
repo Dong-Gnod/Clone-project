@@ -1,9 +1,9 @@
 'use client';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import Nav from '../../../components/nav';
-import Header from '../../../components/header';
-import { Play } from '../../../assets/icons';
+import Nav from '../../components/Nav';
+import Header from '../../components/Header';
+import { Play } from '../../assets/icons';
 import Link from 'next/link';
 
 export default function Detail(props) {
@@ -18,13 +18,12 @@ export default function Detail(props) {
 		method: 'GET',
 		headers: {
 			accept: 'application/json',
-			Authorization: process.env.NEXT_PUBLIC_MOVIE_API_KEY,
 		},
 	};
 
 	useEffect(() => {
 		fetch(
-			`https://api.themoviedb.org/3/movie/${props.params.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=ko-KO&append_to_response=images,videos`,
+			`https://api.themoviedb.org/3/movie/${props.params.id}?api_key=${process.env.NEXT_PUBLIC_MOVIE_API_KEY}&language=ko-KO&append_to_response=images,videos`,
 			options
 		)
 			.then((response) => response.json())
@@ -36,7 +35,13 @@ export default function Detail(props) {
 			.catch((err) => console.error(err));
 	}, []);
 
-	console.log(movie);
+	console.log(videos);
+
+	videos.map((video) => {
+		if (video.type === 'Trailer') {
+			videoKey.push(video.key);
+		}
+	});
 	return (
 		<>
 			<Nav />
@@ -68,11 +73,6 @@ export default function Detail(props) {
 						</div>
 
 						{/* 예고편 */}
-						{videos.map((video) => {
-							if (video.type === 'Trailer') {
-								videoKey.push(video.key);
-							}
-						})}
 						<div className=" bg-play w-[20%] items-center p-10 rounded-md">
 							<Link
 								href={
