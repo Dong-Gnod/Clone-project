@@ -2,16 +2,16 @@
 
 import Genres from '../components/Genres';
 import { useQuery } from '@tanstack/react-query';
-import { getSeries } from '../assets/api.js';
+import { getTv } from '../assets/api.js';
 import Link from 'next/link';
 import Nav from '../components/Nav';
-import Series from '../components/series';
+import Series from '../components/Series';
 import Header from '../components/Header';
 
 export default function SeriesPage() {
 	const { data, isPending, isError, error } = useQuery({
-		queryKey: ['seriesList'],
-		queryFn: getSeries,
+		queryKey: ['tvList'],
+		queryFn: getTv,
 	});
 
 	if (isPending) {
@@ -24,7 +24,7 @@ export default function SeriesPage() {
 
 	console.log(data);
 
-	const series = data.seriesList.results;
+	const series = data.tvList.results;
 	const headerImage = series[Math.floor(Math.random() * series.length - 1)];
 
 	return (

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { fetchGenres } from '../assets/api';
+import { getGenresList } from '../assets/api';
 
 export default function Genres({ movies }) {
 	const { data, isPending, isError, error } = useQuery({

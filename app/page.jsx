@@ -3,36 +3,65 @@
 import Link from 'next/link';
 import Header from './components/Header';
 import Nav from './components/Nav';
-import TopTen from './components/TopTen';
 import { useQuery } from '@tanstack/react-query';
-import { getMovie, getTv } from './assets/api.js';
-import Series from './components/Series';
+import {
+	getPopularMovie,
+	getNowPlayMovie,
+	getUpcomingMovie,
+	getPopularTv,
+	getOnTheAir,
+	getAiringToday,
+} from './assets/api.js';
 import Slider from './components/Slider.jsx';
 
 export default function Home() {
-	const movieItems = useQuery({
-		queryKey: ['movieList'],
-		queryFn: getMovie,
+	const popular = useQuery({
+		queryKey: ['popularMovie'],
+		queryFn: getPopularMovie,
 	});
 
-	const tvItems = useQuery({
-		queryKey: ['tvList'],
-		queryFn: getTv,
+	const nowPlay = useQuery({
+		queryKey: ['nowPlayMovie'],
+		queryFn: getNowPlayMovie,
 	});
 
-	if (!movieItems.data) {
+	const upcoming = useQuery({
+		queryKey: ['upcomingMovie'],
+		queryFn: getUpcomingMovie,
+	});
+
+	// Tv
+	const popularSeries = useQuery({
+		queryKey: ['popularTv'],
+		queryFn: getPopularTv,
+	});
+
+	const onTheAirSeries = useQuery({
+		queryKey: ['onTheAir'],
+		queryFn: getOnTheAir,
+	});
+
+	const airingTodaySeries = useQuery({
+		queryKey: ['airingToday'],
+		queryFn: getAiringToday,
+	});
+
+	if (!popular.data) {
+		return <h1>데이터를 불러오지 못했습니다.</h1>;
+	}
+
+	if (!popularSeries.data) {
 		return;
 	}
 
-	if (!tvItems.data) {
-		return;
-	}
+	const popularMovieList = popular.data.popularMovie.results;
+	const nowPlayMovieList = nowPlay.data.nowPlayMovie.results;
+	const upcomingMovieList = upcoming.data.upcomingMovie.results;
+	const headerImage = popularMovieList[Math.floor(Math.random() * popularMovieList.length - 1)];
 
-	const movies = movieItems.data.movieList.results;
-	console.log(movies);
-	const headerImage = movies[Math.floor(Math.random() * movies.length - 1)];
-
-	const series = tvItems.data.tvList.results;
+	const popularTvList = popularSeries.data.popularTv.results;
+	const onTheAirList = onTheAirSeries.data.onTheAir.results;
+	const airingTodayList = airingTodaySeries.data.airingToday.results;
 
 	return (
 		<div className="w-full h-full font-RobotoMono">
@@ -55,45 +84,39 @@ export default function Home() {
 					</div>
 				</Link>
 			</div>
-
 			{/* Main Contents */}
-			<div className="translate-y-[-2%] overflow-x-hidden max-w-screen-3xl relative">
+			<div>
 				<div>
-					<div className="w-screen mb-5 h-full">
-						<h1 className="ml-2.5 text-3xl font-bold mb-1.5 bg-gray-600/50 p-3 rounded-md w-[15%]">
-							지금 상영 중인 콘텐츠
-						</h1>
-						<div className="w-full h-48">
-							<Slider contents={movies} />
-						</div>
-					</div>
-
-					<div className="mb-7">
-						<h1 className="ml-2.5 text-3xl font-bold mb-7">인기 콘텐츠</h1>
-						<div className="flex justify-between relative mt-12">
-							<Slider contents={movies} />
-						</div>
-					</div>
+					<h1>인기 영화</h1>
+					<Slider contents={popularMovieList} />
 				</div>
 
 				<div>
-					<div className="w-screen mb-5 h-full">
-						<h1 className="ml-2.5 text-3xl font-bold mb-1.5 bg-gray-600/50 p-3 rounded-md w-[15%]">
-							지금 뜨는 콘텐츠
-						</h1>
-						<div className="w-full h-48">
-							<Slider contents={series} />
-						</div>
-					</div>
+					<h1>상영 중인 영화</h1>
+					<Slider contents={nowPlayMovieList} />
+				</div>
 
-					<div className="mb-7">
-						<h1 className="ml-2.5 text-3xl font-bold mb-7">인기 콘텐츠</h1>
-						<div className="flex justify-between relative mt-12">
-							<Slider contents={series} />
-						</div>
-					</div>
+				<div>
+					<h1>상영 예정인 영화</h1>
+					<Slider contents={upcomingMovieList} />
+				</div>
+
+				<div>
+					<h1>인기 시리즈</h1>
+					<Slider contents={popularTvList} />
+				</div>
+
+				<div>
+					<h1>방영 중인 시리즈</h1>
+					<Slider contents={onTheAirList} />
+				</div>
+
+				<div>
+					<h1>오늘 방영 시리즈</h1>
+					<Slider contents={airingTodayList} />
 				</div>
 			</div>
+			{/* Main */}
 		</div>
 	);
 }

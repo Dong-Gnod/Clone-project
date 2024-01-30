@@ -24,12 +24,13 @@ export async function getMovie() {
 }
 
 export async function getPopularMovie() {
-	const response = fetch('https://api.themoviedb.org/3/movie/popular?language=ko&page=1', options);
+	const response = await fetch('https://api.themoviedb.org/3/movie/popular?language=ko&page=1', options);
 	const popularMovie = await response.json();
+	return { popularMovie };
 }
 
 export async function getTopRatedMovie() {
-	const response = fetch('https://api.themoviedb.org/3/movie/top_rated?language=ko&page=1', options);
+	const response = await fetch('https://api.themoviedb.org/3/movie/top_rated?language=ko&page=1', options);
 	const topRated = await response.json();
 	return { topRated };
 }
@@ -57,14 +58,15 @@ export async function getTv() {
 }
 
 export async function getTopRatedTv() {
-	const response = fetch('https://api.themoviedb.org/3/tv/top_rated?language=ko&page=1', options);
+	const response = await fetch('https://api.themoviedb.org/3/tv/top_rated?language=ko&page=1', options);
 	const topRatedTv = await response.json();
 	return { topRatedTv };
 }
 
 export async function getPopularTv() {
-	const response = fetch('https://api.themoviedb.org/3/tv/popular?language=ko&page=1', options);
+	const response = await fetch('https://api.themoviedb.org/3/tv/popular?language=ko&page=1', options);
 	const popularTv = await response.json();
+	return { popularTv };
 }
 
 export async function getOnTheAir() {

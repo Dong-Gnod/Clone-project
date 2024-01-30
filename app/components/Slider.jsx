@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { register } from 'swiper/element/bundle';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -15,6 +14,24 @@ register();
 
 export default function Slider({ contents }) {
 	const swiperElRef = useRef(null);
+	const breakpoints = {
+		390: {
+			slidesPerView: 2,
+			slidesPerGroup: 1,
+		},
+		768: {
+			slidesPerView: 3,
+			slidesPerGroup: 1,
+		},
+		1024: {
+			slidesPerView: 5,
+			slidesPerGroup: 1,
+		},
+		1200: {
+			slidesPerView: 7,
+			slidesPerGroup: 1,
+		},
+	};
 
 	useEffect(() => {
 		swiperElRef.current.addEventListener('swiperprogress', (e) => {
@@ -31,11 +48,12 @@ export default function Slider({ contents }) {
 		<Swiper
 			modules={[Navigation, Pagination, A11y]}
 			ref={swiperElRef}
-			centeredSlides={true}
-			slidesPerView={5}
+			loop={true}
+			slidesPerView={6}
 			navigation={true}
 			pagination={true}
-			spaceBetween={10}>
+			spaceBetween={50}
+			breakpoints={breakpoints}>
 			{contents.map((content) => {
 				return (
 					<SwiperSlide key={content.id}>

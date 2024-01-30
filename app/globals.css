@@ -34,25 +34,5 @@ body {
 	font-family: 'Roboto Mono', monospace;
 }
 
-#slide-box {
-	width: 100rem;
-	margin: 0 auto;
-}
-
-.slideBtn {
-	display: flex;
-	position: relative;
-	justify-content: center;
-	width: 3.75rem;
-	height: 13.5rem;
-	align-items: center;
-}
-
-.slideBtn:hover {
-	background-color: rgba(255, 255, 255, 0.5);
-}
-
-.active {
-	border: 2px solid black;
-	padding: 2rem;
+.swiper-wrapper {
 }
