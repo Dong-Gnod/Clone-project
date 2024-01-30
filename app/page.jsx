@@ -86,33 +86,33 @@ export default function Home() {
 			</div>
 			{/* Main Contents */}
 			<div>
-				<div>
-					<h1>인기 영화</h1>
+				<div className="mt-8">
+					<h1 className="text-xl mb-3 font-extrabold ml-4">인기 영화</h1>
 					<Slider contents={popularMovieList} />
 				</div>
 
-				<div>
-					<h1>상영 중인 영화</h1>
+				<div className="mt-8">
+					<h1 className="text-xl mb-3 font-extrabold ml-4">상영 중인 영화</h1>
 					<Slider contents={nowPlayMovieList} />
 				</div>
 
-				<div>
-					<h1>상영 예정인 영화</h1>
+				<div className="mt-8">
+					<h1 className="text-xl mb-3 font-extrabold ml-4">상영 예정인 영화</h1>
 					<Slider contents={upcomingMovieList} />
 				</div>
 
-				<div>
-					<h1>인기 시리즈</h1>
+				<div className="mt-8">
+					<h1 className="text-xl mb-3 font-extrabold ml-4">인기 시리즈</h1>
 					<Slider contents={popularTvList} />
 				</div>
 
-				<div>
-					<h1>방영 중인 시리즈</h1>
+				<div className="mt-8">
+					<h1 className="text-xl mb-3 font-extrabold ml-4">방영 중인 시리즈</h1>
 					<Slider contents={onTheAirList} />
 				</div>
 
-				<div>
-					<h1>오늘 방영 시리즈</h1>
+				<div className="mt-8">
+					<h1 className="text-xl mb-3 font-extrabold ml-4">오늘 방영 시리즈</h1>
 					<Slider contents={airingTodayList} />
 				</div>
 			</div>

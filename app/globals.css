@@ -19,7 +19,7 @@
 @font-face {
 	font-family: 'Roboto Mono', monospace;
 	src: url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap');
-	font-weight: normal;
+	font-weight: bold;
 	font-style: normal;
 }
 
@@ -35,4 +35,30 @@ body {
 }
 
 .swiper-wrapper {
+	padding: 0 0 0 50px;
+}
+
+.swiper-slide {
+}
+
+.swiper-button-prev {
+	font-weight: bolder;
+	color: red !important;
+}
+
+.swiper-button-next {
+	font-weight: bolder;
+	color: red !important;
+}
+
+.swiper-pagination {
+	position: relative !important;
+	margin-top: 20px;
+}
+
+.swiper-pagination-bullet {
+}
+
+.swiper-pagination-bullet-active {
+	background-color: red !important;
 }
