@@ -26,13 +26,6 @@ export default function Detail(props) {
 		queryFn: getVideo,
 	});
 
-	const options = {
-		method: 'GET',
-		headers: {
-			accept: 'application/json',
-		},
-	};
-
 	videos.map((video) => {
 		if (video.type === 'Trailer') {
 			videoKey.push(video.key);

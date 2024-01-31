@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import Header from './components/Header';
 import Nav from './components/Nav';
+import { Header } from './components/Header';
 import { useQuery } from '@tanstack/react-query';
 import {
 	getPopularMovie,
@@ -46,38 +45,25 @@ export default function Home() {
 		queryFn: getAiringToday,
 	});
 
-	const popularMovieList = popular.isLoading ? <h1>Loading...</h1> : popular.data.popularMovie.results;
-	const nowPlayMovieList = nowPlay.isLoading ? <h1>Loading...</h1> : nowPlay.data.nowPlayMovie.results;
-	const upcomingMovieList = upcoming.isLoading ? <h1>Loading...</h1> : upcoming.data.upcomingMovie.results;
-	const headerImage = popularMovieList[Math.floor(Math.random() * popularMovieList.length - 1)];
-
-	const popularTvList = popularSeries.isLoading ? <h1>Loading...</h1> : popularSeries.data.popularTv.results;
-	const onTheAirList = onTheAirSeries.isLoading ? <h1>Loading...</h1> : onTheAirSeries.data.onTheAir.results;
-	const airingTodayList = airingTodaySeries.isLoading ? (
-		<h1>Loading...</h1>
-	) : (
-		airingTodaySeries.data.airingToday.results
-	);
+	const popularMovieList = popular.isLoading ? null : popular.data.popularMovie.results;
+	const nowPlayMovieList = nowPlay.isLoading ? null : nowPlay.data.nowPlayMovie.results;
+	const upcomingMovieList = upcoming.isLoading ? null : upcoming.data.upcomingMovie.results;
+	const popularTvList = popularSeries.isLoading ? null : popularSeries.data.popularTv.results;
+	const onTheAirList = onTheAirSeries.isLoading ? null : onTheAirSeries.data.onTheAir.results;
+	const airingTodayList = airingTodaySeries.isLoading ? null : airingTodaySeries.data.airingToday.results;
 	return (
 		<div className="w-full h-full font-RobotoMono">
 			<Nav />
 			<div className="w-full flex justify-center">
-				<Link key={headerImage.id} href={`detail/${headerImage.id}`}>
-					<Header
-						key={headerImage.id}
-						id={headerImage.id}
-						title={headerImage.title}
-						headerImage={headerImage.backdrop_path}
-					/>
-					<div className="text-black z-[90] absolute top-[65%] left-[25%] w-1/2 bg-gray-400/50 p-3 rounded-md mx-auto text-center">
-						<p className="font-extrabold text-xl mb-2.5 border-b-solid border-b-white border-b-2 pb-0.5 w-80 mx-auto">
-							{headerImage.title}
-						</p>
-						<p className="font-semibold line-clamp-3 m-10">
-							{headerImage.overview ? headerImage.overview : '설명이 없습니다.'}
-						</p>
-					</div>
-				</Link>
+				<Header />
+				{/* <div className="text-black z-[90] absolute top-[65%] left-[25%] w-1/2 bg-gray-400/50 p-3 rounded-md mx-auto text-center">
+					<p className="font-extrabold text-xl mb-2.5 border-b-solid border-b-white border-b-2 pb-0.5 w-80 mx-auto">
+						{headerImage.title}
+					</p>
+					<p className="font-semibold line-clamp-3 m-10">
+						{headerImage.overview ? headerImage.overview : '설명이 없습니다.'}
+					</p>
+				</div> */}
 			</div>
 			{/* Main Contents */}
 			<div>
@@ -111,7 +97,6 @@ export default function Home() {
 					<Slider contents={airingTodayList} />
 				</div>
 			</div>
-			{/* Main */}
 		</div>
 	);
 }

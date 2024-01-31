@@ -2,37 +2,42 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getVideo } from '../assets/api';
+import { getVideo, getMovie } from '../assets/api';
+import { Trailer } from './Trailer';
 
-export default function Header({ id, headerImage }) {
-	const [video, setVideo] = useState([]);
-	const videoKey = [];
-	const playVideo = useQuery({
-		queryKey: ['movieVideo', id],
-		queryFn: getVideo,
+export function Header() {
+	const movies = useQuery({
+		queryKey: ['movieList'],
+		queryFn: getMovie,
 	});
 
-	console.log(playVideo.data);
+	if (movies.status === 'loading') {
+		return <h1>Loading...</h1>;
+	}
+	if (movies.status === 'error') {
+		return <h1>Error: {movies.error.message}</h1>;
+	}
 
-	video.map((v) => {
-		if (v.type === 'Trailer') {
-			videoKey.push(v.key);
-		}
-	});
+	if (!movies.data) {
+		return <h1>Loading...</h1>;
+	}
+
+	const orderMovie = movies.data.movieList.results;
+	const headerContent = orderMovie[Math.floor(Math.random() * orderMovie.length - 1)];
+	if (!headerContent) {
+		return <h1>Loading...</h1>;
+	}
+
 	return (
 		<>
 			<div className="flex justify-center relative w-screen h-screen overflow-hidden">
-				{videoKey.length === 0 ? (
-					<img id={id} src={`https://image.tmdb.org/t/p/original/${headerImage}`} alt="header-image" />
-				) : (
-					<iframe
-						src={`https://www.youtube.com/watch?v=${videoKey[0]}`}
-						width={100}
-						height={100}
-						allow="autoplay; fullscreen"></iframe>
-				)}
+				<Trailer
+					id={headerContent.id}
+					poster={headerContent.backdrop_path}
+					title={headerContent.title}
+					overview={headerContent.overview}
+				/>
 			</div>
 		</>
 	);
-	tvList;
 }

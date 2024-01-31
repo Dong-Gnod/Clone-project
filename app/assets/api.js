@@ -13,7 +13,7 @@ export async function getGenresList() {
 }
 
 export async function getVideo(id) {
-	const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?language=ko`, options);
+	const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`, options);
 	const movieVideo = await response.json();
 	return { movieVideo };
 }
@@ -22,7 +22,7 @@ export async function getVideo(id) {
 
 export async function getMovie() {
 	const response = await fetch(
-		'https://api.themoviedb.org/3/discover/movie?certification=asia&include_adult=false&include_video=true&language=ko&page=10&sort_by=popularity.desc',
+		'https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=true&language=ko&page=1&sort_by=popularity.desc',
 		options
 	);
 	const movieList = await response.json();

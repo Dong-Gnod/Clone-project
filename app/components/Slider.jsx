@@ -54,21 +54,23 @@ export default function Slider({ contents }) {
 			pagination={true}
 			spaceBetween={50}
 			breakpoints={breakpoints}>
-			{contents.map((content) => {
-				return (
-					<SwiperSlide key={content.id}>
-						<Link key={content.id} href={`detail/${content.id}`}>
-							<Image
-								id={content.id}
-								src={`https://image.tmdb.org/t/p/original/${content.poster_path}`}
-								alt="Image"
-								width={240}
-								height={360}
-							/>
-						</Link>
-					</SwiperSlide>
-				);
-			})}
+			{!contents
+				? null
+				: contents.map((content) => {
+						return (
+							<SwiperSlide key={content.id}>
+								<Link key={content.id} href={`detail/${content.id}`}>
+									<Image
+										id={content.id}
+										src={`https://image.tmdb.org/t/p/original/${content.poster_path}`}
+										alt="Image"
+										width={240}
+										height={360}
+									/>
+								</Link>
+							</SwiperSlide>
+						);
+				  })}
 		</Swiper>
 	);
 }

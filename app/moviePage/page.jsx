@@ -32,12 +32,7 @@ export default function MoviePage() {
 			<Nav />
 			<div className="w-full flex justify-center">
 				<Link key={headerImage.id} href={`detail/${headerImage.id}`}>
-					<Header
-						key={headerImage.id}
-						id={headerImage.id}
-						title={headerImage.title}
-						headerImage={headerImage.backdrop_path}
-					/>
+					<Header />
 					<div className="text-black z-[100] absolute top-[65%] left-[25%] w-1/2 bg-gray-400/50 p-3 rounded-md mx-auto text-center">
 						<p className="font-extrabold text-xl mb-2.5 border-b-solid border-b-white border-b-2 pb-0.5 w-80 mx-auto">
 							{headerImage.title}
