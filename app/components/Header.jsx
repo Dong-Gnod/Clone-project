@@ -1,29 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { getVideo } from '../assets/api';
 
 export default function Header({ id, headerImage }) {
 	const [video, setVideo] = useState([]);
 	const videoKey = [];
+	const playVideo = useQuery({
+		queryKey: ['movieVideo', id],
+		queryFn: getVideo,
+	});
 
-	useEffect(() => {
-		const options = {
-			method: 'GET',
-			headers: {
-				accept: 'application/json',
-			},
-		};
-		fetch(
-			`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_MOVIE_API_KEY}&language=ko-KO&append_to_response=images,videos`,
-			options
-		)
-			.then((response) => response.json())
-			.then((response) => {
-				setVideo(response.videos.results);
-			})
-			.catch((err) => console.error(err));
-	}, []);
-	console.log(video);
+	console.log(playVideo.data);
 
 	video.map((v) => {
 		if (v.type === 'Trailer') {

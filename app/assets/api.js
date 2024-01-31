@@ -12,6 +12,12 @@ export async function getGenresList() {
 	return { genres };
 }
 
+export async function getVideo(id) {
+	const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?language=ko`, options);
+	const movieVideo = await response.json();
+	return { movieVideo };
+}
+
 // Movies
 
 export async function getMovie() {

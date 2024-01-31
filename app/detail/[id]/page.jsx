@@ -5,6 +5,8 @@ import Nav from '../../components/Nav';
 import Header from '../../components/Header';
 import { Play } from '../../assets/icons';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { getMovie, getVideo } from '../../assets/api';
 
 export default function Detail(props) {
 	const [movie, setMovie] = useState([]);
@@ -14,28 +16,22 @@ export default function Detail(props) {
 	const ref = useRef(null);
 	const videoKey = [];
 
+	const movies = useQuery({
+		queryKey: ['movieList', props.params.id],
+		queryFn: getMovie,
+	});
+
+	const playVideo = useQuery({
+		queryKey: ['movieVideo', props.params.id],
+		queryFn: getVideo,
+	});
+
 	const options = {
 		method: 'GET',
 		headers: {
 			accept: 'application/json',
 		},
 	};
-
-	useEffect(() => {
-		fetch(
-			`https://api.themoviedb.org/3/movie/${props.params.id}?api_key=${process.env.NEXT_PUBLIC_MOVIE_API_KEY}&language=ko-KO&append_to_response=images,videos`,
-			options
-		)
-			.then((response) => response.json())
-			.then((response) => {
-				setMovie(response);
-				setVideos(response.videos.results);
-				setGenres(response.genres);
-			})
-			.catch((err) => console.error(err));
-	}, []);
-
-	console.log(videos);
 
 	videos.map((video) => {
 		if (video.type === 'Trailer') {

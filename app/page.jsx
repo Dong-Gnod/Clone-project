@@ -46,23 +46,18 @@ export default function Home() {
 		queryFn: getAiringToday,
 	});
 
-	if (!popular.data) {
-		return <h1>데이터를 불러오지 못했습니다.</h1>;
-	}
-
-	if (!popularSeries.data) {
-		return;
-	}
-
-	const popularMovieList = popular.data.popularMovie.results;
-	const nowPlayMovieList = nowPlay.data.nowPlayMovie.results;
-	const upcomingMovieList = upcoming.data.upcomingMovie.results;
+	const popularMovieList = popular.isLoading ? <h1>Loading...</h1> : popular.data.popularMovie.results;
+	const nowPlayMovieList = nowPlay.isLoading ? <h1>Loading...</h1> : nowPlay.data.nowPlayMovie.results;
+	const upcomingMovieList = upcoming.isLoading ? <h1>Loading...</h1> : upcoming.data.upcomingMovie.results;
 	const headerImage = popularMovieList[Math.floor(Math.random() * popularMovieList.length - 1)];
 
-	const popularTvList = popularSeries.data.popularTv.results;
-	const onTheAirList = onTheAirSeries.data.onTheAir.results;
-	const airingTodayList = airingTodaySeries.data.airingToday.results;
-
+	const popularTvList = popularSeries.isLoading ? <h1>Loading...</h1> : popularSeries.data.popularTv.results;
+	const onTheAirList = onTheAirSeries.isLoading ? <h1>Loading...</h1> : onTheAirSeries.data.onTheAir.results;
+	const airingTodayList = airingTodaySeries.isLoading ? (
+		<h1>Loading...</h1>
+	) : (
+		airingTodaySeries.data.airingToday.results
+	);
 	return (
 		<div className="w-full h-full font-RobotoMono">
 			<Nav />
