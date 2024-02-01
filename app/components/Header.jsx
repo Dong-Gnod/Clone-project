@@ -36,6 +36,8 @@ export function Header() {
 					poster={headerContent.backdrop_path}
 					title={headerContent.title}
 					overview={headerContent.overview}
+					genre={headerContent.genre_ids}
+					average={headerContent.vote_average}
 				/>
 			</div>
 		</>

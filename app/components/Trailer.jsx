@@ -1,14 +1,18 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getVideo } from '../assets/api';
-import Link from 'next/link';
+import { getVideo, getGenresList } from '../assets/api';
 
-export function Trailer({ id, poster, title, overview }) {
+export function Trailer({ id, poster, title, overview, genre, average }) {
 	const videoKey = [];
 	const videos = useQuery({
 		queryKey: ['movieVideo', id],
 		queryFn: () => getVideo(id),
+	});
+
+	const getGenres = useQuery({
+		queryKey: ['genres'],
+		queryFn: getGenresList,
 	});
 
 	if (videos.status === 'loading') {
@@ -29,6 +33,8 @@ export function Trailer({ id, poster, title, overview }) {
 		}
 	});
 	console.log(videoKey);
+	const genreList = getGenres.data.genres.genres;
+
 	return (
 		<>
 			{videoKey.length === 0 ? (
@@ -38,10 +44,26 @@ export function Trailer({ id, poster, title, overview }) {
 					className="w-screen h-screen"
 					src={`https://www.youtube.com/embed/${videoKey[0]}?controls=0&autoplay=1&loop=1&mute=1&playlist=${videoKey[0]}`}
 					title="YouTube video player"
-					frameborder="0"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
-					allowfullscreen></iframe>
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"></iframe>
 			)}
+			<div className="text-white z-[90] absolute top-[35%] left-[5%] w-1/3">
+				<h1 className="font-black text-4xl drop-shadow-2xl mb-3">{title}</h1>
+				<div>
+					{genreList.map((gl) => {
+						if (genre.includes(gl.id)) {
+							return (
+								<span key={gl.id} className="mr-2 mb-2">
+									{gl.name}
+								</span>
+							);
+						}
+					})}
+				</div>
+				<p className="text-2xl mb-3">⭐평점: {average}</p>
+				<p className="font-bold text-3xl w-full drop-shadow-2xl line-clamp-3">
+					{!overview ? '영화에 대한 소개가 없습니다.' : overview}
+				</p>
+			</div>
 		</>
 	);
 }
