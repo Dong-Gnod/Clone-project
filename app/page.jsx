@@ -52,7 +52,7 @@ export default function Home() {
 	const onTheAirList = onTheAirSeries.isLoading ? null : onTheAirSeries.data.onTheAir.results;
 	const airingTodayList = airingTodaySeries.isLoading ? null : airingTodaySeries.data.airingToday.results;
 	return (
-		<div className="w-full h-full font-RobotoMono">
+		<div className="w-screen h-full font-RobotoMono">
 			<div className="w-full flex justify-center">
 				<Header />
 			</div>

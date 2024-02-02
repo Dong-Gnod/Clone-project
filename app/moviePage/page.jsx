@@ -104,6 +104,7 @@ export default function MoviePage() {
 				{categories === '' ? (
 					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
 						{moviesList.map((movie) => {
+							if (!movie.poster_path) return;
 							return (
 								<Link key={movie.id} href={`detail/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
@@ -121,6 +122,7 @@ export default function MoviePage() {
 				{categories === 'popular' ? (
 					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
 						{popularMovieList.map((movie) => {
+							if (!movie.poster_path) return;
 							return (
 								<Link key={movie.id} href={`detail/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
@@ -138,6 +140,7 @@ export default function MoviePage() {
 				{categories === 'now-playing' ? (
 					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
 						{nowPlayMovieList.map((movie) => {
+							if (!movie.poster_path) return;
 							return (
 								<Link key={movie.id} href={`detail/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
@@ -155,6 +158,7 @@ export default function MoviePage() {
 				{categories === 'upcoming' ? (
 					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
 						{upcomingMovieList.map((movie) => {
+							if (!movie.poster_path) return;
 							return (
 								<Link key={movie.id} href={`detail/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
@@ -172,6 +176,7 @@ export default function MoviePage() {
 				{categories === 'toprated' ? (
 					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
 						{topRatedMovieList.map((movie) => {
+							if (!movie.poster_path) return;
 							return (
 								<Link key={movie.id} href={`detail/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">

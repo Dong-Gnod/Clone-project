@@ -54,13 +54,13 @@ export async function getUpcomingMovie() {
 }
 
 // Series
-export async function getTv() {
+export async function getTvList() {
 	const response = await fetch(
-		'https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=true&language=ko&page=10&sort_by=popularity.desc',
+		'https://api.themoviedb.org/3/discover/tv?include_adult=true&include_null_first_air_dates=true&language=ko&page=1&sort_by=popularity.desc',
 		options
 	);
-	const tvList = await response.json();
-	return { tvList };
+	const tvSeriesList = await response.json();
+	return { tvSeriesList };
 }
 
 export async function getTopRatedTv() {

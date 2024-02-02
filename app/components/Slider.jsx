@@ -45,6 +45,7 @@ export default function Slider({ contents }) {
 	}, []);
 
 	return (
+		<div className='w-screen'>
 		<Swiper
 			modules={[Navigation, Pagination, A11y]}
 			ref={swiperElRef}
@@ -72,5 +73,6 @@ export default function Slider({ contents }) {
 						);
 				  })}
 		</Swiper>
+		</div>
 	);
 }
