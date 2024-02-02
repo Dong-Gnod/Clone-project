@@ -34,6 +34,15 @@ body {
 	font-family: 'Roboto Condensed', sans-serif;
 }
 
+body::-webkit-scrollbar {
+	width: 7px;
+}
+
+body::-webkit-scrollbar-thumb {
+	background-color: red;
+	border-radius: 3px;
+}
+
 .swiper-wrapper {
 	padding: 0 0 0 50px;
 }
