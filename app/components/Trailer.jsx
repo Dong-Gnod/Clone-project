@@ -23,7 +23,15 @@ export function Trailer({ id, poster, title, overview, genre, average }) {
 		return <h1>Error : {videos.error.message}</h1>;
 	}
 
-	if (!videos.data) {
+	if (getGenres.status === 'loading') {
+		return <h1>Genres Loading...</h1>;
+	}
+
+	if (getGenres.status === 'error') {
+		return <h1>Error : {getGenres.error.message}</h1>;
+	}
+
+	if (!videos.data || !getGenres.data) {
 		return <h1>Trailer Loading...</h1>;
 	}
 	const videoList = videos.data.movieVideo.results;

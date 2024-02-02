@@ -1,8 +1,7 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import RQProvider from './components/RQProvider';
-
-const inter = Inter({ subsets: ['latin'] });
+import Nav from './components/Nav';
 
 export const metadata = {
 	title: 'DFLIX',
@@ -12,8 +11,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
 	return (
 		<html lang="ko">
-			<body className={inter.className}>
-				<RQProvider>{children}</RQProvider>
+			<body className="flex flex-col">
+				<RQProvider>
+					<div>
+						<Nav />
+					</div>
+					<div>{children}</div>
+				</RQProvider>
 			</body>
 		</html>
 	);

@@ -53,17 +53,8 @@ export default function Home() {
 	const airingTodayList = airingTodaySeries.isLoading ? null : airingTodaySeries.data.airingToday.results;
 	return (
 		<div className="w-full h-full font-RobotoMono">
-			<Nav />
 			<div className="w-full flex justify-center">
 				<Header />
-				{/* <div className="text-black z-[90] absolute top-[65%] left-[25%] w-1/2 bg-gray-400/50 p-3 rounded-md mx-auto text-center">
-					<p className="font-extrabold text-xl mb-2.5 border-b-solid border-b-white border-b-2 pb-0.5 w-80 mx-auto">
-						{headerImage.title}
-					</p>
-					<p className="font-semibold line-clamp-3 m-10">
-						{headerImage.overview ? headerImage.overview : '설명이 없습니다.'}
-					</p>
-				</div> */}
 			</div>
 			{/* Main Contents */}
 			<div>
