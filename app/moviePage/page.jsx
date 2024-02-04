@@ -8,6 +8,7 @@ import clsx from 'clsx';
 
 export default function MoviePage() {
 	const [categories, setCategories] = useState('');
+	const part = 'movie';
 	const categoryRoute = [
 		{
 			id: 'popular',
@@ -106,7 +107,7 @@ export default function MoviePage() {
 						{moviesList.map((movie) => {
 							if (!movie.poster_path) return;
 							return (
-								<Link key={movie.id} href={`detail/${movie.id}`}>
+								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
@@ -124,7 +125,7 @@ export default function MoviePage() {
 						{popularMovieList.map((movie) => {
 							if (!movie.poster_path) return;
 							return (
-								<Link key={movie.id} href={`detail/${movie.id}`}>
+								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
@@ -142,7 +143,7 @@ export default function MoviePage() {
 						{nowPlayMovieList.map((movie) => {
 							if (!movie.poster_path) return;
 							return (
-								<Link key={movie.id} href={`detail/${movie.id}`}>
+								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
@@ -160,7 +161,7 @@ export default function MoviePage() {
 						{upcomingMovieList.map((movie) => {
 							if (!movie.poster_path) return;
 							return (
-								<Link key={movie.id} href={`detail/${movie.id}`}>
+								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
@@ -178,7 +179,7 @@ export default function MoviePage() {
 						{topRatedMovieList.map((movie) => {
 							if (!movie.poster_path) return;
 							return (
-								<Link key={movie.id} href={`detail/${movie.id}`}>
+								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}

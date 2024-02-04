@@ -11,7 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
 	return (
 		<html lang="ko">
-			<body className="flex flex-col w-screen overflow-x-hidden">
+			<body className="flex flex-col justify-between w-screen overflow-x-hidden">
 				<RQProvider>
 					<div>
 						<Nav />

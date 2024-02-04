@@ -12,7 +12,7 @@ import 'swiper/css/pagination';
 
 register();
 
-export default function Slider({ contents }) {
+export default function Slider({ contents, part }) {
 	const swiperElRef = useRef(null);
 	const breakpoints = {
 		390: {
@@ -45,34 +45,34 @@ export default function Slider({ contents }) {
 	}, []);
 
 	return (
-		<div className='w-screen'>
-		<Swiper
-			modules={[Navigation, Pagination, A11y]}
-			ref={swiperElRef}
-			loop={true}
-			slidesPerView={6}
-			navigation={true}
-			pagination={true}
-			spaceBetween={50}
-			breakpoints={breakpoints}>
-			{!contents
-				? null
-				: contents.map((content) => {
-						return (
-							<SwiperSlide key={content.id}>
-								<Link key={content.id} href={`detail/${content.id}`}>
-									<Image
-										id={content.id}
-										src={`https://image.tmdb.org/t/p/original/${content.poster_path}`}
-										alt="Image"
-										width={240}
-										height={360}
-									/>
-								</Link>
-							</SwiperSlide>
-						);
-				  })}
-		</Swiper>
+		<div className="w-screen">
+			<Swiper
+				modules={[Navigation, Pagination, A11y]}
+				ref={swiperElRef}
+				loop={true}
+				slidesPerView={6}
+				navigation={true}
+				pagination={true}
+				spaceBetween={50}
+				breakpoints={breakpoints}>
+				{!contents
+					? null
+					: contents.map((content) => {
+							return (
+								<SwiperSlide key={content.id}>
+									<Link key={content.id} href={`detail/${part}/${content.id}`}>
+										<Image
+											id={content.id}
+											src={`https://image.tmdb.org/t/p/original/${content.poster_path}`}
+											alt="Image"
+											width={240}
+											height={360}
+										/>
+									</Link>
+								</SwiperSlide>
+							);
+					  })}
+			</Swiper>
 		</div>
 	);
 }

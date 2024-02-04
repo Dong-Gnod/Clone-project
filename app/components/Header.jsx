@@ -11,6 +11,8 @@ export function Header() {
 		queryFn: getMovie,
 	});
 
+	const part = 'movie';
+
 	if (movies.status === 'loading') {
 		return <h1>Loading...</h1>;
 	}
@@ -38,6 +40,7 @@ export function Header() {
 					overview={headerContent.overview}
 					genre={headerContent.genre_ids}
 					average={headerContent.vote_average}
+					part={part}
 				/>
 			</div>
 		</>

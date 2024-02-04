@@ -3,11 +3,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { getVideo, getGenresList } from '../assets/api';
 
-export function Trailer({ id, poster, title, overview, genre, average }) {
+export function Trailer({ id, poster, title, overview, genre, average, part }) {
 	const videoKey = [];
 	const videos = useQuery({
-		queryKey: ['movieVideo', id],
-		queryFn: () => getVideo(id),
+		queryKey: ['movieVideo', part, id],
+		queryFn: () => getVideo(part, id),
 	});
 
 	const getGenres = useQuery({
@@ -40,7 +40,6 @@ export function Trailer({ id, poster, title, overview, genre, average }) {
 			return videoKey.push(video.key);
 		}
 	});
-	console.log(videoKey);
 	const genreList = getGenres.data.genres.genres;
 
 	return (

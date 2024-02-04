@@ -1,6 +1,5 @@
 'use client';
 
-import Nav from './components/Nav';
 import { Header } from './components/Header';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -60,32 +59,32 @@ export default function Home() {
 			<div>
 				<div className="mt-8">
 					<h1 className="text-xl mb-3 font-extrabold ml-4">인기 영화</h1>
-					<Slider contents={popularMovieList} />
+					<Slider contents={popularMovieList} part={'movie'} />
 				</div>
 
 				<div className="mt-8">
 					<h1 className="text-xl mb-3 font-extrabold ml-4">상영 중인 영화</h1>
-					<Slider contents={nowPlayMovieList} />
+					<Slider contents={nowPlayMovieList} part={'movie'} />
 				</div>
 
 				<div className="mt-8">
 					<h1 className="text-xl mb-3 font-extrabold ml-4">상영 예정인 영화</h1>
-					<Slider contents={upcomingMovieList} />
+					<Slider contents={upcomingMovieList} part={'movie'} />
 				</div>
 
 				<div className="mt-8">
 					<h1 className="text-xl mb-3 font-extrabold ml-4">인기 시리즈</h1>
-					<Slider contents={popularTvList} />
+					<Slider contents={popularTvList} part={'series'} />
 				</div>
 
 				<div className="mt-8">
 					<h1 className="text-xl mb-3 font-extrabold ml-4">방영 중인 시리즈</h1>
-					<Slider contents={onTheAirList} />
+					<Slider contents={onTheAirList} part={'series'} />
 				</div>
 
 				<div className="mt-8">
 					<h1 className="text-xl mb-3 font-extrabold ml-4">오늘 방영 시리즈</h1>
-					<Slider contents={airingTodayList} />
+					<Slider contents={airingTodayList} part={'series'} />
 				</div>
 			</div>
 		</div>

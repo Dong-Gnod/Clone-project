@@ -8,6 +8,7 @@ import clsx from 'clsx';
 
 export default function SeriesPage() {
 	const [categories, setCategories] = useState('');
+	const part = 'tv';
 	const categoryRoute = [
 		{
 			id: 'popular',
@@ -15,15 +16,15 @@ export default function SeriesPage() {
 		},
 		{
 			id: 'on-The-Air',
-			name: '상영 중인 영화',
+			name: '방영 중인 프로그램',
 		},
 		{
 			id: 'airing-Today',
-			name: '상영 예정 영화',
+			name: '오늘 방영 프로그램',
 		},
 		{
 			id: 'toprated',
-			name: '평점 순 영화',
+			name: '평점 순 프로그램',
 		},
 	];
 
@@ -49,6 +50,12 @@ export default function SeriesPage() {
 		queryFn: getTopRatedTv,
 	});
 
+	if (getTv.status === 'loading') {
+		return <h1>Loading...</h1>;
+	} else if (getTv.status === 'error') {
+		<h1>Error: {getTv.error.message}</h1>;
+	}
+
 	if (getPopular.status === 'loading') {
 		return <h1>Loading...</h1>;
 	} else if (getPopular.status === 'error') {
@@ -73,7 +80,7 @@ export default function SeriesPage() {
 		<h1>Error: {getTopRated.error.message}</h1>;
 	}
 
-	if (!getPopular.data || !getOnTheAiring.data || !getToday.data || !getTopRated.data) {
+	if (!getPopular.data || !getOnTheAiring.data || !getToday.data || !getTopRated.data || !getTv.data) {
 		return <h1>Loading...</h1>;
 	}
 
@@ -105,7 +112,7 @@ export default function SeriesPage() {
 						{seriesList.map((series) => {
 							if (!series.poster_path) return;
 							return (
-								<Link key={series.id} href={`detail/${series.id}`}>
+								<Link key={series.id} href={`detail/${part}/${series.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
@@ -123,7 +130,7 @@ export default function SeriesPage() {
 						{popularTvList.map((series) => {
 							if (!series.poster_path) return;
 							return (
-								<Link key={series.id} href={`detail/${series.id}`}>
+								<Link key={series.id} href={`detail/${part}/${series.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
@@ -141,7 +148,7 @@ export default function SeriesPage() {
 						{onTvList.map((series) => {
 							if (!series.poster_path) return;
 							return (
-								<Link key={series.id} href={`detail/${series.id}`}>
+								<Link key={series.id} href={`detail/${part}/${series.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
@@ -159,7 +166,7 @@ export default function SeriesPage() {
 						{todayTvList.map((series) => {
 							if (!series.poster_path) return;
 							return (
-								<Link key={series.id} href={`detail/${series.id}`}>
+								<Link key={series.id} href={`detail/${part}/${series.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
@@ -177,7 +184,7 @@ export default function SeriesPage() {
 						{topRatedTvList.map((series) => {
 							if (!series.poster_path) return;
 							return (
-								<Link key={series.id} href={`detail/${series.id}`}>
+								<Link key={series.id} href={`detail/${part}/${series.id}`}>
 									<div className="w-48 transition-all duration-300 hover:scale-150">
 										<img
 											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
