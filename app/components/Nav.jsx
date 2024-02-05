@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import logo from '../../public/logo.png';
 import Link from 'next/link';
+import { Search } from './Search';
 
 import { motion, useMotionValue, useScroll, useTransform } from 'framer-motion';
 
@@ -35,6 +36,9 @@ export default function Nav() {
 						<li className="ml-5 text-sm">시리즈</li>
 					</Link>
 				</ul>
+			</div>
+			<div className="mr-8">
+				<Search />
 			</div>
 		</motion.nav>
 	);

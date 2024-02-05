@@ -100,9 +100,9 @@ export async function getAiringToday() {
 }
 
 // Search
-export async function searchContent() {
+export async function searchContent(keyword) {
 	const response = await fetch(
-		'https://api.themoviedb.org/3/search/multi?include_adult=false&language=ko-KR&page=1',
+		`https://api.themoviedb.org/3/search/multi?query=${keyword}&include_adult=false&language=ko-KR&page=1`,
 		options
 	);
 	const searchInfo = await response.json();
