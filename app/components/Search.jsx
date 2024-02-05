@@ -14,14 +14,15 @@ export function Search() {
 
 	return (
 		<>
-			<form className="flex items-center p-2 rounded-md bg-red-600">
-				<input type="text" className=" text-black rounded-md" value={word} onChange={inputHandler} />
+			<form className="flex items-center">
+				<input type="text" className="h-6 text-black rounded-md" value={word} onChange={inputHandler} />
 				<Link
 					href={{
 						pathname: '/searchPage',
 						query: { content: keyword },
-					}}>
-					<button className="ml-2">
+					}}
+					className="flex items-center justify-center">
+					<button className="ml-2 text-red-600 font-black">
 						<SearchIcon />
 					</button>
 				</Link>

@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
 		<html lang="ko">
 			<body className="flex flex-col justify-between w-screen overflow-x-hidden">
 				<RQProvider>
-					<div>
+					<div className=" bg-black/40">
 						<Nav />
 					</div>
 					<div>{children}</div>

@@ -18,14 +18,14 @@ export default function Nav() {
 	return (
 		<motion.nav
 			style={{ backgroundColor }}
-			className="flex w-full justify-between items-center fixed z-[100] font-RobotoMono">
-			<div className="flex items-center w-full px-5">
+			className="flex w-full justify-between items-center fixed z-[100] font-RobotoMono  bg-black/40">
+			<div className="flex items-center w-full px-5  bg-black/40">
 				<Link href="/">
 					<Image src={logo} alt="Netflix home" className="w-20 h-20" />
 				</Link>
 				{/* menu */}
 
-				<ul className="text-sm flex justify-start w-full font-medium">
+				<ul className="text-lg flex justify-start w-full font-black">
 					<Link href="/">
 						<li className="ml-5 text-sm">홈</li>
 					</Link>
@@ -36,8 +36,6 @@ export default function Nav() {
 						<li className="ml-5 text-sm">시리즈</li>
 					</Link>
 				</ul>
-			</div>
-			<div className="mr-8">
 				<Search />
 			</div>
 		</motion.nav>
