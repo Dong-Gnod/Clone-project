@@ -1,8 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { getVideo, getMovie } from '../assets/api';
+import { getMovie } from '../assets/api';
 import { Trailer } from './Trailer';
 
 export function Header() {

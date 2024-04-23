@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getVideo, getDetail, getCredits } from '../../../assets/api';
 import Image from 'next/image';
 
@@ -14,43 +14,48 @@ export default function Detail() {
 	console.log(params.id);
 	console.log(params.part);
 
-	const getDetails = useQuery({
+	const {
+		data: getDetails,
+		isError: detailStatus,
+		error: detailError,
+	} = useSuspenseQuery({
 		queryKey: ['contentDetail', contentsParts, contentsids],
 		queryFn: () => getDetail(contentsParts, contentsids),
 	});
 
-	const getActor = useQuery({
+	const {
+		data: getActor,
+		isError: actorStatus,
+		error: actorError,
+	} = useSuspenseQuery({
 		queryKey: ['creditsList', contentsParts, contentsids],
 		queryFn: () => getCredits(contentsParts, contentsids),
 	});
 
-	const getPlayVideo = useQuery({
+	const {
+		data: getPlayVideo,
+		isError: videoStatus,
+		error: videoError,
+	} = useSuspenseQuery({
 		queryKey: ['movieVideo', contentsParts, contentsids],
 		queryFn: () => getVideo(contentsParts, contentsids),
 	});
 
 	// error check
-	if (getDetails.status === 'loading' || getActor.status === 'loading' || getPlayVideo.status === 'loading') {
-		return <h1>Loading</h1>;
+
+	if (detailStatus) {
+		return <h1>Error {detailError.message}</h1>;
 	}
-	if (getDetails.status === 'error') {
-		return <h1>Error {getDetails.error.message}</h1>;
+	if (actorStatus) {
+		return <h1>Error {actorError.message}</h1>;
 	}
-	if (!getDetails.data || !getActor.data || !getPlayVideo.data) {
-		return <h1>Loading...</h1>;
-	}
-	if (getActor.status === 'error') {
-		return <h1>Error {getActor.error.message}</h1>;
-	}
-	if (getPlayVideo.status === 'error') {
-		return <h1>Error {getActor.error.message}</h1>;
+	if (videoStatus) {
+		return <h1>Error {videoError.message}</h1>;
 	}
 
-	const content = getDetails.data.contentDetail;
-	console.log(content);
-	const actors = getActor.data.creditsList.cast;
-	console.log(actors);
-	const viedos = getPlayVideo.data.movieVideo.results;
+	const content = getDetails.contentDetail;
+	const actors = getActor.creditsList.cast;
+	const viedos = getPlayVideo.movieVideo.results;
 	viedos.map((video) => {
 		if (video.type === 'Trailer' || video.type === 'Teaser') {
 			return videoKey.push(video.key);

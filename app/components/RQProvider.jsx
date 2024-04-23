@@ -2,7 +2,8 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import React, { Suspense, useEffect, useState, lazy } from 'react';
+import React, { Suspense, useState, lazy } from 'react';
+import Loading from './Loading';
 
 const ReactQueryDevtoolsProduction = lazy(() => {
 	import('@tanstack/react-query-devtools/build/modern/production.js').then((d) => ({
@@ -25,19 +26,13 @@ function RQProvider({ children }) {
 		})
 	);
 
-	useEffect(() => {
-		window.toggleDevtools = () => setShowDevtools((old) => !old);
-	}, []);
-
 	return (
 		<QueryClientProvider client={client}>
-			{children}
-			<ReactQueryDevtools initialIsOpen={true} />
-			{showDevtools && (
-				<Suspense fallback={null}>
-					<ReactQueryDevtoolsProduction />
-				</Suspense>
-			)}
+			<Suspense fallback={<Loading />}>
+				{children}
+				<ReactQueryDevtools initialIsOpen={true} />
+				{showDevtools && <ReactQueryDevtoolsProduction />}
+			</Suspense>
 		</QueryClientProvider>
 	);
 }

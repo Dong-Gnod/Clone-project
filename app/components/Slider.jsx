@@ -14,24 +14,7 @@ register();
 
 export default function Slider({ contents, part }) {
 	const swiperElRef = useRef(null);
-	const breakpoints = {
-		390: {
-			slidesPerView: 2,
-			slidesPerGroup: 1,
-		},
-		768: {
-			slidesPerView: 3,
-			slidesPerGroup: 1,
-		},
-		1024: {
-			slidesPerView: 5,
-			slidesPerGroup: 1,
-		},
-		1200: {
-			slidesPerView: 7,
-			slidesPerGroup: 1,
-		},
-	};
+	console.log(contents);
 
 	useEffect(() => {
 		swiperElRef.current.addEventListener('swiperprogress', (e) => {
@@ -53,8 +36,7 @@ export default function Slider({ contents, part }) {
 				slidesPerView={6}
 				navigation={true}
 				pagination={true}
-				spaceBetween={50}
-				breakpoints={breakpoints}>
+				spaceBetween={50}>
 				{!contents
 					? null
 					: contents.map((content) => {

@@ -1,13 +1,28 @@
 'use client';
 
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getPopularMovie, getNowPlayMovie, getUpcomingMovie, getTopRatedMovie, getMovie } from '@/app/assets/api';
 import Link from 'next/link';
 import clsx from 'clsx';
 
+const MovieList = ({ movies }) => {
+	<div className="w-9/12 flex flex-wrap gap-5 justify-center">
+		{movies.map((movie) => {
+			if (!movie.poster_path) return;
+			return (
+				<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
+					<div className="w-48 transition-all duration-300 hover:scale-150">
+						<img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt="poster" />
+					</div>
+				</Link>
+			);
+		})}
+	</div>;
+};
+
 export default function MoviePage() {
-	const [categories, setCategories] = useState('');
+	const [categories, setCategories] = useState('popular');
 	const part = 'movie';
 	const categoryRoute = [
 		{
@@ -80,10 +95,19 @@ export default function MoviePage() {
 
 	const moviesList = getMovies.data.movieList.results;
 	const popularMovieList = getPopular.data.popularMovie.results;
-	console.log(popularMovieList);
 	const nowPlayMovieList = getNowPlaying.data.nowPlayMovie.results;
 	const upcomingMovieList = getUpcoming.data.upcomingMovie.results;
 	const topRatedMovieList = getTopRated.data.topRated.results;
+
+	// ////////////////
+	const moviesByCategory = {
+		'': moviesList,
+		popular: popularMovieList,
+		'now-playing': nowPlayMovieList,
+		upcoming: upcomingMovieList,
+		toprated: topRatedMovieList,
+	};
+	// ///////////////
 
 	return (
 		<div className="w-screen flex flex-col justify-center mt-20">
@@ -101,7 +125,8 @@ export default function MoviePage() {
 					);
 				})}
 			</ul>
-			<div className="flex justify-center mt-10">
+			<MovieList movies={moviesByCategory[categories]} />
+			{/* <div className="flex justify-center mt-10">
 				{categories === '' ? (
 					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
 						{moviesList.map((movie) => {
@@ -190,8 +215,8 @@ export default function MoviePage() {
 							);
 						})}
 					</div>
-				) : null}
-			</div>
+				) : null} */}
+			{/* </div> */}
 		</div>
 	);
 }
