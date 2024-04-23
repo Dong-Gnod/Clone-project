@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DHFLIX
+***
+이 프로젝트는 영화와 시리즈에 대한 정보를 얻을 수 있도록 제작되었습니다. 
 
-## Getting Started
+해당 프로젝트는 영화와 시리즈에 대한 인기 순위, 예고편, 간략한 소개글을 확인할 수 있습니다.
+***
 
-First, run the development server:
+## 사용 API
+***
+TMDB API
+***
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 사용 기술
+***
+React.js, Next.js, React Query, clsx, swiper, framer-motion, tailwindCSS
+### Next.js 사용 이유
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+React 공식 홈페이지에서 프레임워크를 사용하는 것을 추천하고 있습니다.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+그 글에서는 Next.js, Remix, Gatsby 등을 소개하고 있고 그중 Next.js의 app Router를 더 추천하고 있다고 생각을 하였습니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+또한 React 팀과 Next 팀이 서로 협력 관계임을 이야기가 있는 것으로 보아 React의 생태계에서 Next가 관련 업데이트 및 오류 해결 등의 피드백들이 더욱 잘 이루어지며 앞으로 더 많이 쓰일 것이라고 판단했습니다.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+### React Query 사용 이유
+상태관리 라이브러리를 경험해보면 좋다고 생각했습니다. 그래서 상태관리 라이브러리 중 React Query가 별도의 설정없이 사용할 수 있이서 빠르게 적용할 수 있을 것 같다고 판단되어 사용하였습니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### Tailwind CSS 사용 이유
+Next를 사용할 때 파일을 기반으로 라우팅을 하는데 스타일 폴더 또는 파일들이 있으면 폴더와 파일들이 늘어나 작업할 때에 불편할 것으로 생각했습니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+그에 대한 해결책을 찾던 중 Tailwind CSS가 클래스에 추가만 해주면 돼서 편하게 작업할 수 있을 것이라 판단했습니다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+또한 자주 사용하는 클래스만 외워두면 작업 속도도 빨라질 것이라고 생각했습니다.
+***
+
