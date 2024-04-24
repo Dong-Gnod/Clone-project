@@ -1,29 +1,21 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getMovie } from '../assets/api';
 import { Trailer } from './Trailer';
 
 export function Header() {
-	const movies = useQuery({
+	const { data, isError, error } = useSuspenseQuery({
 		queryKey: ['movieList'],
 		queryFn: getMovie,
 	});
 
 	const part = 'movie';
-
-	if (movies.status === 'loading') {
-		return <h1>Loading...</h1>;
-	}
-	if (movies.status === 'error') {
-		return <h1>Error: {movies.error.message}</h1>;
+	if (isError) {
+		return <h1>Error: {error.message}</h1>;
 	}
 
-	if (!movies.data) {
-		return <h1>Loading...</h1>;
-	}
-
-	const orderMovie = movies.data.movieList.results;
+	const orderMovie = data.movieList.results;
 	const headerContent = orderMovie[Math.floor(Math.random() * orderMovie.length - 1)];
 	if (!headerContent) {
 		return <h1>Loading...</h1>;

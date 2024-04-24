@@ -1,117 +1,118 @@
 'use client';
 
 import { useState } from 'react';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { getPopularMovie, getNowPlayMovie, getUpcomingMovie, getTopRatedMovie, getMovie } from '@/app/assets/api';
+import { useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
+import {
+	getPopularInfinite,
+	getNowPlayMovieInfinite,
+	getUpcomingMovieInfinite,
+	getTopRatedMovieInfinite,
+	getMovie,
+} from '../assets/api';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { MovieList } from '../components/MovieList';
 
-const MovieList = ({ movies }) => {
-	<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-		{movies.map((movie) => {
-			if (!movie.poster_path) return;
-			return (
-				<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
-					<div className="w-48 transition-all duration-300 hover:scale-150">
-						<img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt="poster" />
-					</div>
-				</Link>
-			);
-		})}
-	</div>;
-};
+const categoryRoute = [
+	{
+		id: 'popular',
+		name: '인기 영화',
+	},
+	{
+		id: 'now-playing',
+		name: '상영 중인 영화',
+	},
+	{
+		id: 'upcoming',
+		name: '상영 예정 영화',
+	},
+	{
+		id: 'toprated',
+		name: '평점 순 영화',
+	},
+];
 
 export default function MoviePage() {
 	const [categories, setCategories] = useState('popular');
-	const part = 'movie';
-	const categoryRoute = [
-		{
-			id: 'popular',
-			name: '인기 영화',
-		},
-		{
-			id: 'now-playing',
-			name: '상영 중인 영화',
-		},
-		{
-			id: 'upcoming',
-			name: '상영 예정 영화',
-		},
-		{
-			id: 'toprated',
-			name: '평점 순 영화',
-		},
-	];
 
-	const getMovies = useQuery({
-		queryKey: ['movieList'],
-		queryFn: getMovie,
-	});
-
-	const getPopular = useQuery({
+	const {
+		data: popular,
+		isError: popularStatus,
+		error: popularError,
+	} = useSuspenseInfiniteQuery({
 		queryKey: ['popularMovie'],
-		queryFn: getPopularMovie,
+		queryFn: ({ pageParams = 1 }) => getPopularInfinite({ pageParams: pageParams }),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage) => lastPage.nextCursor,
+		maxPages: 500,
 	});
-	const getNowPlaying = useQuery({
+
+	const {
+		data: nowPlay,
+		isError: nowplayStatus,
+		error: nowPlayError,
+	} = useSuspenseInfiniteQuery({
 		queryKey: ['nowPlayMovie'],
-		queryFn: getNowPlayMovie,
+		queryFn: ({ pageParams = 1 }) => getNowPlayMovieInfinite({ pageParams: pageParams }),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+		maxPages: 500,
 	});
-	const getUpcoming = useQuery({
+
+	const {
+		data: upcoming,
+		isError: upcomingStatus,
+		error: upcomingError,
+	} = useSuspenseInfiniteQuery({
 		queryKey: ['upcomingMovie'],
-		queryFn: getUpcomingMovie,
+		queryFn: ({ pageParams = 1 }) => getUpcomingMovieInfinite({ pageParams: pageParams }),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+		maxPages: 500,
 	});
-	const getTopRated = useQuery({
+
+	const {
+		data: topRated,
+		isError: topRatedStatus,
+		error: topRatedError,
+	} = useSuspenseInfiniteQuery({
 		queryKey: ['topRated'],
-		queryFn: getTopRatedMovie,
+		queryFn: ({ pageParams = 1 }) => getTopRatedMovieInfinite({ pageParams: pageParams }),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+		maxPages: 500,
 	});
 
-	if (getPopular.status === 'loading') {
-		return <h1>Loading...</h1>;
-	} else if (getPopular.status === 'error') {
-		<h1>Error: {getPopular.error.message}</h1>;
+	if (popularStatus) {
+		<h1>Popular Error: {popularError.message}</h1>;
 	}
 
-	if (getNowPlaying.status === 'loading') {
-		return <h1>Loading...</h1>;
-	} else if (getNowPlaying.status === 'error') {
-		<h1>Error: {getNowPlaying.error.message}</h1>;
+	if (nowplayStatus) {
+		<h1>Now-play Error: {nowPlayError.message}</h1>;
+	}
+	if (upcomingStatus) {
+		<h1>Upcoming Error: {upcomingError.message}</h1>;
+	}
+	if (topRatedStatus) {
+		<h1>Top-Rated Error: {topRatedError.message}</h1>;
 	}
 
-	if (getUpcoming.status === 'loading') {
-		return <h1>Loading...</h1>;
-	} else if (getUpcoming.status === 'error') {
-		<h1>Error: {getUpcoming.error.message}</h1>;
-	}
+	const popularMovieList = popular.pages[0].popularMovie.results;
+	const nowPlayMovieList = nowPlay.pages[0].nowPlayMovie.results;
+	const upcomingMovieList = upcoming.pages[0].upcomingMovie.results;
+	const topRatedMovieList = topRated.pages[0].topRated.results;
+	// console.log(popularMovieList[0].popularMovie.results);
 
-	if (getTopRated.status === 'loading') {
-		return <h1>Loading...</h1>;
-	} else if (getTopRated.status === 'error') {
-		<h1>Error: {getTopRated.error.message}</h1>;
-	}
-
-	if (!getPopular.data || !getNowPlaying.data || !getUpcoming.data || !getTopRated.data) {
-		return <h1>Loading...</h1>;
-	}
-
-	const moviesList = getMovies.data.movieList.results;
-	const popularMovieList = getPopular.data.popularMovie.results;
-	const nowPlayMovieList = getNowPlaying.data.nowPlayMovie.results;
-	const upcomingMovieList = getUpcoming.data.upcomingMovie.results;
-	const topRatedMovieList = getTopRated.data.topRated.results;
-
-	// ////////////////
 	const moviesByCategory = {
-		'': moviesList,
 		popular: popularMovieList,
 		'now-playing': nowPlayMovieList,
 		upcoming: upcomingMovieList,
 		toprated: topRatedMovieList,
 	};
-	// ///////////////
 
 	return (
 		<div className="w-screen flex flex-col justify-center mt-20">
-			<ul className="flex w-dvw justify-center font-black text-xl">
+			<ul className="flex w-dvw justify-center font-black text-xl mt-10">
 				{categoryRoute.map((category) => {
 					return (
 						<button
@@ -125,98 +126,9 @@ export default function MoviePage() {
 					);
 				})}
 			</ul>
-			<MovieList movies={moviesByCategory[categories]} />
-			{/* <div className="flex justify-center mt-10">
-				{categories === '' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{moviesList.map((movie) => {
-							if (!movie.poster_path) return;
-							return (
-								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null}
-
-				{categories === 'popular' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{popularMovieList.map((movie) => {
-							if (!movie.poster_path) return;
-							return (
-								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null}
-
-				{categories === 'now-playing' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{nowPlayMovieList.map((movie) => {
-							if (!movie.poster_path) return;
-							return (
-								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null}
-
-				{categories === 'upcoming' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{upcomingMovieList.map((movie) => {
-							if (!movie.poster_path) return;
-							return (
-								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null}
-
-				{categories === 'toprated' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{topRatedMovieList.map((movie) => {
-							if (!movie.poster_path) return;
-							return (
-								<Link key={movie.id} href={`detail/${part}/${movie.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null} */}
-			{/* </div> */}
+			<div className="mt-10">
+				<MovieList movies={moviesByCategory[categories]} />
+			</div>
 		</div>
 	);
 }

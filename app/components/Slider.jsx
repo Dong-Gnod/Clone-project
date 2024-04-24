@@ -14,7 +14,6 @@ register();
 
 export default function Slider({ contents, part }) {
 	const swiperElRef = useRef(null);
-	console.log(contents);
 
 	useEffect(() => {
 		swiperElRef.current.addEventListener('swiperprogress', (e) => {
