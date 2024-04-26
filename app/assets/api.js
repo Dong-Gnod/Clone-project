@@ -41,67 +41,30 @@ export async function getMovie() {
 	return { movieList };
 }
 
-export async function getPopularMovie() {
-	const response = await fetch('https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=1', options);
+export async function getPopularMovie({ page = 1 }) {
+	const response = await fetch(`https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${page}`, options);
 	const popularMovie = await response.json();
-	return { popularMovie };
+	return { popularMovie, nextPageParam: page + 1 };
 }
 
-export async function getTopRatedMovie() {
-	const response = await fetch('https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=1', options);
+export async function getTopRatedMovie({ page = 1 }) {
+	const response = await fetch(`https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=${page}`, options);
 	const topRated = await response.json();
-	return { topRated };
+	return { topRated, nextPageParam: page + 1 };
 }
 
-export async function getNowPlayMovie() {
-	const response = await fetch('https://api.themoviedb.org/3/movie/now_playing?language=ko-KR&page=1', options);
+export async function getNowPlayMovie({ page = 1 }) {
+	const response = await fetch(`https://api.themoviedb.org/3/movie/now_playing?language=ko-KR&page=${page}`, options);
 	const nowPlayMovie = await response.json();
-	return { nowPlayMovie };
+	return { nowPlayMovie, nextPageParam: page + 1 };
 }
 
-export async function getUpcomingMovie() {
-	const response = await fetch('https://api.themoviedb.org/3/movie/upcoming?language=ko-KR&page=1', options);
+export async function getUpcomingMovie({ page = 1 }) {
+	const response = await fetch(`https://api.themoviedb.org/3/movie/upcoming?language=ko-KR&page=${page}`, options);
 	const upcomingMovie = await response.json();
-	return { upcomingMovie };
-}
-//////////////////////////////////////////////////////////////////////////////
-// movie infinite query
-export async function getPopularInfinite({ pageParams }) {
-	const response = await fetch(
-		`https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${pageParams}`,
-		options
-	);
-	const popularMovie = await response.json();
-	return { popularMovie };
+	return { upcomingMovie, nextPageParam: page + 1 };
 }
 
-export async function getNowPlayMovieInfinite({ pageParams }) {
-	const response = await fetch(
-		`https://api.themoviedb.org/3/movie/now_playing?language=ko-KR&page=${pageParams}`,
-		options
-	);
-	const nowPlayMovie = await response.json();
-	return { nowPlayMovie };
-}
-
-export async function getTopRatedMovieInfinite({ pageParams }) {
-	const response = await fetch(
-		`https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=${pageParams}`,
-		options
-	);
-	const topRated = await response.json();
-	return { topRated };
-}
-
-export async function getUpcomingMovieInfinite({ pageParams }) {
-	const response = await fetch(
-		`https://api.themoviedb.org/3/movie/upcoming?language=ko-KR&page=${pageParams}`,
-		options
-	);
-	const upcomingMovie = await response.json();
-	return { upcomingMovie };
-}
-//////////////////////////////////////////////////////////////////////////////
 // Series
 export async function getTvList() {
 	const response = await fetch(
@@ -112,28 +75,28 @@ export async function getTvList() {
 	return { tvSeriesList };
 }
 
-export async function getTopRatedTv() {
-	const response = await fetch('https://api.themoviedb.org/3/tv/top_rated?language=ko-KR&page=1', options);
+export async function getTopRatedTv({ page = 1 }) {
+	const response = await fetch(`https://api.themoviedb.org/3/tv/top_rated?language=ko-KR&page=${page}`, options);
 	const topRatedTv = await response.json();
-	return { topRatedTv };
+	return { topRatedTv, nextPageParam: page + 1 };
 }
 
-export async function getPopularTv() {
-	const response = await fetch('https://api.themoviedb.org/3/tv/popular?language=ko-KR&page=1', options);
+export async function getPopularTv({ page = 1 }) {
+	const response = await fetch(`https://api.themoviedb.org/3/tv/popular?language=ko-KR&page=${page}`, options);
 	const popularTv = await response.json();
-	return { popularTv };
+	return { popularTv, nextPageParam: page + 1 };
 }
 
-export async function getOnTheAir() {
-	const response = await fetch('https://api.themoviedb.org/3/tv/on_the_air?language=ko-KR&page=1', options);
+export async function getOnTheAir({ page = 1 }) {
+	const response = await fetch(`https://api.themoviedb.org/3/tv/on_the_air?language=ko-KR&page=${page}`, options);
 	const onTheAir = await response.json();
-	return { onTheAir };
+	return { onTheAir, nextPageParam: page + 1 };
 }
 
-export async function getAiringToday() {
-	const response = await fetch('https://api.themoviedb.org/3/tv/airing_today?language=ko-KR&page=1', options);
+export async function getAiringToday({ page = 1 }) {
+	const response = await fetch(`https://api.themoviedb.org/3/tv/airing_today?language=ko-KR&page=${page}`, options);
 	const airingToday = await response.json();
-	return { airingToday };
+	return { airingToday, nextPageParam: page + 1 };
 }
 
 // Search

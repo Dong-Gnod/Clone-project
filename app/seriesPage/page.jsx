@@ -1,94 +1,155 @@
 'use client';
 
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { getTopRatedTv, getPopularTv, getOnTheAir, getAiringToday, getTvList } from '../assets/api.js';
 import Link from 'next/link';
+import { useInView } from 'react-intersection-observer';
 import clsx from 'clsx';
+import { Top } from '../assets/icons';
+
+const categoryRoute = [
+	{
+		id: 'popularTv',
+		name: '인기 Tv 프로그램',
+	},
+	{
+		id: 'onTheAir',
+		name: '방영 중인 프로그램',
+	},
+	{
+		id: 'airingToday',
+		name: '오늘 방영 프로그램',
+	},
+	{
+		id: 'topRatedTv',
+		name: '평점 순 프로그램',
+	},
+];
 
 export default function SeriesPage() {
-	const [categories, setCategories] = useState('');
+	const [categories, setCategories] = useState('popularTv');
 	const part = 'tv';
-	const categoryRoute = [
-		{
-			id: 'popular',
-			name: '인기 Tv 프로그램',
-		},
-		{
-			id: 'on-The-Air',
-			name: '방영 중인 프로그램',
-		},
-		{
-			id: 'airing-Today',
-			name: '오늘 방영 프로그램',
-		},
-		{
-			id: 'toprated',
-			name: '평점 순 프로그램',
-		},
-	];
 
-	const getTv = useQuery({
-		queryKey: ['tvSeriesList'],
-		queryFn: getTvList,
-	});
-
-	const getPopular = useQuery({
+	const {
+		data: popular,
+		isError: popularStatus,
+		error: popularError,
+		fetchNextPage: popularNextPage,
+		hasNextPage: popularHasNextPage,
+		isFetching: popularFetching,
+	} = useSuspenseInfiniteQuery({
 		queryKey: ['popularTv'],
-		queryFn: getPopularTv,
+		queryFn: ({ pageParam = 1 }) => getPopularTv({ page: pageParam }),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage) => lastPage.nextPageParam,
+		maxPages: 500,
 	});
-	const getOnTheAiring = useQuery({
+
+	const {
+		data: onTheAir,
+		isError: onTheAirStatus,
+		error: onTheAirError,
+		fetchNextPage: onTheAirNextPage,
+		hasNextPage: onTheAirHasNextPage,
+		isFetching: onTheAirFetching,
+	} = useSuspenseInfiniteQuery({
 		queryKey: ['onTheAir'],
-		queryFn: getOnTheAir,
+		queryFn: ({ pageParam = 1 }) => getOnTheAir({ page: pageParam }),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage) => lastPage.nextPageParam,
+		maxPages: 500,
 	});
-	const getToday = useQuery({
+
+	const {
+		data: airingToday,
+		isError: airingTodayStatus,
+		error: airingTodayError,
+		fetchNextPage: airingTodayNextPage,
+		hasNextPage: airingTodayHasNextPage,
+		isFetching: airingTodayFetching,
+	} = useSuspenseInfiniteQuery({
 		queryKey: ['airingToday'],
-		queryFn: getAiringToday,
+		queryFn: ({ pageParam = 1 }) => getAiringToday({ page: pageParam }),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage) => lastPage.nextPageParam,
+		maxPages: 500,
 	});
-	const getTopRated = useQuery({
+
+	const {
+		data: topRated,
+		isError: topRatedStatus,
+		error: topRatedError,
+		fetchNextPage: topRatedNextPage,
+		hasNextPage: topRatedHasNextPage,
+		isFetching: topRatedFetching,
+	} = useSuspenseInfiniteQuery({
 		queryKey: ['topRatedTv'],
-		queryFn: getTopRatedTv,
+		queryFn: ({ pageParam = 1 }) => getTopRatedTv({ page: pageParam }),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage) => lastPage.nextPageParam,
+		maxPages: 500,
 	});
 
-	if (getTv.status === 'loading') {
-		return <h1>Loading...</h1>;
-	} else if (getTv.status === 'error') {
-		<h1>Error: {getTv.error.message}</h1>;
+	const { ref, inView } = useInView({
+		threshold: 0,
+		delay: 0,
+	});
+
+	useEffect(() => {
+		if (inView) {
+			loadMore();
+		}
+	}, [inView]);
+
+	const loadMore = () => {
+		if (categories === 'popularTv') {
+			!popularFetching && popularHasNextPage && popularNextPage();
+		}
+		if (categories === 'onTheAir') {
+			!onTheAirFetching && onTheAirHasNextPage && onTheAirNextPage();
+		}
+
+		if (categories === 'airingToday') {
+			!airingTodayFetching && airingTodayHasNextPage && airingTodayNextPage();
+		}
+
+		if (categories === 'topRatedTv') {
+			!topRatedFetching && topRatedHasNextPage && topRatedNextPage();
+		}
+	};
+
+	if (popularStatus) {
+		<h1>Error: {popularError.message}</h1>;
 	}
 
-	if (getPopular.status === 'loading') {
-		return <h1>Loading...</h1>;
-	} else if (getPopular.status === 'error') {
-		<h1>Error: {getPopular.error.message}</h1>;
+	if (onTheAirStatus) {
+		<h1>Error: {onTheAirError.message}</h1>;
 	}
 
-	if (getOnTheAiring.status === 'loading') {
-		return <h1>Loading...</h1>;
-	} else if (getOnTheAiring.status === 'error') {
-		<h1>Error: {getOnTheAiring.error.message}</h1>;
+	if (airingTodayStatus) {
+		<h1>Error: {airingTodayError.message}</h1>;
 	}
 
-	if (getToday.status === 'loading') {
-		return <h1>Loading...</h1>;
-	} else if (getToday.status === 'error') {
-		<h1>Error: {getToday.error.message}</h1>;
+	if (topRatedStatus) {
+		<h1>Error: {topRatedError.message}</h1>;
 	}
 
-	if (getTopRated.status === 'loading') {
-		return <h1>Loading...</h1>;
-	} else if (getTopRated.status === 'error') {
-		<h1>Error: {getTopRated.error.message}</h1>;
-	}
+	const popularTvList = popular?.pages;
+	const onTvList = onTheAir?.pages;
+	const todayTvList = airingToday?.pages;
+	const topRatedTvList = topRated?.pages;
 
-	if (!getPopular.data || !getOnTheAiring.data || !getToday.data || !getTopRated.data || !getTv.data) {
-		return <h1>Loading...</h1>;
-	}
+	const tvByCategory = {
+		popularTv: popularTvList || [],
+		onTheAir: onTvList || [],
+		airingToday: todayTvList || [],
+		topRatedTv: topRatedTvList || [],
+	};
 
-	const seriesList = getTv.data.tvSeriesList.results;
-	const popularTvList = getPopular.data.popularTv.results;
-	const onTvList = getOnTheAiring.data.onTheAir.results;
-	const todayTvList = getToday.data.airingToday.results;
-	const topRatedTvList = getTopRated.data.topRatedTv.results;
+	const MoveToTop = () => {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	};
 
 	return (
 		<div className="w-screen flex flex-col justify-center mt-20">
@@ -106,96 +167,31 @@ export default function SeriesPage() {
 					);
 				})}
 			</ul>
-			<div className="flex justify-center mt-10">
-				{categories === '' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{seriesList.map((series) => {
-							if (!series.poster_path) return;
-							return (
-								<Link key={series.id} href={`detail/${part}/${series.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null}
-
-				{categories === 'popular' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{popularTvList.map((series) => {
-							if (!series.poster_path) return;
-							return (
-								<Link key={series.id} href={`detail/${part}/${series.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null}
-
-				{categories === 'on-The-Air' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{onTvList.map((series) => {
-							if (!series.poster_path) return;
-							return (
-								<Link key={series.id} href={`detail/${part}/${series.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null}
-
-				{categories === 'airing-Today' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{todayTvList.map((series) => {
-							if (!series.poster_path) return;
-							return (
-								<Link key={series.id} href={`detail/${part}/${series.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null}
-
-				{categories === 'toprated' ? (
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center">
-						{topRatedTvList.map((series) => {
-							if (!series.poster_path) return;
-							return (
-								<Link key={series.id} href={`detail/${part}/${series.id}`}>
-									<div className="w-48 transition-all duration-300 hover:scale-150">
-										<img
-											src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
-											alt="poster"
-										/>
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				) : null}
+			<div className="mt-10">
+				<div className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
+					{tvByCategory[categories]?.map((page) => {
+						if (page[categories]) {
+							return page[categories].results?.map((series) => {
+								if (!series.poster_path) return;
+								return (
+									<Link key={series.id} href={`detail/tv/${series.id}`}>
+										<div className="w-48 transition-all duration-300 hover:scale-150">
+											<img
+												src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
+												alt="poster"
+											/>
+										</div>
+									</Link>
+								);
+							});
+						}
+						return null;
+					})}
+					<div ref={ref} style={{ height: 20 }} />
+				</div>
+				<button className="text-red-500 w-10 h-10 fixed bottom-16 right-6" onClick={MoveToTop}>
+					<Top />
+				</button>
 			</div>
 		</div>
 	);
