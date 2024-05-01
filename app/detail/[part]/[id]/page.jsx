@@ -10,9 +10,6 @@ export default function Detail() {
 	const contentsParts = params.part;
 	const contentsids = params.id;
 	const videoKey = [];
-	console.log(params);
-	console.log(params.id);
-	console.log(params.part);
 
 	const {
 		data: getDetails,

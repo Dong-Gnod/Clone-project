@@ -1,7 +1,7 @@
 'use client';
 
 import { Header } from './components/Header';
-import { useSuspenseQueries } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
 	getPopularMovie,
 	getNowPlayMovie,
@@ -11,68 +11,126 @@ import {
 	getAiringToday,
 } from './assets/api.js';
 import Slider from './components/Slider.jsx';
-
-const movieQueries = [
-	{ key: 'popularMovie', fn: getPopularMovie, title: '인기 영화', part: 'movie' },
-	{ key: 'nowPlayMovie', fn: getNowPlayMovie, title: '상영 중인 영화', part: 'movie' },
-	{ key: 'upcomingMovie', fn: getUpcomingMovie, title: '상영 예정인 영화', part: 'movie' },
-];
-
-const tvQueries = [
-	{ key: 'popularTv', fn: getPopularTv, title: '인기 시리즈', part: 'series' },
-	{ key: 'onTheAir', fn: getOnTheAir, title: '방영 중인 시리즈', part: 'series' },
-	{ key: 'airingToday', fn: getAiringToday, title: '오늘 방영 시리즈', part: 'series' },
-];
+import { useEffect, useState } from 'react';
+import Loading from './components/Loading';
 
 export default function Home() {
-	const movieResults = useSuspenseQueries({
-		queries: movieQueries.map(({ key, fn }) => ({ queryKey: [key], queryFn: fn })),
-	});
-	const tvResults = useSuspenseQueries({
-		queries: tvQueries.map(({ key, fn }) => ({ queryKey: [key], queryFn: fn })),
+	const [movieData, setMovieData] = useState([]);
+	const [tvData, setTvData] = useState([]);
+
+	const movieCategry = ['인기 영화', '상영 중인 영화', '개봉 예정 영화'];
+	const tvCategry = ['인기 시리즈', '방송 중인 시리즈', '오늘 방송 시리즈'];
+
+	const {
+		data: popular,
+		error: popularError,
+		isLoading: popularLoading,
+	} = useQuery({
+		queryKey: ['popularMovie'],
+		queryFn: getPopularMovie,
 	});
 
-	const getResults = (results) => results.map((query) => query.data) ?? [];
+	const {
+		data: nowPlay,
+		error: nowPlayError,
+		isLoading: nowPlayLoading,
+	} = useQuery({
+		queryKey: ['nowPlayMovie'],
+		queryFn: getNowPlayMovie,
+	});
 
-	// 에러 체크 함수
-	const checkError = (results) => results.some((query) => query.error);
+	const {
+		data: upcoming,
+		error: upcomingError,
+		isLoading: upcomingLoading,
+	} = useQuery({
+		queryKey: ['upcomingMovie'],
+		queryFn: getUpcomingMovie,
+	});
+
+	// 시리즈
+	const {
+		data: popularTv,
+		error: popularTvError,
+		isLoading: popularTvLoading,
+	} = useQuery({
+		queryKey: ['popularTv'],
+		queryFn: getPopularTv,
+	});
+
+	const {
+		data: onTheAir,
+		error: onTheAirError,
+		isLoading: onTheAirLoading,
+	} = useQuery({
+		queryKey: ['onTheAir'],
+		queryFn: getOnTheAir,
+	});
+
+	const {
+		data: airingToday,
+		error: airingTodayError,
+		isLoading: airingTodayLoading,
+	} = useQuery({
+		queryKey: ['airingToday'],
+		queryFn: getAiringToday,
+	});
+	/////
+
+	useEffect(() => {
+		if (popular && nowPlay && upcoming) {
+			setMovieData([popular.popularMovie.results, nowPlay.nowPlayMovie.results, upcoming.upcomingMovie.results]);
+		}
+	}, [popular, nowPlay, upcoming]);
+
+	useEffect(() => {
+		if (popularTv && onTheAir && airingToday) {
+			setTvData([popularTv.popularTv.results, onTheAir.onTheAir.results, airingToday.airingToday.results]);
+		}
+	}, [popularTv, onTheAir, airingToday]);
+	if (
+		popularLoading ||
+		nowPlayLoading ||
+		upcomingLoading ||
+		popularTvLoading ||
+		onTheAirLoading ||
+		airingTodayLoading
+	) {
+		return <Loading />;
+	}
+
+	if (popularError || nowPlayError || upcomingError) {
+		return <h1>데이터를 가져오다가 에러가 발생했어요.</h1>;
+	}
+
+	if (popularTvError || onTheAirError) {
+		return <h1>Error: {popularTvError ? popularTvError.message : onTheAirError.message} </h1>;
+	}
+	if (airingTodayError) {
+		return <h1>Error : {airingTodayError.message}</h1>;
+	}
 
 	return (
 		<div className="w-screen h-full font-RobotoMono">
 			<div className="w-full flex justify-center">
 				<Header />
 			</div>
+
 			{/* Main Contents */}
 			<div>
-				{movieResults &&
-					movieQueries.map(({ title, part }, index) => (
-						<div key={index} className="mt-8">
-							<h1 className="text-xl mb-3 font-extrabold ml-4">{title}</h1>
-							{checkError(movieResults) ? (
-								<p className="text-red-500 ml-4">데이터를 불러오는 중 에러가 발생했습니다.</p>
-							) : (
-								<Slider
-									contents={getResults(movieResults)[index][movieQueries[index].key].results}
-									part={part}
-								/>
-							)}
-						</div>
-					))}
+				{movieData.map((result, index) => (
+					<div key={index} className="mt-8">
+						<h1 className="text-xl mb-3 font-extrabold ml-4">{movieCategry[index]}</h1>
+						<Slider contents={result} part={'movie'} />
+					</div>
+				))}
 
-				{tvResults &&
-					tvQueries.map(({ title, part }, index) => (
-						<div key={index} className="mt-8">
-							<h1 className="text-xl mb-3 font-extrabold ml-4">{title}</h1>
-							{checkError(tvResults) ? (
-								<p className="text-red-500 ml-4">데이터를 불러오는 중 에러가 발생했습니다.</p>
-							) : (
-								<Slider
-									contents={getResults(tvResults)[index][tvQueries[index].key].results}
-									part={part}
-								/>
-							)}
-						</div>
-					))}
+				{tvData.map((result, index) => (
+					<div key={index} className="mt-8">
+						<h1 className="text-xl mb-3 font-extrabold ml-4">{tvCategry[index]}</h1>
+						<Slider contents={result} part={'series'} />
+					</div>
+				))}
 			</div>
 		</div>
 	);

@@ -1,29 +1,34 @@
 'use client';
 
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getMovie } from '../assets/api';
 import { Trailer } from './Trailer';
+import Loading from './Loading';
 
 export function Header() {
-	const { data, isError, error } = useSuspenseQuery({
+	const { data, error, isLoading } = useQuery({
 		queryKey: ['movieList'],
 		queryFn: getMovie,
 	});
 
 	const part = 'movie';
-	if (isError) {
+
+	if (error) {
 		return <h1>Error: {error.message}</h1>;
 	}
 
-	const orderMovie = data.movieList.results;
-	const headerContent = orderMovie[Math.floor(Math.random() * orderMovie.length - 1)];
-	if (!headerContent) {
-		return <h1>Loading...</h1>;
+	if (isLoading) {
+		return <Loading />;
 	}
 
+	const orderMovie = data.movieList.results;
+	const headerIndex = Math.floor(Math.random() * orderMovie.length);
+	const headerContent = orderMovie[headerIndex];
+	console.log(headerContent);
+
 	return (
-		<>
-			<div className="flex justify-center relative w-screen h-screen overflow-hidden">
+		<div className="flex justify-center relative w-screen h-screen overflow-hidden">
+			{headerContent && (
 				<Trailer
 					id={headerContent.id}
 					poster={headerContent.backdrop_path}
@@ -33,7 +38,7 @@ export function Header() {
 					average={headerContent.vote_average}
 					part={part}
 				/>
-			</div>
-		</>
+			)}
+		</div>
 	);
 }

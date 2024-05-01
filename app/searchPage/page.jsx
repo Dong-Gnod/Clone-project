@@ -42,7 +42,7 @@ export default function SearchPage() {
 										<Image
 											src={`https://image.tmdb.org/t/p/original/${item.poster_path}`}
 											alt="search result item"
-											width={180}
+											width={240}
 											height={360}
 										/>
 									</div>

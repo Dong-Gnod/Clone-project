@@ -4,14 +4,9 @@ import Image from 'next/image';
 import logo from '../../public/logo.png';
 import Link from 'next/link';
 import { Search } from './Search';
-
-import { motion, useMotionValue, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 export default function Nav() {
-	const x = useMotionValue(0);
-	const input = [-200, 0, 200];
-	const output = [0, 1, 0];
-	const opacity = useTransform(x, input, output);
 	const { scrollY } = useScroll();
 	const backgroundColor = useTransform(scrollY, [0, 80], ['rgba(0,0,0,0)', 'rgba(0,0,0,1)']);
 
@@ -23,7 +18,6 @@ export default function Nav() {
 				<Link href="/">
 					<Image src={logo} alt="Netflix home" className="w-20 h-20" />
 				</Link>
-				{/* menu */}
 
 				<ul className="text-lg flex justify-start w-full font-black">
 					<Link href="/">

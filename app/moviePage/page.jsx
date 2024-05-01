@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { getPopularMovie, getNowPlayMovie, getUpcomingMovie, getTopRatedMovie } from '../assets/api';
 import clsx from 'clsx';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 import { Top } from '../assets/icons';
+useInfiniteQuery;
 
 const categoryRoute = [
 	{
@@ -29,6 +30,8 @@ const categoryRoute = [
 
 export default function MoviePage() {
 	const [categories, setCategories] = useState('popularMovie');
+	const [showTop, setShowTop] = useState(false);
+	const [show, setShow] = useState(false);
 	const {
 		data: popular,
 		isError: popularStatus,
@@ -36,12 +39,12 @@ export default function MoviePage() {
 		fetchNextPage: popularNextPage,
 		hasNextPage: popularHasNextPage,
 		isFetching: popularFetching,
-	} = useSuspenseInfiniteQuery({
+	} = useInfiniteQuery({
 		queryKey: ['popularMovie'],
 		queryFn: ({ pageParam = 1 }) => getPopularMovie({ page: pageParam }),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => lastPage.nextPageParam,
-		maxPages: 500,
+		maxPages: 100,
 	});
 
 	const {
@@ -51,12 +54,12 @@ export default function MoviePage() {
 		fetchNextPage: nowPlayNextPage,
 		hasNextPage: nowPlayHasNextPage,
 		isFetching: nowPlayFetching,
-	} = useSuspenseInfiniteQuery({
+	} = useInfiniteQuery({
 		queryKey: ['nowPlayMovie'],
 		queryFn: ({ pageParam = 1 }) => getNowPlayMovie({ page: pageParam }),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => lastPage.nextPageParam,
-		maxPages: 500,
+		maxPages: 100,
 	});
 
 	const {
@@ -66,12 +69,12 @@ export default function MoviePage() {
 		fetchNextPage: upcomingNextPage,
 		hasNextPage: upcomingHasNextPage,
 		isFetching: upcomingFetching,
-	} = useSuspenseInfiniteQuery({
+	} = useInfiniteQuery({
 		queryKey: ['upcomingMovie'],
 		queryFn: ({ pageParam = 1 }) => getUpcomingMovie({ page: pageParam }),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => lastPage.nextPageParam,
-		maxPages: 500,
+		maxPages: 100,
 	});
 
 	const {
@@ -81,12 +84,12 @@ export default function MoviePage() {
 		fetchNextPage: topRatedNextPage,
 		hasNextPage: topRatedHasNextPage,
 		isFetching: topRatedFetching,
-	} = useSuspenseInfiniteQuery({
+	} = useInfiniteQuery({
 		queryKey: ['topRated'],
 		queryFn: ({ pageParam = 1 }) => getTopRatedMovie({ page: pageParam }),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => lastPage.nextPageParam,
-		maxPages: 500,
+		maxPages: 100,
 	});
 
 	const { ref, inView } = useInView({
@@ -117,10 +120,21 @@ export default function MoviePage() {
 		}
 	};
 
+	useEffect(() => {
+		const topButtonShow = () => {
+			if (window.scrollY > 100) {
+				setShowTop(true);
+			} else {
+				setShowTop(false);
+			}
+		};
+		window.addEventListener('scroll', topButtonShow);
+		return () => window.removeEventListener('scroll', topButtonShow);
+	}, []);
+
 	if (popularStatus) {
 		return <h1>Popular Error: {popularError.message}</h1>;
 	}
-
 	if (nowplayStatus) {
 		return <h1>Now-play Error: {nowPlayError.message}</h1>;
 	}
@@ -135,7 +149,6 @@ export default function MoviePage() {
 	const nowPlayMovieList = nowPlay?.pages;
 	const upcomingMovieList = upcoming?.pages;
 	const topRatedMovieList = topRated?.pages;
-	// console.log(popularMovieList[0].popularMovie.results);
 
 	const moviesByCategory = {
 		popularMovie: popularMovieList || [],
@@ -166,9 +179,9 @@ export default function MoviePage() {
 			</ul>
 			<div className="mt-10">
 				<div className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-					{moviesByCategory[categories]?.map((page) => {
+					{moviesByCategory[categories].map((page) => {
 						if (page[categories]) {
-							return page[categories].results?.map((movie) => {
+							return page[categories].results.map((movie) => {
 								if (!movie.poster_path) return;
 								return (
 									<Link key={movie.id} href={`detail/movie/${movie.id}`}>
@@ -186,9 +199,11 @@ export default function MoviePage() {
 					})}
 					<div ref={ref} style={{ height: 20 }} />
 				</div>
-				<button className="text-red-500 w-10 h-10 fixed bottom-16 right-6" onClick={MoveToTop}>
-					<Top />
-				</button>
+				{showTop && (
+					<button className="text-red-500 w-10 h-10 fixed bottom-16 right-6" onClick={MoveToTop}>
+						<Top />
+					</button>
+				)}
 			</div>
 		</div>
 	);

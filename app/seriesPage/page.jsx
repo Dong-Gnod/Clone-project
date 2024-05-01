@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { getTopRatedTv, getPopularTv, getOnTheAir, getAiringToday, getTvList } from '../assets/api.js';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getTopRatedTv, getPopularTv, getOnTheAir, getAiringToday } from '../assets/api.js';
 import Link from 'next/link';
 import { useInView } from 'react-intersection-observer';
 import clsx from 'clsx';
 import { Top } from '../assets/icons';
+import Image from 'next/image.js';
 
 const categoryRoute = [
 	{
@@ -29,7 +30,7 @@ const categoryRoute = [
 
 export default function SeriesPage() {
 	const [categories, setCategories] = useState('popularTv');
-	const part = 'tv';
+	const [showTop, setShowTop] = useState('false');
 
 	const {
 		data: popular,
@@ -38,12 +39,12 @@ export default function SeriesPage() {
 		fetchNextPage: popularNextPage,
 		hasNextPage: popularHasNextPage,
 		isFetching: popularFetching,
-	} = useSuspenseInfiniteQuery({
+	} = useInfiniteQuery({
 		queryKey: ['popularTv'],
 		queryFn: ({ pageParam = 1 }) => getPopularTv({ page: pageParam }),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => lastPage.nextPageParam,
-		maxPages: 500,
+		maxPages: 100,
 	});
 
 	const {
@@ -53,12 +54,12 @@ export default function SeriesPage() {
 		fetchNextPage: onTheAirNextPage,
 		hasNextPage: onTheAirHasNextPage,
 		isFetching: onTheAirFetching,
-	} = useSuspenseInfiniteQuery({
+	} = useInfiniteQuery({
 		queryKey: ['onTheAir'],
 		queryFn: ({ pageParam = 1 }) => getOnTheAir({ page: pageParam }),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => lastPage.nextPageParam,
-		maxPages: 500,
+		maxPages: 100,
 	});
 
 	const {
@@ -68,12 +69,12 @@ export default function SeriesPage() {
 		fetchNextPage: airingTodayNextPage,
 		hasNextPage: airingTodayHasNextPage,
 		isFetching: airingTodayFetching,
-	} = useSuspenseInfiniteQuery({
+	} = useInfiniteQuery({
 		queryKey: ['airingToday'],
 		queryFn: ({ pageParam = 1 }) => getAiringToday({ page: pageParam }),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => lastPage.nextPageParam,
-		maxPages: 500,
+		maxPages: 100,
 	});
 
 	const {
@@ -83,12 +84,12 @@ export default function SeriesPage() {
 		fetchNextPage: topRatedNextPage,
 		hasNextPage: topRatedHasNextPage,
 		isFetching: topRatedFetching,
-	} = useSuspenseInfiniteQuery({
+	} = useInfiniteQuery({
 		queryKey: ['topRatedTv'],
 		queryFn: ({ pageParam = 1 }) => getTopRatedTv({ page: pageParam }),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => lastPage.nextPageParam,
-		maxPages: 500,
+		maxPages: 100,
 	});
 
 	const { ref, inView } = useInView({
@@ -118,6 +119,18 @@ export default function SeriesPage() {
 			!topRatedFetching && topRatedHasNextPage && topRatedNextPage();
 		}
 	};
+
+	useEffect(() => {
+		const topButtonShow = () => {
+			if (window.scrollY > 100) {
+				setShowTop(true);
+			} else {
+				setShowTop(false);
+			}
+		};
+		window.addEventListener('scroll', topButtonShow);
+		return () => window.removeEventListener('scroll', topButtonShow);
+	}, []);
 
 	if (popularStatus) {
 		<h1>Error: {popularError.message}</h1>;
@@ -189,9 +202,11 @@ export default function SeriesPage() {
 					})}
 					<div ref={ref} style={{ height: 20 }} />
 				</div>
-				<button className="text-red-500 w-10 h-10 fixed bottom-16 right-6" onClick={MoveToTop}>
-					<Top />
-				</button>
+				{showTop && (
+					<button className="text-red-500 w-10 h-10 fixed bottom-16 right-6" onClick={MoveToTop}>
+						<Top />
+					</button>
+				)}
 			</div>
 		</div>
 	);

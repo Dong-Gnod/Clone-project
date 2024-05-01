@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { register } from 'swiper/element/bundle';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
@@ -26,33 +25,33 @@ export default function Slider({ contents, part }) {
 		});
 	}, []);
 
+	const slidesPerView = Math.min(contents.length, 6);
+
 	return (
 		<div className="w-screen">
 			<Swiper
 				modules={[Navigation, Pagination, A11y]}
 				ref={swiperElRef}
 				loop={true}
-				slidesPerView={6}
+				slidesPerView={slidesPerView}
 				navigation={true}
 				pagination={true}
 				spaceBetween={50}>
-				{!contents
-					? null
-					: contents.map((content) => {
-							return (
-								<SwiperSlide key={content.id}>
-									<Link key={content.id} href={`detail/${part}/${content.id}`}>
-										<Image
-											id={content.id}
-											src={`https://image.tmdb.org/t/p/original/${content.poster_path}`}
-											alt="Image"
-											width={240}
-											height={360}
-										/>
-									</Link>
-								</SwiperSlide>
-							);
-					  })}
+				{contents &&
+					contents.map((content) => {
+						return (
+							<SwiperSlide key={content.id} className="w-60">
+								<Link key={content.id} href={`detail/${part}/${content.id}`} className="w-60">
+									<img
+										id={content.id}
+										src={`https://image.tmdb.org/t/p/original/${content.poster_path}`}
+										alt="Image"
+										className="w-60 h-80"
+									/>
+								</Link>
+							</SwiperSlide>
+						);
+					})}
 			</Swiper>
 		</div>
 	);
