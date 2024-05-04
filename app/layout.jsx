@@ -1,6 +1,7 @@
 import './globals.css';
 import RQProvider from './components/RQProvider';
 import Nav from './components/Nav';
+import { Suspense } from 'react';
 
 export const metadata = {
 	title: 'DFLIX',
@@ -26,7 +27,9 @@ export default function RootLayout({ children }) {
 					<Nav />
 				</div>
 				<RQProvider>
-					<div>{children}</div>
+					<Suspense>
+						<div>{children}</div>
+					</Suspense>
 				</RQProvider>
 			</body>
 		</html>
