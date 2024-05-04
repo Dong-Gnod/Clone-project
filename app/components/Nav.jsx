@@ -5,6 +5,7 @@ import logo from '../../public/logo.png';
 import Link from 'next/link';
 import { Search } from './Search';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { Suspense } from 'react';
 
 export default function Nav() {
 	const { scrollY } = useScroll();
@@ -30,7 +31,9 @@ export default function Nav() {
 						<li className="ml-5 text-sm">시리즈</li>
 					</Link>
 				</ul>
-				<Search />
+				<Suspense fallback={null}>
+					<Search />
+				</Suspense>
 			</div>
 		</motion.nav>
 	);
