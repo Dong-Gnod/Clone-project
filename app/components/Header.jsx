@@ -6,14 +6,14 @@ import { Trailer } from './Trailer';
 import Loading from './Loading';
 
 export function Header() {
-	const { data, error, isLoading } = useQuery({
+	const { data, error, isLoading, isError } = useQuery({
 		queryKey: ['movieList'],
 		queryFn: getMovie,
 	});
 
 	const part = 'movie';
 
-	if (error) {
+	if (isError) {
 		return <h1>Error: {error.message}</h1>;
 	}
 

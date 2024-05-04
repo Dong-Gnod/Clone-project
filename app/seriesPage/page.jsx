@@ -35,10 +35,8 @@ export default function SeriesPage() {
 	const {
 		data: popular,
 		isError: popularStatus,
-		error: popularError,
 		fetchNextPage: popularNextPage,
 		hasNextPage: popularHasNextPage,
-		isFetching: popularFetching,
 	} = useInfiniteQuery({
 		queryKey: ['popularTv'],
 		queryFn: ({ pageParam = 1 }) => getPopularTv({ page: pageParam }),
@@ -50,10 +48,8 @@ export default function SeriesPage() {
 	const {
 		data: onTheAir,
 		isError: onTheAirStatus,
-		error: onTheAirError,
 		fetchNextPage: onTheAirNextPage,
 		hasNextPage: onTheAirHasNextPage,
-		isFetching: onTheAirFetching,
 	} = useInfiniteQuery({
 		queryKey: ['onTheAir'],
 		queryFn: ({ pageParam = 1 }) => getOnTheAir({ page: pageParam }),
@@ -65,10 +61,8 @@ export default function SeriesPage() {
 	const {
 		data: airingToday,
 		isError: airingTodayStatus,
-		error: airingTodayError,
 		fetchNextPage: airingTodayNextPage,
 		hasNextPage: airingTodayHasNextPage,
-		isFetching: airingTodayFetching,
 	} = useInfiniteQuery({
 		queryKey: ['airingToday'],
 		queryFn: ({ pageParam = 1 }) => getAiringToday({ page: pageParam }),
@@ -80,10 +74,8 @@ export default function SeriesPage() {
 	const {
 		data: topRated,
 		isError: topRatedStatus,
-		error: topRatedError,
 		fetchNextPage: topRatedNextPage,
 		hasNextPage: topRatedHasNextPage,
-		isFetching: topRatedFetching,
 	} = useInfiniteQuery({
 		queryKey: ['topRatedTv'],
 		queryFn: ({ pageParam = 1 }) => getTopRatedTv({ page: pageParam }),
@@ -105,18 +97,18 @@ export default function SeriesPage() {
 
 	const loadMore = () => {
 		if (categories === 'popularTv') {
-			!popularFetching && popularHasNextPage && popularNextPage();
+			popularHasNextPage && popularNextPage();
 		}
 		if (categories === 'onTheAir') {
-			!onTheAirFetching && onTheAirHasNextPage && onTheAirNextPage();
+			onTheAirHasNextPage && onTheAirNextPage();
 		}
 
 		if (categories === 'airingToday') {
-			!airingTodayFetching && airingTodayHasNextPage && airingTodayNextPage();
+			airingTodayHasNextPage && airingTodayNextPage();
 		}
 
 		if (categories === 'topRatedTv') {
-			!topRatedFetching && topRatedHasNextPage && topRatedNextPage();
+			topRatedHasNextPage && topRatedNextPage();
 		}
 	};
 
@@ -132,32 +124,20 @@ export default function SeriesPage() {
 		return () => window.removeEventListener('scroll', topButtonShow);
 	}, []);
 
-	if (popularStatus) {
-		<h1>Error: {popularError.message}</h1>;
+	if (popularStatus || onTheAirStatus || airingTodayStatus || topRatedStatus) {
+		return <h1>Error: 문제가 발생했어요</h1>;
 	}
 
-	if (onTheAirStatus) {
-		<h1>Error: {onTheAirError.message}</h1>;
-	}
-
-	if (airingTodayStatus) {
-		<h1>Error: {airingTodayError.message}</h1>;
-	}
-
-	if (topRatedStatus) {
-		<h1>Error: {topRatedError.message}</h1>;
-	}
-
-	const popularTvList = popular?.pages;
-	const onTvList = onTheAir?.pages;
-	const todayTvList = airingToday?.pages;
-	const topRatedTvList = topRated?.pages;
+	const popularTvList = !popular ? null : popular?.pages;
+	const onTvList = !onTheAir ? null : onTheAir?.pages;
+	const todayTvList = !airingToday ? null : airingToday?.pages;
+	const topRatedTvList = !topRated ? null : topRated?.pages;
 
 	const tvByCategory = {
-		popularTv: popularTvList || [],
-		onTheAir: onTvList || [],
-		airingToday: todayTvList || [],
-		topRatedTv: topRatedTvList || [],
+		popularTv: popularTvList,
+		onTheAir: onTvList,
+		airingToday: todayTvList,
+		topRatedTv: topRatedTvList,
 	};
 
 	const MoveToTop = () => {
@@ -182,24 +162,28 @@ export default function SeriesPage() {
 			</ul>
 			<div className="mt-10">
 				<div className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-					{tvByCategory[categories]?.map((page) => {
-						if (page[categories]) {
-							return page[categories].results?.map((series) => {
-								if (!series.poster_path) return;
-								return (
-									<Link key={series.id} href={`detail/tv/${series.id}`}>
-										<div className="w-48 transition-all duration-300 hover:scale-150">
-											<img
-												src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
-												alt="poster"
-											/>
-										</div>
-									</Link>
-								);
-							});
-						}
-						return null;
-					})}
+					{!tvByCategory[categories]
+						? null
+						: tvByCategory[categories]?.map((page) => {
+								if (page[categories]) {
+									return page[categories].results?.map((series) => {
+										if (!series.poster_path) return;
+										return (
+											<Link key={series.id} href={`detail/tv/${series.id}`}>
+												<div className="w-48 transition-all duration-300 hover:scale-150">
+													<Image
+														src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
+														alt="poster"
+														width={240}
+														height={360}
+													/>
+												</div>
+											</Link>
+										);
+									});
+								}
+								return null;
+						  })}
 					<div ref={ref} style={{ height: 20 }} />
 				</div>
 				{showTop && (

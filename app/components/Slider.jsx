@@ -8,6 +8,7 @@ import { Navigation, Pagination, A11y } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import Image from 'next/legacy/image';
 
 register();
 
@@ -42,11 +43,13 @@ export default function Slider({ contents, part }) {
 						return (
 							<SwiperSlide key={content.id} className="w-60">
 								<Link key={content.id} href={`detail/${part}/${content.id}`} className="w-60">
-									<img
+									<Image
 										id={content.id}
 										src={`https://image.tmdb.org/t/p/original/${content.poster_path}`}
 										alt="Image"
-										className="w-60 h-80"
+										width={240}
+										height={320}
+										layout="responsive"
 									/>
 								</Link>
 							</SwiperSlide>

@@ -11,104 +11,109 @@ import {
 	getAiringToday,
 } from './assets/api.js';
 import Slider from './components/Slider.jsx';
-import { useEffect, useState } from 'react';
 import Loading from './components/Loading';
 
 export default function Home() {
-	const [movieData, setMovieData] = useState([]);
-	const [tvData, setTvData] = useState([]);
-
-	const movieCategry = ['인기 영화', '상영 중인 영화', '개봉 예정 영화'];
-	const tvCategry = ['인기 시리즈', '방송 중인 시리즈', '오늘 방송 시리즈'];
-
-	const {
-		data: popular,
-		error: popularError,
-		isLoading: popularLoading,
-	} = useQuery({
+	const popular = useQuery({
 		queryKey: ['popularMovie'],
 		queryFn: getPopularMovie,
 	});
 
-	const {
-		data: nowPlay,
-		error: nowPlayError,
-		isLoading: nowPlayLoading,
-	} = useQuery({
+	const nowPlay = useQuery({
 		queryKey: ['nowPlayMovie'],
 		queryFn: getNowPlayMovie,
 	});
 
-	const {
-		data: upcoming,
-		error: upcomingError,
-		isLoading: upcomingLoading,
-	} = useQuery({
+	const upcoming = useQuery({
 		queryKey: ['upcomingMovie'],
 		queryFn: getUpcomingMovie,
 	});
 
 	// 시리즈
-	const {
-		data: popularTv,
-		error: popularTvError,
-		isLoading: popularTvLoading,
-	} = useQuery({
+	const popularTv = useQuery({
 		queryKey: ['popularTv'],
 		queryFn: getPopularTv,
 	});
 
-	const {
-		data: onTheAir,
-		error: onTheAirError,
-		isLoading: onTheAirLoading,
-	} = useQuery({
+	const onTheAir = useQuery({
 		queryKey: ['onTheAir'],
 		queryFn: getOnTheAir,
 	});
 
-	const {
-		data: airingToday,
-		error: airingTodayError,
-		isLoading: airingTodayLoading,
-	} = useQuery({
+	const airingToday = useQuery({
 		queryKey: ['airingToday'],
 		queryFn: getAiringToday,
 	});
-	/////
 
-	useEffect(() => {
-		if (popular && nowPlay && upcoming) {
-			setMovieData([popular.popularMovie.results, nowPlay.nowPlayMovie.results, upcoming.upcomingMovie.results]);
-		}
-	}, [popular, nowPlay, upcoming]);
-
-	useEffect(() => {
-		if (popularTv && onTheAir && airingToday) {
-			setTvData([popularTv.popularTv.results, onTheAir.onTheAir.results, airingToday.airingToday.results]);
-		}
-	}, [popularTv, onTheAir, airingToday]);
-	if (
-		popularLoading ||
-		nowPlayLoading ||
-		upcomingLoading ||
-		popularTvLoading ||
-		onTheAirLoading ||
-		airingTodayLoading
-	) {
+	if (popular.isLoading) {
+		return <Loading />;
+	}
+	if (nowPlay.isLoading) {
+		return <Loading />;
+	}
+	if (upcoming.isLoading) {
+		return <Loading />;
+	}
+	if (popularTv.isLoading) {
+		return <Loading />;
+	}
+	if (onTheAir.isLoading) {
+		return <Loading />;
+	}
+	if (airingToday.isLoading) {
 		return <Loading />;
 	}
 
-	if (popularError || nowPlayError || upcomingError) {
-		return <h1>데이터를 가져오다가 에러가 발생했어요.</h1>;
+	if (
+		popular.isError ||
+		nowPlay.isError ||
+		upcoming.isError ||
+		popularTv.isError ||
+		onTheAir.isError ||
+		airingToday.isError
+	) {
+		return <h1>Error: 문제가 발생했어요.</h1>;
 	}
 
-	if (popularTvError || onTheAirError) {
-		return <h1>Error: {popularTvError ? popularTvError.message : onTheAirError.message} </h1>;
-	}
-	if (airingTodayError) {
-		return <h1>Error : {airingTodayError.message}</h1>;
-	}
+	const popularMovieList = !popular ? null : popular.data.popularMovie?.results;
+	const nowPlayMovieList = !nowPlay ? null : nowPlay.data.nowPlayMovie?.results;
+	const upcomingMovieList = !upcoming ? null : upcoming.data.upcomingMovie?.results;
+	const popularTvList = !popularTv ? null : popularTv.data.popularTv?.results;
+	const onTheAirList = !onTheAir ? null : onTheAir.data.onTheAir?.results;
+	const airingTodayList = !airingToday ? null : airingToday.data.airingToday?.results;
+
+	const contents = [
+		{
+			title: '인기 영화',
+			content: popularMovieList,
+			part: 'movie',
+		},
+		{
+			title: '상영 중인 영화',
+			content: nowPlayMovieList,
+			part: 'movie',
+		},
+		{
+			title: '개봉 예정 영화',
+			content: upcomingMovieList,
+			part: 'movie',
+		},
+		{
+			title: '인기 시리즈',
+			content: popularTvList,
+			part: 'series',
+		},
+		{
+			title: '방송 중인 시리즈',
+			content: onTheAirList,
+			part: 'series',
+		},
+		{
+			title: '오늘 방송 시리즈',
+			content: airingTodayList,
+			part: 'series',
+		},
+	];
 
 	return (
 		<div className="w-screen h-full font-RobotoMono">
@@ -118,19 +123,14 @@ export default function Home() {
 
 			{/* Main Contents */}
 			<div>
-				{movieData.map((result, index) => (
-					<div key={index} className="mt-8">
-						<h1 className="text-xl mb-3 font-extrabold ml-4">{movieCategry[index]}</h1>
-						<Slider contents={result} part={'movie'} />
-					</div>
-				))}
-
-				{tvData.map((result, index) => (
-					<div key={index} className="mt-8">
-						<h1 className="text-xl mb-3 font-extrabold ml-4">{tvCategry[index]}</h1>
-						<Slider contents={result} part={'series'} />
-					</div>
-				))}
+				{contents?.map(({ title, content, part }, index) => {
+					return (
+						<div key={index} className="mt-8">
+							<h1 className="text-xl mb-3 font-extrabold ml-4">{title}</h1>
+							<Slider contents={content} part={part} />
+						</div>
+					);
+				})}
 			</div>
 		</div>
 	);

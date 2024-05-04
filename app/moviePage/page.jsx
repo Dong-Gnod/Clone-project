@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useInfiniteQuery, useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getPopularMovie, getNowPlayMovie, getUpcomingMovie, getTopRatedMovie } from '../assets/api';
 import clsx from 'clsx';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 import { Top } from '../assets/icons';
-useInfiniteQuery;
+import Loading from '../components/Loading';
+import Image from 'next/image';
 
 const categoryRoute = [
 	{
@@ -31,29 +32,32 @@ const categoryRoute = [
 export default function MoviePage() {
 	const [categories, setCategories] = useState('popularMovie');
 	const [showTop, setShowTop] = useState(false);
-	const [show, setShow] = useState(false);
+
 	const {
 		data: popular,
 		isError: popularStatus,
-		error: popularError,
+		isLoading: popularLoading,
+		isFetching: popularFetching,
 		fetchNextPage: popularNextPage,
 		hasNextPage: popularHasNextPage,
-		isFetching: popularFetching,
 	} = useInfiniteQuery({
 		queryKey: ['popularMovie'],
 		queryFn: ({ pageParam = 1 }) => getPopularMovie({ page: pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage) => lastPage.nextPageParam,
+		getNextPageParam: (lastPage) => {
+			return lastPage?.nextPageParam || undefined;
+		},
 		maxPages: 100,
 	});
+	console.log(popular);
 
 	const {
 		data: nowPlay,
 		isError: nowplayStatus,
-		error: nowPlayError,
+		isLoading: nowPlayLoading,
+		isFetching: nowPlayFetching,
 		fetchNextPage: nowPlayNextPage,
 		hasNextPage: nowPlayHasNextPage,
-		isFetching: nowPlayFetching,
 	} = useInfiniteQuery({
 		queryKey: ['nowPlayMovie'],
 		queryFn: ({ pageParam = 1 }) => getNowPlayMovie({ page: pageParam }),
@@ -65,10 +69,10 @@ export default function MoviePage() {
 	const {
 		data: upcoming,
 		isError: upcomingStatus,
-		error: upcomingError,
+		isLoading: upcomingLoading,
+		isFetching: upcomingFetching,
 		fetchNextPage: upcomingNextPage,
 		hasNextPage: upcomingHasNextPage,
-		isFetching: upcomingFetching,
 	} = useInfiniteQuery({
 		queryKey: ['upcomingMovie'],
 		queryFn: ({ pageParam = 1 }) => getUpcomingMovie({ page: pageParam }),
@@ -80,10 +84,10 @@ export default function MoviePage() {
 	const {
 		data: topRated,
 		isError: topRatedStatus,
-		error: topRatedError,
+		isLoading: topRatedLoading,
+		isFetching: topRatedFetching,
 		fetchNextPage: topRatedNextPage,
 		hasNextPage: topRatedHasNextPage,
-		isFetching: topRatedFetching,
 	} = useInfiniteQuery({
 		queryKey: ['topRated'],
 		queryFn: ({ pageParam = 1 }) => getTopRatedMovie({ page: pageParam }),
@@ -92,16 +96,11 @@ export default function MoviePage() {
 		maxPages: 100,
 	});
 
+	// /////////////////////////////////////////
 	const { ref, inView } = useInView({
 		threshold: 0,
 		delay: 0,
 	});
-
-	useEffect(() => {
-		if (inView) {
-			loadMore();
-		}
-	}, [inView]);
 
 	const loadMore = () => {
 		if (categories === 'popularMovie') {
@@ -121,8 +120,14 @@ export default function MoviePage() {
 	};
 
 	useEffect(() => {
+		if (inView) {
+			loadMore();
+		}
+	}, [inView]);
+
+	useEffect(() => {
 		const topButtonShow = () => {
-			if (window.scrollY > 100) {
+			if (window.scrollY > 250) {
 				setShowTop(true);
 			} else {
 				setShowTop(false);
@@ -132,33 +137,38 @@ export default function MoviePage() {
 		return () => window.removeEventListener('scroll', topButtonShow);
 	}, []);
 
-	if (popularStatus) {
-		return <h1>Popular Error: {popularError.message}</h1>;
-	}
-	if (nowplayStatus) {
-		return <h1>Now-play Error: {nowPlayError.message}</h1>;
-	}
-	if (upcomingStatus) {
-		return <h1>Upcoming Error: {upcomingError.message}</h1>;
-	}
-	if (topRatedStatus) {
-		return <h1>Top-Rated Error: {topRatedError.message}</h1>;
-	}
-
-	const popularMovieList = popular?.pages;
-	const nowPlayMovieList = nowPlay?.pages;
-	const upcomingMovieList = upcoming?.pages;
-	const topRatedMovieList = topRated?.pages;
-
-	const moviesByCategory = {
-		popularMovie: popularMovieList || [],
-		nowPlayMovie: nowPlayMovieList || [],
-		upcomingMovie: upcomingMovieList || [],
-		topRated: topRatedMovieList || [],
-	};
-
 	const MoveToTop = () => {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
+	};
+	// /////////////////////////////////////////
+	if (popularLoading) {
+		return <Loading />;
+	}
+	if (nowPlayLoading) {
+		return <Loading />;
+	}
+	if (upcomingLoading) {
+		return <Loading />;
+	}
+	if (topRatedLoading) {
+		return <Loading />;
+	}
+
+	if (popularStatus || nowplayStatus || upcomingStatus || topRatedStatus) {
+		return <h1>Error: 문제가 발생했어요</h1>;
+	}
+
+	const popularMovieList = popular?.pages?.flatMap((page) => page[categories]?.results) ?? [];
+	const nowPlayMovieList = nowPlay?.pages?.flatMap((page) => page[categories]?.results) ?? [];
+	const upcomingMovieList = upcoming?.pages?.flatMap((page) => page[categories]?.results) ?? [];
+	const topRatedMovieList = topRated?.pages?.flatMap((page) => page[categories]?.results) ?? [];
+	console.log(popularMovieList);
+
+	const moviesByCategory = {
+		popularMovie: popularMovieList,
+		nowPlayMovie: nowPlayMovieList,
+		upcomingMovie: upcomingMovieList,
+		topRated: topRatedMovieList,
 	};
 
 	return (
@@ -179,23 +189,20 @@ export default function MoviePage() {
 			</ul>
 			<div className="mt-10">
 				<div className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-					{moviesByCategory[categories].map((page) => {
-						if (page[categories]) {
-							return page[categories].results.map((movie) => {
-								if (!movie.poster_path) return;
-								return (
-									<Link key={movie.id} href={`detail/movie/${movie.id}`}>
-										<div className="w-48 transition-all duration-300 hover:scale-150">
-											<img
-												src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-												alt="poster"
-											/>
-										</div>
-									</Link>
-								);
-							});
-						}
-						return null;
+					{moviesByCategory[categories]?.map((movie) => {
+						if (!movie.poster_path) return;
+						return (
+							<Link key={movie.id} href={`detail/movie/${movie.id}`}>
+								<div className="w-48 transition-all duration-300 hover:scale-150">
+									<Image
+										src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+										alt="poster"
+										width={240}
+										height={320}
+									/>
+								</div>
+							</Link>
+						);
 					})}
 					<div ref={ref} style={{ height: 20 }} />
 				</div>

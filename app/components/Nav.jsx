@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import logo from '../../public/logo.png';
 import Link from 'next/link';
 import { Search } from './Search';
@@ -16,7 +16,7 @@ export default function Nav() {
 			className="flex w-full justify-between items-center fixed z-[100] font-RobotoMono  bg-black/40">
 			<div className="flex items-center w-full px-5  bg-black/40">
 				<Link href="/">
-					<Image src={logo} alt="Netflix home" className="w-20 h-20" />
+					<Image src={logo} alt="Netflix home" width={80} height={80} priority />
 				</Link>
 
 				<ul className="text-lg flex justify-start w-full font-black">

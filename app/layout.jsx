@@ -11,8 +11,16 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+	const errorReload = () => {
+		try {
+			return;
+		} catch (error) {
+			window.location.reload('/');
+		}
+	};
+	errorReload();
 	return (
-		<html lang="ko">
+		<html>
 			<body className="flex flex-col justify-between w-screen overflow-x-hidden">
 				<div className=" bg-black/40">
 					<Nav />

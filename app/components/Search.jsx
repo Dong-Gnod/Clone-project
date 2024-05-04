@@ -15,7 +15,13 @@ export function Search() {
 	return (
 		<>
 			<form className="flex items-center">
-				<input type="text" className="h-6 text-black rounded-md" value={word} onChange={inputHandler} />
+				<input
+					name="search"
+					type="text"
+					className="h-6 text-black rounded-md"
+					value={word}
+					onChange={inputHandler}
+				/>
 				<Link
 					href={{
 						pathname: '/searchPage',
