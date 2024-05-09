@@ -1,7 +1,6 @@
 import './globals.css';
 import RQProvider from './components/RQProvider';
-import Nav from './components/Nav';
-import { Suspense } from 'react';
+import { Nav } from './components/Nav';
 
 export const metadata = {
 	title: 'DFLIX',
@@ -12,14 +11,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-	const errorReload = () => {
-		try {
-			return;
-		} catch (error) {
-			window.location.reload('/');
-		}
-	};
-	errorReload();
 	return (
 		<html>
 			<body className="flex flex-col justify-between w-screen overflow-x-hidden">
@@ -27,9 +18,7 @@ export default function RootLayout({ children }) {
 					<Nav />
 				</div>
 				<RQProvider>
-					<Suspense>
-						<div>{children}</div>
-					</Suspense>
+					<main>{children}</main>
 				</RQProvider>
 			</body>
 		</html>

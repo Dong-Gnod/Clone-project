@@ -3,11 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getTopRatedTv, getPopularTv, getOnTheAir, getAiringToday } from '../assets/api.js';
-import Link from 'next/link';
 import { useInView } from 'react-intersection-observer';
 import clsx from 'clsx';
-import { Top } from '../assets/icons';
-import Image from 'next/image.js';
+import { ContentList } from '../components/ContentList.jsx';
+import { TopBtn } from '../components/TopBtn.jsx';
 
 const categoryRoute = [
 	{
@@ -30,7 +29,6 @@ const categoryRoute = [
 
 export default function SeriesPage() {
 	const [categories, setCategories] = useState('popularTv');
-	const [showTop, setShowTop] = useState('false');
 
 	const {
 		data: popular,
@@ -112,36 +110,20 @@ export default function SeriesPage() {
 		}
 	};
 
-	useEffect(() => {
-		const topButtonShow = () => {
-			if (window.scrollY > 100) {
-				setShowTop(true);
-			} else {
-				setShowTop(false);
-			}
-		};
-		window.addEventListener('scroll', topButtonShow);
-		return () => window.removeEventListener('scroll', topButtonShow);
-	}, []);
-
 	if (popularStatus || onTheAirStatus || airingTodayStatus || topRatedStatus) {
 		return <h1>Error: 문제가 발생했어요</h1>;
 	}
 
-	const popularTvList = !popular ? null : popular?.pages;
-	const onTvList = !onTheAir ? null : onTheAir?.pages;
-	const todayTvList = !airingToday ? null : airingToday?.pages;
-	const topRatedTvList = !topRated ? null : topRated?.pages;
+	const popularTvList = popular?.pages.flatMap((page) => page[categories]?.results) ?? [];
+	const onTvList = onTheAir?.pages.flatMap((page) => page[categories]?.results) ?? [];
+	const todayTvList = airingToday?.pages.flatMap((page) => page[categories]?.results) ?? [];
+	const topRatedTvList = topRated?.pages.flatMap((page) => page[categories]?.results) ?? [];
 
 	const tvByCategory = {
 		popularTv: popularTvList,
 		onTheAir: onTvList,
 		airingToday: todayTvList,
 		topRatedTv: topRatedTvList,
-	};
-
-	const MoveToTop = () => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
 
 	return (
@@ -162,35 +144,10 @@ export default function SeriesPage() {
 			</ul>
 			<div className="mt-10">
 				<div className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-					{!tvByCategory[categories]
-						? null
-						: tvByCategory[categories]?.map((page) => {
-								if (page[categories]) {
-									return page[categories].results?.map((series) => {
-										if (!series.poster_path) return;
-										return (
-											<Link key={series.id} href={`detail/tv/${series.id}`}>
-												<div className="w-48 transition-all duration-300 hover:scale-150">
-													<Image
-														src={`https://image.tmdb.org/t/p/original/${series.poster_path}`}
-														alt="poster"
-														width={240}
-														height={360}
-													/>
-												</div>
-											</Link>
-										);
-									});
-								}
-								return null;
-						  })}
+					<ContentList category={tvByCategory} current={categories} />
 					<div ref={ref} style={{ height: 20 }} />
 				</div>
-				{showTop && (
-					<button className="text-red-500 w-10 h-10 fixed bottom-16 right-6" onClick={MoveToTop}>
-						<Top />
-					</button>
-				)}
+				<TopBtn />
 			</div>
 		</div>
 	);

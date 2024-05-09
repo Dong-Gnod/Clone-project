@@ -1,32 +1,19 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { getVideo, getGenresList } from '../assets/api';
-import Loading from './Loading';
 import Image from 'next/image';
 
 export function Trailer({ id, poster, title, overview, genre, average, part }) {
-	const {
-		data: video,
-		error: videoError,
-		isLoading: videoLoading,
-	} = useQuery({
+	const { data: video, error: videoError } = useSuspenseQuery({
 		queryKey: ['movieVideo', part, id],
 		queryFn: () => getVideo(part, id),
 	});
 
-	const {
-		data: genresData,
-		error: genresError,
-		isLoading: genreLoading,
-	} = useQuery({
+	const { data: genresData, error: genresError } = useSuspenseQuery({
 		queryKey: ['genres'],
 		queryFn: getGenresList,
 	});
-
-	if (videoLoading || genreLoading) {
-		return <Loading />;
-	}
 
 	if (videoError || genresError) {
 		return <h1>Error: {videoError ? videoError.message : genresError.message}</h1>;
@@ -48,7 +35,8 @@ export function Trailer({ id, poster, title, overview, genre, average, part }) {
 					className="w-screen h-screen"
 					src={`https://www.youtube.com/embed/${trailer.key}?controls=0&autoplay=1&loop=1&mute=1&playlist=${trailer.key}`}
 					title="YouTube video player"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"></iframe>
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+				/>
 			)}
 			<div className="text-white z-[90] absolute top-[35%] left-[5%] w-1/3">
 				<h1 className="font-black text-4xl drop-shadow-2xl mb-3">{title}</h1>
@@ -66,7 +54,7 @@ export function Trailer({ id, poster, title, overview, genre, average, part }) {
 				</div>
 				<div className="text-2xl mb-3">⭐평점: {average}</div>
 				<div className="font-bold text-3xl w-full drop-shadow-2xl line-clamp-3">
-					{!overview ? <h1>영화에 대한 소개가 없습니다.</h1> : <p>{overview}</p>}
+					{!overview ? <span>영화에 대한 소개가 없습니다.</span> : <span>{overview}</span>}
 				</div>
 			</div>
 		</>

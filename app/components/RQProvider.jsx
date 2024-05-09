@@ -5,18 +5,16 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React, { useState } from 'react';
 
 function RQProvider({ children }) {
-	const [client] = useState(
-		new QueryClient({
-			defaultOptions: {
-				queries: {
-					refetchOnWindowFocus: false,
-					retryOnMount: true,
-					refetchOnReconnect: false,
-					retry: false,
-				},
+	const client = new QueryClient({
+		defaultOptions: {
+			queries: {
+				refetchOnWindowFocus: false,
+				retryOnMount: true,
+				refetchOnReconnect: false,
+				retry: false,
 			},
-		})
-	);
+		},
+	});
 
 	return (
 		<QueryClientProvider client={client}>

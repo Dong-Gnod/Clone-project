@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getVideo, getDetail, getCredits } from '../../../assets/api';
 import Image from 'next/image';
+import Loading from '@/app/components/Loading';
 
 export default function Detail() {
 	const params = useParams();
@@ -13,31 +14,36 @@ export default function Detail() {
 
 	const {
 		data: getDetails,
+		isLoading: detailsLoading,
 		isError: detailStatus,
 		error: detailError,
-	} = useSuspenseQuery({
+	} = useQuery({
 		queryKey: ['contentDetail', contentsParts, contentsids],
 		queryFn: () => getDetail(contentsParts, contentsids),
 	});
 
 	const {
 		data: getActor,
+		isLoading: actorLoading,
 		isError: actorStatus,
 		error: actorError,
-	} = useSuspenseQuery({
+	} = useQuery({
 		queryKey: ['creditsList', contentsParts, contentsids],
 		queryFn: () => getCredits(contentsParts, contentsids),
 	});
 
 	const {
 		data: getPlayVideo,
+		isLoading: videoLoading,
 		isError: videoStatus,
 		error: videoError,
-	} = useSuspenseQuery({
+	} = useQuery({
 		queryKey: ['movieVideo', contentsParts, contentsids],
 		queryFn: () => getVideo(contentsParts, contentsids),
 	});
-
+	if (detailsLoading || actorLoading || videoLoading) {
+		return <Loading />;
+	}
 	// error check
 
 	if (detailStatus) {
@@ -53,7 +59,7 @@ export default function Detail() {
 	const content = getDetails.contentDetail;
 	const actors = getActor.creditsList.cast;
 	const viedos = getPlayVideo.movieVideo.results;
-	viedos.map((video) => {
+	viedos?.map((video) => {
 		if (video.type === 'Trailer' || video.type === 'Teaser') {
 			return videoKey.push(video.key);
 		}
@@ -73,7 +79,7 @@ export default function Detail() {
 						{content.title ? content.title : content.name}
 					</h1>
 					<div>
-						{content.genres.map((genre) => {
+						{content.genres?.map((genre) => {
 							return (
 								<>
 									<span className="mr-2 mb-4">{genre.name}</span>
@@ -89,7 +95,7 @@ export default function Detail() {
 			<div className="flex flex-col mx-auto mt-12 border-t-2 border-red-600 border-solid pt-10  w-3/4">
 				<h1 className="font-black text-4xl drop-shadow-2xl mb-10 mx-auto">Actor</h1>
 				<div className="flex justify-evenly">
-					{actors.length
+					{actors?.length
 						? actors.map((actor, index) => {
 								if (index > 5) return;
 								return (

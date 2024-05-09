@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { register } from 'swiper/element/bundle';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
@@ -9,24 +9,27 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Image from 'next/legacy/image';
-
+import Loading from './Loading';
 register();
 
 export default function Slider({ contents, part }) {
 	const swiperElRef = useRef(null);
 
 	useEffect(() => {
-		swiperElRef.current.addEventListener('swiperprogress', (e) => {
+		swiperElRef.current?.addEventListener('swiperprogress', (e) => {
 			const [swiper, progress] = e.detail;
 			console.log(progress);
 		});
 
-		swiperElRef.current.addEventListener('swiperslidechange', (e) => {
+		swiperElRef.current?.addEventListener('swiperslidechange', (e) => {
 			console.log('slide changed');
 		});
 	}, []);
+	if (!contents) {
+		return;
+	}
 
-	const slidesPerView = Math.min(contents.length, 6);
+	const slidesPerView = Math.min(contents?.length, 6);
 
 	return (
 		<div className="w-screen">
@@ -49,7 +52,6 @@ export default function Slider({ contents, part }) {
 										alt="Image"
 										width={240}
 										height={320}
-										layout="responsive"
 									/>
 								</Link>
 							</SwiperSlide>

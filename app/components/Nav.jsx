@@ -6,8 +6,9 @@ import Link from 'next/link';
 import { Search } from './Search';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Suspense } from 'react';
+import Loading from './Loading';
 
-export default function Nav() {
+export function Nav() {
 	const { scrollY } = useScroll();
 	const backgroundColor = useTransform(scrollY, [0, 80], ['rgba(0,0,0,0)', 'rgba(0,0,0,1)']);
 
@@ -31,7 +32,7 @@ export default function Nav() {
 						<li className="ml-5 text-sm">시리즈</li>
 					</Link>
 				</ul>
-				<Suspense fallback={null}>
+				<Suspense fallback={<Loading />}>
 					<Search />
 				</Suspense>
 			</div>
