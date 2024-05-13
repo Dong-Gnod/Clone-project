@@ -7,6 +7,13 @@ import { useInView } from 'react-intersection-observer';
 import clsx from 'clsx';
 import { ContentList } from '../components/ContentList.jsx';
 import { TopBtn } from '../components/TopBtn.jsx';
+import {
+	usePopularInfiniteTv,
+	useOnTheAirInfiniteTv,
+	useTodayInfiniteTv,
+	useTopRatedInfiniteTv,
+} from '../hooks/useFetch.jsx';
+import Loading from '../components/Loading.jsx';
 
 const categoryRoute = [
 	{
@@ -36,18 +43,7 @@ export default function SeriesPage() {
 		isFetching: popularFetching,
 		fetchNextPage: popularNextPage,
 		hasNextPage: popularHasNextPage,
-	} = useInfiniteQuery({
-		queryKey: ['popularTv'],
-		queryFn: ({ pageParam = 1 }) => getPopularTv({ page: pageParam }),
-		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
-			}
-			return lastPageParam + 1;
-		},
-		maxPages: 100,
-	});
+	} = usePopularInfiniteTv();
 
 	const {
 		data: onTheAir,
@@ -55,18 +51,7 @@ export default function SeriesPage() {
 		isFetching: onTheAirFetching,
 		fetchNextPage: onTheAirNextPage,
 		hasNextPage: onTheAirHasNextPage,
-	} = useInfiniteQuery({
-		queryKey: ['onTheAir'],
-		queryFn: ({ pageParam = 1 }) => getOnTheAir({ page: pageParam }),
-		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
-			}
-			return lastPageParam + 1;
-		},
-		maxPages: 100,
-	});
+	} = useOnTheAirInfiniteTv();
 
 	const {
 		data: airingToday,
@@ -74,18 +59,7 @@ export default function SeriesPage() {
 		isFetching: airingTodayFetching,
 		fetchNextPage: airingTodayNextPage,
 		hasNextPage: airingTodayHasNextPage,
-	} = useInfiniteQuery({
-		queryKey: ['airingToday'],
-		queryFn: ({ pageParam = 1 }) => getAiringToday({ page: pageParam }),
-		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
-			}
-			return lastPageParam + 1;
-		},
-		maxPages: 100,
-	});
+	} = useTodayInfiniteTv();
 
 	const {
 		data: topRated,
@@ -93,18 +67,7 @@ export default function SeriesPage() {
 		isFetching: topRatedFetching,
 		fetchNextPage: topRatedNextPage,
 		hasNextPage: topRatedHasNextPage,
-	} = useInfiniteQuery({
-		queryKey: ['topRatedTv'],
-		queryFn: ({ pageParam = 1 }) => getTopRatedTv({ page: pageParam }),
-		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
-			}
-			return lastPageParam + 1;
-		},
-		maxPages: 100,
-	});
+	} = useTopRatedInfiniteTv();
 
 	const { ref, inView } = useInView({
 		threshold: 0,
@@ -133,15 +96,24 @@ export default function SeriesPage() {
 			!topRatedFetching && topRatedHasNextPage && topRatedNextPage();
 		}
 	};
+	/////////////////////////////////////////////
 
-	if (popularStatus || onTheAirStatus || airingTodayStatus || topRatedStatus) {
+	const dataLoading = popularLoading && nowPlayLoading && upcomingLoading && topRatedLoading;
+	const dataFetching = popularFetching || onTheAirFetching || airingTodayFetching || topRatedFetching;
+	const dataError = popularStatus || onTheAirStatus || airingTodayStatus || topRatedStatus;
+	if (!popular?.pages || !onTheAir?.pages || !airingToday?.pages || !topRated?.pages) {
+		return <Loading title={'movie 없음'} />;
+	}
+	if (dataLoading) {
+		return <Loading title={'TV Page'} />;
+	}
+	if (dataError) {
 		return <h1>Error: 문제가 발생했어요</h1>;
 	}
-
-	const popularTvList = popular?.pages.flatMap((page) => page[categories]?.results) ?? [];
-	const onTvList = onTheAir?.pages.flatMap((page) => page[categories]?.results) ?? [];
-	const todayTvList = airingToday?.pages.flatMap((page) => page[categories]?.results) ?? [];
-	const topRatedTvList = topRated?.pages.flatMap((page) => page[categories]?.results) ?? [];
+	const popularTvList = popular?.pages;
+	const onTvList = onTheAir?.pages;
+	const todayTvList = airingToday?.pages;
+	const topRatedTvList = topRated?.pages;
 
 	const tvByCategory = {
 		popularTv: popularTvList,
@@ -168,7 +140,7 @@ export default function SeriesPage() {
 			</ul>
 			<div className="mt-10">
 				<div className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-					<ContentList category={tvByCategory} select={categories} />
+					<ContentList category={tvByCategory[categories]} part={'series'} />
 					<div ref={ref} style={{ height: 20 }} />
 				</div>
 				<TopBtn />
