@@ -1,12 +1,15 @@
-import { useEffect } from 'react';
+'use client';
+import { useEffect, useState } from 'react';
 import { Top } from '../assets/icons';
 
-export function TopBtn({ onShowTop }) {
+export const TopBtn = () => {
+	const [showTop, setShowTop] = useState(false);
+
 	const topButtonShow = () => {
 		if (window.scrollY > 250) {
-			onShowTop(true);
+			setShowTop(true);
 		} else {
-			onShowTop(false);
+			setShowTop(false);
 		}
 	};
 
@@ -20,11 +23,14 @@ export function TopBtn({ onShowTop }) {
 	const MoveToTop = () => {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
+
 	return (
 		<>
-			<button className="text-red-500 w-10 h-10 fixed bottom-16 right-6" onClick={MoveToTop}>
-				<Top />
-			</button>
+			{showTop && (
+				<button className="text-red-500 w-10 h-10 fixed bottom-16 right-6" onClick={MoveToTop}>
+					<Top />
+				</button>
+			)}
 		</>
 	);
-}
+};

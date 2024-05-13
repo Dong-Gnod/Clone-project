@@ -33,52 +33,76 @@ export default function SeriesPage() {
 	const {
 		data: popular,
 		isError: popularStatus,
+		isFetching: popularFetching,
 		fetchNextPage: popularNextPage,
 		hasNextPage: popularHasNextPage,
 	} = useInfiniteQuery({
 		queryKey: ['popularTv'],
 		queryFn: ({ pageParam = 1 }) => getPopularTv({ page: pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage) => lastPage.nextPageParam,
+		getNextPageParam: (lastPage, allPages, lastPageParam) => {
+			if (lastPage.length === 0) {
+				return undefined;
+			}
+			return lastPageParam + 1;
+		},
 		maxPages: 100,
 	});
 
 	const {
 		data: onTheAir,
 		isError: onTheAirStatus,
+		isFetching: onTheAirFetching,
 		fetchNextPage: onTheAirNextPage,
 		hasNextPage: onTheAirHasNextPage,
 	} = useInfiniteQuery({
 		queryKey: ['onTheAir'],
 		queryFn: ({ pageParam = 1 }) => getOnTheAir({ page: pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage) => lastPage.nextPageParam,
+		getNextPageParam: (lastPage, allPages, lastPageParam) => {
+			if (lastPage.length === 0) {
+				return undefined;
+			}
+			return lastPageParam + 1;
+		},
 		maxPages: 100,
 	});
 
 	const {
 		data: airingToday,
 		isError: airingTodayStatus,
+		isFetching: airingTodayFetching,
 		fetchNextPage: airingTodayNextPage,
 		hasNextPage: airingTodayHasNextPage,
 	} = useInfiniteQuery({
 		queryKey: ['airingToday'],
 		queryFn: ({ pageParam = 1 }) => getAiringToday({ page: pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage) => lastPage.nextPageParam,
+		getNextPageParam: (lastPage, allPages, lastPageParam) => {
+			if (lastPage.length === 0) {
+				return undefined;
+			}
+			return lastPageParam + 1;
+		},
 		maxPages: 100,
 	});
 
 	const {
 		data: topRated,
 		isError: topRatedStatus,
+		isFetching: topRatedFetching,
 		fetchNextPage: topRatedNextPage,
 		hasNextPage: topRatedHasNextPage,
 	} = useInfiniteQuery({
 		queryKey: ['topRatedTv'],
 		queryFn: ({ pageParam = 1 }) => getTopRatedTv({ page: pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage) => lastPage.nextPageParam,
+		getNextPageParam: (lastPage, allPages, lastPageParam) => {
+			if (lastPage.length === 0) {
+				return undefined;
+			}
+			return lastPageParam + 1;
+		},
 		maxPages: 100,
 	});
 
@@ -95,18 +119,18 @@ export default function SeriesPage() {
 
 	const loadMore = () => {
 		if (categories === 'popularTv') {
-			popularHasNextPage && popularNextPage();
+			!popularFetching && popularHasNextPage && popularNextPage();
 		}
 		if (categories === 'onTheAir') {
-			onTheAirHasNextPage && onTheAirNextPage();
+			!onTheAirFetching && onTheAirHasNextPage && onTheAirNextPage();
 		}
 
 		if (categories === 'airingToday') {
-			airingTodayHasNextPage && airingTodayNextPage();
+			!airingTodayFetching && airingTodayHasNextPage && airingTodayNextPage();
 		}
 
 		if (categories === 'topRatedTv') {
-			topRatedHasNextPage && topRatedNextPage();
+			!topRatedFetching && topRatedHasNextPage && topRatedNextPage();
 		}
 	};
 
@@ -144,7 +168,7 @@ export default function SeriesPage() {
 			</ul>
 			<div className="mt-10">
 				<div className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-					<ContentList category={tvByCategory} current={categories} />
+					<ContentList category={tvByCategory} select={categories} />
 					<div ref={ref} style={{ height: 20 }} />
 				</div>
 				<TopBtn />

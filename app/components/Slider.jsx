@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Suspense, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { register } from 'swiper/element/bundle';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
@@ -9,7 +9,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Image from 'next/legacy/image';
-import Loading from './Loading';
 register();
 
 export default function Slider({ contents, part }) {
@@ -25,9 +24,6 @@ export default function Slider({ contents, part }) {
 			console.log('slide changed');
 		});
 	}, []);
-	if (!contents) {
-		return;
-	}
 
 	const slidesPerView = Math.min(contents?.length, 6);
 
