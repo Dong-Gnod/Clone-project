@@ -1,9 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { useInView } from 'react-intersection-observer';
-import Loading from '../components/Loading';
 import { ContentList } from '../components/ContentList';
 import { TopBtn } from '../components/TopBtn';
 import {
@@ -12,6 +9,9 @@ import {
 	useUpcomingInfiniteMovie,
 	useTopRatedInfiniteMovie,
 } from '../hooks/useFetch';
+import Loading from '../components/Loading';
+import InfiniteScroll from 'react-infinite-scroller';
+import ContentCategory from '../components/ContentCategory';
 
 const categoryRoute = [
 	{
@@ -34,19 +34,27 @@ const categoryRoute = [
 
 export default function MoviePage() {
 	const [categories, setCategories] = useState('popularMovie');
+	const [popularMovie, setPopularMovie] = useState(null);
+	const [nowPlayMovie, setNowPlayMovie] = useState(null);
+	const [upcomingMovie, setUpcomingMovie] = useState(null);
+	const [topRatedMovie, setTopRatedMovie] = useState(null);
+
 	const {
 		data: popular,
-		isError: popularError,
-		isFetching: popularFetching,
+		isError: popularIsError,
+		error: popularError,
+		isFetchingNextPage: popularFetching,
 		isLoading: popularLoading,
 		fetchNextPage: popularNextPage,
 		hasNextPage: popularHasNextPage,
+		status,
 	} = usePopularInfiniteMovie();
-	console.log(popular);
+
 	const {
 		data: nowPlay,
-		isError: nowplayError,
-		isFetching: nowPlayFetching,
+		isError: nowplayIsError,
+		error: nowplayError,
+		isFetchingNextPage: nowPlayFetching,
 		isLoading: nowPlayLoading,
 		fetchNextPage: nowPlayNextPage,
 		hasNextPage: nowPlayHasNextPage,
@@ -54,8 +62,9 @@ export default function MoviePage() {
 
 	const {
 		data: upcoming,
-		isError: upcomingError,
-		isFetching: upcomingFetching,
+		isError: upcomingIsError,
+		error: upcomingError,
+		isFetchingNextPage: upcomingFetching,
 		isLoading: upcomingLoading,
 		fetchNextPage: upcomingNextPage,
 		hasNextPage: upcomingHasNextPage,
@@ -63,61 +72,88 @@ export default function MoviePage() {
 
 	const {
 		data: topRated,
-		isError: topRatedError,
-		isFetching: topRatedFetching,
+		isError: topRatedIsError,
+		error: topRatedError,
+		isFetchingNextPage: topRatedFetching,
 		isLoading: topRatedLoading,
 		fetchNextPage: topRatedNextPage,
 		hasNextPage: topRatedHasNextPage,
 	} = useTopRatedInfiniteMovie();
 
-	// /////////////////////////////////////////
-	const { ref, inView } = useInView({
-		threshold: 0,
-		delay: 0,
-	});
-
 	useEffect(() => {
-		if (inView) {
-			loadMore();
+		if (popular) {
+			setPopularMovie(popular);
 		}
-	}, [inView]);
+		if (nowPlay) {
+			setNowPlayMovie(nowPlay);
+		}
+		if (upcoming) {
+			setUpcomingMovie(upcoming);
+		}
+		if (topRated) {
+			setTopRatedMovie(topRated);
+		}
+	}, [popular, nowPlay, upcoming, topRated]);
 
 	const loadMore = () => {
-		if (categories === 'popularMovie') {
-			!popularFetching && popularHasNextPage && popularNextPage();
+		if (categories === 'popularMovie' && !popularFetching && popularHasNextPage) {
+			popularNextPage();
 		}
-		if (categories === 'nowPlayMovie') {
-			!nowPlayFetching && nowPlayHasNextPage && nowPlayNextPage();
-		}
-
-		if (categories === 'upcomingMovie') {
-			!upcomingFetching && upcomingHasNextPage && upcomingNextPage();
+		if (categories === 'nowPlayMovie' && !nowPlayFetching && nowPlayHasNextPage) {
+			nowPlayNextPage();
 		}
 
-		if (categories === 'topRated') {
-			!topRatedFetching && topRatedHasNextPage && topRatedNextPage();
+		if (categories === 'upcomingMovie' && !upcomingFetching && upcomingHasNextPage) {
+			upcomingNextPage();
+		}
+
+		if (categories === 'topRated' && !topRatedFetching && topRatedHasNextPage) {
+			topRatedNextPage();
 		}
 	};
 
-	// /////////////////////////////////////////
-	const dataLoading = popularLoading && nowPlayLoading && upcomingLoading && topRatedLoading;
-	const dataFetching = popularFetching || nowPlayFetching || upcomingFetching || topRatedFetching;
-	const dataError = popularError || nowplayError || upcomingError || topRatedError;
-	if (!popular?.pages || !nowPlay?.pages || !upcoming?.pages || !topRated?.pages) {
-		return <Loading title={'movie 없음'} />;
-	}
-	if (dataLoading) {
-		return <Loading title={'Movie Page'} />;
-	}
-	if (dataError) {
-		return <h1>Error: 문제가 발생했어요</h1>;
-	}
-	const popularMovieList = popular.pages;
-	const nowPlayMovieList = nowPlay.pages;
-	const upcomingMovieList = upcoming.pages;
-	const topRatedMovieList = topRated.pages;
+	const hasNext = () => {
+		if (categories === 'popularMovie') {
+			return popularHasNextPage;
+		}
+		if (categories === 'nowPlayMovie') {
+			return nowPlayHasNextPage;
+		}
 
-	const movieByCategory = {
+		if (categories === 'upcomingMovie') {
+			return upcomingHasNextPage;
+		}
+
+		if (categories === 'topRated') {
+			return topRatedHasNextPage;
+		}
+	};
+
+	const dataLoading = popularLoading || nowPlayLoading || upcomingLoading || topRatedLoading;
+	const dataError = popularIsError || nowplayIsError || upcomingIsError || topRatedIsError;
+
+	if (dataLoading) {
+		return <Loading />;
+	}
+
+	if (dataError) {
+		return (
+			<>
+				<h1>Error: 문제가 발생했어요</h1>
+				{popularIsError && <h1>Popular: {popularError.message}</h1>}
+				{nowplayIsError && <h1>nowplay: {nowplayError.message}</h1>}
+				{upcomingIsError && <h1>upcoming: {upcomingError.message}</h1>}
+				{topRatedIsError && <h1>topRated: {topRatedError.message}</h1>}
+			</>
+		);
+	}
+
+	const popularMovieList = popularMovie?.pages;
+	const nowPlayMovieList = nowPlayMovie?.pages;
+	const upcomingMovieList = upcomingMovie?.pages;
+	const topRatedMovieList = topRatedMovie?.pages;
+
+	const contentList = {
 		popularMovie: popularMovieList,
 		nowPlayMovie: nowPlayMovieList,
 		upcomingMovie: upcomingMovieList,
@@ -125,30 +161,18 @@ export default function MoviePage() {
 	};
 
 	return (
-		<>
-			<div className="w-screen flex flex-col justify-center mt-20">
-				<ul className="flex w-dvw justify-center font-black text-xl mt-10">
-					{categoryRoute.map((category) => {
-						return (
-							<button
-								key={category.id}
-								onClick={() => setCategories(category.id)}
-								className={`mr-8 pb-2 hover:border-b-4 hover:border-solid hover:border-red-600 ${clsx({
-									['border-b-4 border-solid border-red-600']: categories === category.id,
-								})}`}>
-								<li key={category.id}>{category.name}</li>
-							</button>
-						);
-					})}
-				</ul>
-				<div className="mt-10">
-					<div className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-						<ContentList category={movieByCategory[categories]} part={'movie'} />
-						<div ref={ref} style={{ height: 20 }} />
-					</div>
-					<TopBtn />
-				</div>
+		<div className="w-screen flex flex-col justify-center mt-20">
+			<ContentCategory part={'movie'} categories={categories} onCategories={setCategories} />
+			<div className="mt-10">
+				<InfiniteScroll
+					pageStart={1}
+					loadMore={loadMore}
+					hasMore={hasNext}
+					className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
+					<ContentList category={contentList[categories]} part={'movie'} />
+				</InfiniteScroll>
+				<TopBtn />
 			</div>
-		</>
+		</div>
 	);
 }

@@ -1,11 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { getTopRatedTv, getPopularTv, getOnTheAir, getAiringToday } from '../assets/api.js';
-import { useInView } from 'react-intersection-observer';
 import clsx from 'clsx';
-import { ContentList } from '../components/ContentList.jsx';
+import { ContentList } from '../components/ContentList';
 import { TopBtn } from '../components/TopBtn.jsx';
 import {
 	usePopularInfiniteTv,
@@ -13,7 +10,8 @@ import {
 	useTodayInfiniteTv,
 	useTopRatedInfiniteTv,
 } from '../hooks/useFetch.jsx';
-import Loading from '../components/Loading.jsx';
+import Loading from '../components/Loading';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const categoryRoute = [
 	{
@@ -36,11 +34,11 @@ const categoryRoute = [
 
 export default function SeriesPage() {
 	const [categories, setCategories] = useState('popularTv');
-
 	const {
 		data: popular,
 		isError: popularStatus,
-		isFetching: popularFetching,
+		isFetchingNextPage: popularFetching,
+		isLoading: popularLoading,
 		fetchNextPage: popularNextPage,
 		hasNextPage: popularHasNextPage,
 	} = usePopularInfiniteTv();
@@ -48,7 +46,8 @@ export default function SeriesPage() {
 	const {
 		data: onTheAir,
 		isError: onTheAirStatus,
-		isFetching: onTheAirFetching,
+		isFetchingNextPage: onTheAirFetching,
+		isLoading: onTheAirLoading,
 		fetchNextPage: onTheAirNextPage,
 		hasNextPage: onTheAirHasNextPage,
 	} = useOnTheAirInfiniteTv();
@@ -56,7 +55,8 @@ export default function SeriesPage() {
 	const {
 		data: airingToday,
 		isError: airingTodayStatus,
-		isFetching: airingTodayFetching,
+		isFetchingNextPage: airingTodayFetching,
+		isLoading: todayLoading,
 		fetchNextPage: airingTodayNextPage,
 		hasNextPage: airingTodayHasNextPage,
 	} = useTodayInfiniteTv();
@@ -64,21 +64,11 @@ export default function SeriesPage() {
 	const {
 		data: topRated,
 		isError: topRatedStatus,
-		isFetching: topRatedFetching,
+		isFetchingNextPage: topRatedFetching,
+		isLoading: topRatedLoading,
 		fetchNextPage: topRatedNextPage,
 		hasNextPage: topRatedHasNextPage,
 	} = useTopRatedInfiniteTv();
-
-	const { ref, inView } = useInView({
-		threshold: 0,
-		delay: 0,
-	});
-
-	useEffect(() => {
-		if (inView) {
-			loadMore();
-		}
-	}, [inView]);
 
 	const loadMore = () => {
 		if (categories === 'popularTv') {
@@ -96,16 +86,29 @@ export default function SeriesPage() {
 			!topRatedFetching && topRatedHasNextPage && topRatedNextPage();
 		}
 	};
-	/////////////////////////////////////////////
 
-	const dataLoading = popularLoading && nowPlayLoading && upcomingLoading && topRatedLoading;
-	const dataFetching = popularFetching || onTheAirFetching || airingTodayFetching || topRatedFetching;
+	const hasNext = () => {
+		if (categories === 'popularTv') {
+			popularHasNextPage;
+		}
+		if (categories === 'onTheAir') {
+			onTheAirHasNextPage;
+		}
+
+		if (categories === 'airingToday') {
+			airingTodayHasNextPage;
+		}
+
+		if (categories === 'topRatedTv') {
+			topRatedHasNextPage;
+		}
+	};
+
+	const dataLoading = popularLoading && onTheAirLoading && todayLoading && topRatedLoading;
 	const dataError = popularStatus || onTheAirStatus || airingTodayStatus || topRatedStatus;
-	if (!popular?.pages || !onTheAir?.pages || !airingToday?.pages || !topRated?.pages) {
-		return <Loading title={'movie 없음'} />;
-	}
+
 	if (dataLoading) {
-		return <Loading title={'TV Page'} />;
+		return <Loading />;
 	}
 	if (dataError) {
 		return <h1>Error: 문제가 발생했어요</h1>;
@@ -115,7 +118,7 @@ export default function SeriesPage() {
 	const todayTvList = airingToday?.pages;
 	const topRatedTvList = topRated?.pages;
 
-	const tvByCategory = {
+	const contentList = {
 		popularTv: popularTvList,
 		onTheAir: onTvList,
 		airingToday: todayTvList,
@@ -139,10 +142,13 @@ export default function SeriesPage() {
 				})}
 			</ul>
 			<div className="mt-10">
-				<div className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-					<ContentList category={tvByCategory[categories]} part={'series'} />
-					<div ref={ref} style={{ height: 20 }} />
-				</div>
+				<InfiniteScroll
+					pageStart={1}
+					loadMore={loadMore}
+					hasMore={hasNext}
+					className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
+					<ContentList category={contentList[categories]} part={'series'} />
+				</InfiniteScroll>
 				<TopBtn />
 			</div>
 		</div>

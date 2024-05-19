@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import {
 	getMovie,
 	getPopularMovie,
@@ -18,7 +18,6 @@ export const useAllMovie = () => {
 	return useQuery({
 		queryKey: ['movieList'],
 		queryFn: getMovie,
-		staleTime: Infinity,
 	});
 };
 
@@ -48,16 +47,16 @@ export const usePopularInfiniteMovie = () => {
 	return useInfiniteQuery({
 		queryKey: ['popularMovie'],
 		queryFn: getPopularMovie,
-		initialPageParam: 0,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
+		initialPageParam: 1,
+		getNextPageParam: (lastPage) => {
+			if (lastPage?.nextPage && lastPage.nextPage <= lastPage.totalPages) {
+				return lastPage.nextPage;
 			}
-			return lastPageParam + 1;
+			return undefined;
 		},
 		select: (data) => ({
-			pages: data?.pages.flatMap((page) => page.popularMovie.results),
-			pageParams: data.pageParams,
+			pages: data?.pages?.flatMap((page) => page?.results) || [],
+			pageParams: data?.pageParams || [],
 		}),
 		maxPages: 100,
 	});
@@ -68,15 +67,15 @@ export const useNowPlayInfiniteMovie = () => {
 		queryKey: ['nowPlayMovie'],
 		queryFn: ({ pageParam = 1 }) => getNowPlayMovie({ pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
+		getNextPageParam: (lastPage) => {
+			if (lastPage?.nextPage && lastPage.nextPage <= lastPage.totalPages) {
+				return lastPage.nextPage;
 			}
-			return lastPageParam + 1;
+			return undefined;
 		},
 		select: (data) => ({
-			pages: data.pages.flatMap((page) => page.nowPlayMovie.results),
-			pageParams: data.pageParams,
+			pages: data?.pages?.flatMap((page) => page?.results) || [],
+			pageParams: data?.pageParams || [],
 		}),
 		maxPages: 100,
 	});
@@ -85,17 +84,17 @@ export const useNowPlayInfiniteMovie = () => {
 export const useUpcomingInfiniteMovie = () => {
 	return useInfiniteQuery({
 		queryKey: ['upcomingMovie'],
-		queryFn: getUpcomingMovie,
+		queryFn: ({ pageParam }) => getUpcomingMovie({ pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
+		getNextPageParam: (lastPage) => {
+			if (lastPage?.nextPage && lastPage.nextPage <= lastPage.totalPages) {
+				return lastPage.nextPage;
 			}
-			return lastPageParam + 1;
+			return undefined;
 		},
 		select: (data) => ({
-			pages: data.pages.flatMap((page) => page.upcomingMovie.results),
-			pageParams: data.pageParams,
+			pages: data?.pages?.flatMap((page) => page?.results) || [],
+			pageParams: data?.pageParams || [],
 		}),
 		maxPages: 100,
 	});
@@ -104,38 +103,38 @@ export const useUpcomingInfiniteMovie = () => {
 export const useTopRatedInfiniteMovie = () => {
 	return useInfiniteQuery({
 		queryKey: ['topRated'],
-		queryFn: getTopRatedMovie,
+		queryFn: ({ pageParam }) => getTopRatedMovie({ pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
+		getNextPageParam: (lastPage) => {
+			if (lastPage?.nextPage && lastPage.nextPage <= lastPage.totalPages) {
+				return lastPage.nextPage;
 			}
-			return lastPageParam + 1;
+			return undefined;
 		},
 		select: (data) => ({
-			pages: data.pages.flatMap((page) => page.topRated.results),
-			pageParams: data.pageParams,
+			pages: data?.pages?.flatMap((page) => page?.results) || [],
+			pageParams: data?.pageParams || [],
 		}),
 		maxPages: 100,
 	});
 };
 
 // Series
-export const usePopularTv = (part, id) => {
+export const usePopularTv = () => {
 	return useQuery({
 		queryKey: ['popularTv'],
 		queryFn: getPopularTv,
 	});
 };
 
-export const useOnTheAirTv = (part, id) => {
+export const useOnTheAirTv = () => {
 	return useQuery({
 		queryKey: ['onTheAir'],
 		queryFn: getOnTheAir,
 	});
 };
 
-export const useAiringToday = (part, id) => {
+export const useAiringToday = () => {
 	return useQuery({
 		queryKey: ['airingToday'],
 		queryFn: getAiringToday,
@@ -146,17 +145,17 @@ export const useAiringToday = (part, id) => {
 export const usePopularInfiniteTv = () => {
 	return useInfiniteQuery({
 		queryKey: ['popularTv'],
-		queryFn: ({ pageParam = 1 }) => getPopularTv({ page: pageParam }),
+		queryFn: ({ pageParam }) => getPopularTv({ pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
+		getNextPageParam: (lastPage) => {
+			if (lastPage?.nextPage && lastPage.nextPage <= lastPage.totalPages) {
+				return lastPage.nextPage;
 			}
-			return lastPageParam + 1;
+			return undefined;
 		},
 		select: (data) => ({
-			pages: data.pages.flatMap((page) => page.popularTv.results),
-			pageParams: data.pageParams,
+			pages: data?.pages?.flatMap((page) => page?.results) || [],
+			pageParams: data?.pageParams || [],
 		}),
 		maxPages: 100,
 	});
@@ -165,17 +164,17 @@ export const usePopularInfiniteTv = () => {
 export const useOnTheAirInfiniteTv = () => {
 	return useInfiniteQuery({
 		queryKey: ['onTheAir'],
-		queryFn: ({ pageParam = 1 }) => getOnTheAir({ page: pageParam }),
+		queryFn: ({ pageParam }) => getOnTheAir({ pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
+		getNextPageParam: (lastPage) => {
+			if (lastPage?.nextPage && lastPage.nextPage <= lastPage.totalPages) {
+				return lastPage.nextPage;
 			}
-			return lastPageParam + 1;
+			return undefined;
 		},
 		select: (data) => ({
-			pages: data.pages.flatMap((page) => page.onTheAir.results),
-			pageParams: data.pageParams,
+			pages: data?.pages?.flatMap((page) => page?.results) || [],
+			pageParams: data?.pageParams || [],
 		}),
 		maxPages: 100,
 	});
@@ -184,17 +183,17 @@ export const useOnTheAirInfiniteTv = () => {
 export const useTodayInfiniteTv = () => {
 	return useInfiniteQuery({
 		queryKey: ['airingToday'],
-		queryFn: ({ pageParam = 1 }) => getAiringToday({ page: pageParam }),
+		queryFn: ({ pageParam }) => getAiringToday({ pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
+		getNextPageParam: (lastPage) => {
+			if (lastPage?.nextPage && lastPage.nextPage <= lastPage.totalPages) {
+				return lastPage.nextPage;
 			}
-			return lastPageParam + 1;
+			return undefined;
 		},
 		select: (data) => ({
-			pages: data.pages.flatMap((page) => page.airingToday.results),
-			pageParams: data.pageParams,
+			pages: data?.pages?.flatMap((page) => page?.results) || [],
+			pageParams: data?.pageParams || [],
 		}),
 		maxPages: 100,
 	});
@@ -203,17 +202,17 @@ export const useTodayInfiniteTv = () => {
 export const useTopRatedInfiniteTv = () => {
 	return useInfiniteQuery({
 		queryKey: ['topRatedTv'],
-		queryFn: ({ pageParam = 1 }) => getTopRatedTv({ page: pageParam }),
+		queryFn: ({ pageParam }) => getTopRatedTv({ pageParam }),
 		initialPageParam: 1,
-		getNextPageParam: (lastPage, allPages, lastPageParam) => {
-			if (lastPage.length === 0) {
-				return undefined;
+		getNextPageParam: (lastPage) => {
+			if (lastPage?.nextPage && lastPage.nextPage <= lastPage.totalPages) {
+				return lastPage.nextPage;
 			}
-			return lastPageParam + 1;
+			return undefined;
 		},
 		select: (data) => ({
-			pages: data.pages.flatMap((page) => page.topRatedTv.results),
-			pageParams: data.pageParams,
+			pages: data?.pages?.flatMap((page) => page?.results) || [],
+			pageParams: data?.pageParams || [],
 		}),
 		maxPages: 100,
 	});
@@ -234,7 +233,7 @@ export const useGenres = () => {
 	});
 };
 
-export const useSearch = () => {
+export const useSearch = (keyword) => {
 	return useQuery({
 		queryKey: ['searchInfo', keyword],
 		queryFn: () => searchContent(keyword),

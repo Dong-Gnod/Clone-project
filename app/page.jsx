@@ -1,14 +1,6 @@
 'use client';
+
 import { Header } from './components/Header';
-import { useQueries } from '@tanstack/react-query';
-import {
-	getPopularMovie,
-	getNowPlayMovie,
-	getUpcomingMovie,
-	getPopularTv,
-	getOnTheAir,
-	getAiringToday,
-} from './assets/api.js';
 import Slider from './components/Slider.jsx';
 import {
 	usePopularMovie,
@@ -28,29 +20,33 @@ export default function Home() {
 	const { data: onTheAirTv, isError: onTheAirTvError, isLoading: onTheAirTvLoading } = useOnTheAirTv();
 	const { data: todayTv, isError: todayTvError, isLoading: todayTvLoading } = useAiringToday();
 
+	const dataLoading =
+		popMovieLoading || nowPlayLoading || upcomingLoading || popTvLoading || onTheAirTvLoading || todayTvLoading;
+
 	if (popMovieError || nowPlayError || upcomingError) {
 		return <h1>Movie Error</h1>;
 	}
 	if (popTvError || onTheAirTvError || todayTvError) {
 		return <h1>Tv Error</h1>;
 	}
-	if (popMovieLoading || nowPlayLoading || upcomingLoading || popTvLoading || onTheAirTvLoading || todayTvLoading) {
+	if (dataLoading) {
 		return <Loading />;
 	}
-	const popularMovie = popMovie.popularMovie?.results;
-	const nowPlayMovie = nowPlay.nowPlayMovie?.results;
-	const upcomingMovie = upcoming.upcomingMovie?.results;
-	const popTvSeries = popTv.popularTv?.results;
-	const onTheAirTvSeries = onTheAirTv.onTheAir?.results;
-	const todayTvSeries = todayTv.airingToday?.results;
+	const popularMovie = popMovie?.results;
+	const nowPlayMovie = nowPlay?.results;
+	const upcomingMovie = upcoming?.results;
+	const popTvSeries = popTv?.results;
+	const onTheAirTvSeries = onTheAirTv?.results;
+	const todayTvSeries = todayTv?.results;
 
-	return (
+	return dataLoading ? (
+		<Loading />
+	) : (
 		<div className="w-screen h-full font-RobotoMono">
 			<div className="w-full flex justify-center">
 				<Header />
 			</div>
 
-			{/* Main Contents */}
 			<div className="mt-8">
 				<h1 className="text-xl mb-3 font-extrabold ml-4">인기 영화</h1>
 				<Slider contents={popularMovie} part={'movie'} />

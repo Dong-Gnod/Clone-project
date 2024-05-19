@@ -1,10 +1,9 @@
 import './globals.css';
 import RQProvider from './components/RQProvider';
 import { Nav } from './components/Nav';
+import InitialContents from './hooks/useHydrate';
 import { Suspense } from 'react';
 import Loading from './components/Loading';
-import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
-import { getPopularMovie } from './assets/api';
 
 export const metadata = {
 	title: 'DFLIX',
@@ -20,9 +19,13 @@ export default async function RootLayout({ children }) {
 			<body className="flex flex-col justify-between w-screen overflow-x-hidden">
 				<RQProvider>
 					<div className=" bg-black/40">
-						<Nav />
+						<Suspense fallback={<Loading />}>
+							<Nav />
+						</Suspense>
 					</div>
-					<main>{children}</main>
+					<InitialContents>
+						<main>{children}</main>
+					</InitialContents>
 				</RQProvider>
 			</body>
 		</html>

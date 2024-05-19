@@ -12,7 +12,7 @@ export function Header() {
 	}
 
 	if (isLoading) {
-		return <Loading title={'header'} />;
+		return <Loading />;
 	}
 
 	const orderMovie = data.movieList.results;
