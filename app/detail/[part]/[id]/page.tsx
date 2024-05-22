@@ -83,12 +83,19 @@ export default function Detail() {
 	return (
 		<main className="flex justify-center flex-col w-screen mt-24">
 			<div className="flex w-3/4 mx-auto">
-				<Image
-					src={`https://image.tmdb.org/t/p/original/${content.poster_path}`}
-					alt="detail image"
-					width={220}
-					height={440}
-				/>
+				{!content.poster_path ? (
+					<div className="w-56 h-96 flex justify-center items-center bg-slate-400">
+						<h1>No Image</h1>
+					</div>
+				) : (
+					<Image
+						src={`https://image.tmdb.org/t/p/original/${content.poster_path}`}
+						alt="detail image"
+						width={220}
+						height={440}
+					/>
+				)}
+
 				<div className="ml-4">
 					<h1 className="font-black text-4xl drop-shadow-2xl mb-4">
 						{content.title ? content.title : content.name}

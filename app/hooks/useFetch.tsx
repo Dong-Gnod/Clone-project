@@ -191,18 +191,3 @@ export const useTopRatedInfiniteTv = () => {
 		maxPages: 100,
 	});
 };
-
-// etc
-export const useVideo = ({ part, id }: { part: string; id: string }) => {
-	return useQuery({
-		queryKey: ['movieVideo', part, id],
-		queryFn: () => getVideo({ part, id }),
-	});
-};
-
-export const useGenres = () => {
-	return useQuery({
-		queryKey: ['genres'],
-		queryFn: getGenresList,
-	});
-};

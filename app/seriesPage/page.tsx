@@ -139,7 +139,7 @@ export default function SeriesPage() {
 					loadMore={loadMore}
 					hasMore={hasNext()}
 					className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-					<ContentList category={contentList[categories]} part={'series'} />
+					<ContentList category={contentList[categories]} part={'tv'} />
 				</InfiniteScroll>
 				<TopBtn />
 			</div>

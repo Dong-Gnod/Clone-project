@@ -63,15 +63,15 @@ export default function Home() {
 			</div>
 			<div className="mt-8">
 				<h1 className="text-xl mb-3 font-extrabold ml-4">인기 시리즈</h1>
-				<Slider contents={popTvSeries} part={'series'} />
+				<Slider contents={popTvSeries} part={'tv'} />
 			</div>
 			<div className="mt-8">
 				<h1 className="text-xl mb-3 font-extrabold ml-4">방송 중인 시리즈</h1>
-				<Slider contents={onTheAirTvSeries} part={'series'} />
+				<Slider contents={onTheAirTvSeries} part={'tv'} />
 			</div>
 			<div className="mt-8">
 				<h1 className="text-xl mb-3 font-extrabold ml-4">오늘 방송 시리즈</h1>
-				<Slider contents={todayTvSeries} part={'series'} />
+				<Slider contents={todayTvSeries} part={'tv'} />
 			</div>
 		</div>
 	);
