@@ -19,9 +19,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 			<body className="flex flex-col justify-between w-screen overflow-x-hidden">
 				<RQProvider>
 					<div className=" bg-black/40">
-						<Nav />
+						<Suspense fallback={<Loading />}>
+							<Nav />
+						</Suspense>
 					</div>
-
 					<InitialContents>
 						<main>{children}</main>
 					</InitialContents>
