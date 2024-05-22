@@ -7,7 +7,7 @@ import SearchResult from '../components/SearchResult';
 export default function SearchPage() {
 	return (
 		<Suspense fallback={<Loading />}>
-			<div className="flex flex-col justify-center">
+			<div className="flex flex-col justify-center items-center">
 				<SearchResult />
 			</div>
 		</Suspense>
