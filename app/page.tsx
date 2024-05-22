@@ -44,7 +44,7 @@ export default function Home() {
 	return dataLoading ? (
 		<Loading />
 	) : (
-		<div className="w-screen h-full font-RobotoMono">
+		<>
 			<div className="w-full flex justify-center">
 				<Header />
 			</div>
@@ -73,6 +73,6 @@ export default function Home() {
 				<h1 className="text-xl mb-3 font-extrabold ml-4">오늘 방송 시리즈</h1>
 				<Slider contents={todayTvSeries} part={'tv'} />
 			</div>
-		</div>
+		</>
 	);
 }

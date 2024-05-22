@@ -2,7 +2,7 @@
 module.exports = {
 	enabled: process.env.NODE_ENV === 'production',
 	content: [
-		'./src/**/*.{js,jsx,ts,tsx}',
+		'./src/**/*.{js,jsx,ts,tsx,html}',
 		'./pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',

@@ -21,7 +21,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 						<Nav />
 					</div>
 					<InitialContents>
-						<main>{children}</main>
+						<main className="w-screen h-full font-RobotoMono">{children}</main>
 					</InitialContents>
 				</RQProvider>
 			</body>

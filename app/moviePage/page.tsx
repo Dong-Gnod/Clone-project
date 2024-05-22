@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ContentList } from '../components/ContentList';
 import { TopBtn } from '../components/TopBtn';
 import {
@@ -10,13 +10,17 @@ import {
 	useTopRatedInfiniteMovie,
 } from '../hooks/useFetch';
 import Loading from '../components/Loading';
-import InfiniteScroll from 'react-infinite-scroller';
 import ContentCategory from '../components/ContentCategory';
 import { ContentsObject, MoviePageData } from '../model/Movies';
 import { InfiniteData } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
 
 export default function MoviePage() {
 	const [categories, setCategories] = useState('popularMovie');
+	const { ref, inView } = useInView({
+		delay: 0,
+		threshold: 0,
+	});
 
 	const {
 		data: popular,
@@ -57,6 +61,12 @@ export default function MoviePage() {
 		fetchNextPage: topRatedNextPage,
 		hasNextPage: topRatedHasNextPage,
 	} = useTopRatedInfiniteMovie();
+
+	useEffect(() => {
+		if (inView) {
+			loadMore();
+		}
+	}, [inView]);
 
 	const loadMore = () => {
 		if (categories === 'popularMovie' && !popularFetching && popularHasNextPage) {
@@ -137,14 +147,9 @@ export default function MoviePage() {
 	return (
 		<div className="w-screen flex flex-col justify-center mt-20">
 			<ContentCategory part={'movie'} categories={categories} onCategories={setCategories} />
-			<div className="mt-10">
-				<InfiniteScroll
-					pageStart={1}
-					loadMore={loadMore}
-					hasMore={hasNext()}
-					className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
-					<ContentList category={contentList[categories]} part={'movie'} />
-				</InfiniteScroll>
+			<div className="mt-10 w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
+				<ContentList category={contentList[categories]} part={'movie'} />
+				<div ref={ref} className="h-12"></div>
 				<TopBtn />
 			</div>
 		</div>

@@ -27,22 +27,22 @@ export function Nav() {
 						href="/"
 						className={`${clsx({
 							['text-red-600']: path === '/',
-						})}`}>
-						<li className="ml-5 text-sm hover:-translate-y-2 hover:text-red-600 duration-300 ">홈</li>
+						})} ml-5 text-sm hover:-translate-y-2 hover:text-red-600 duration-300`}>
+						<li>홈</li>
 					</Link>
 					<Link
 						href="/moviePage"
 						className={`${clsx({
 							['text-red-600']: path === '/moviePage',
-						})}`}>
-						<li className="ml-5 text-sm hover:-translate-y-2 hover:text-red-600 duration-300 ">영화</li>
+						})} ml-5 text-sm hover:-translate-y-2 hover:text-red-600 duration-300`}>
+						<li>영화</li>
 					</Link>
 					<Link
 						href="/seriesPage"
 						className={`${clsx({
 							['text-red-600']: path === '/seriesPage',
-						})}`}>
-						<li className="ml-5 text-sm hover:-translate-y-2 hover:text-red-600 duration-300 ">시리즈</li>
+						})} ml-5 text-sm hover:-translate-y-2 hover:text-red-600 duration-300`}>
+						<li>시리즈</li>
 					</Link>
 				</ul>
 				<Search />
