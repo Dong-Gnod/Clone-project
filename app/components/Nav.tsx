@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { Search } from './Search';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import Loading from './Loading';
 
 export function Nav() {
 	const [active, isActive] = useState('');
@@ -21,7 +22,6 @@ export function Nav() {
 				<Link href="/">
 					<Image src={logo} alt="Netflix home" width={80} height={80} priority />
 				</Link>
-
 				<ul className="text-lg flex justify-start w-full font-black">
 					<Link href="/">
 						<li
@@ -51,7 +51,9 @@ export function Nav() {
 						</li>
 					</Link>
 				</ul>
-				<Search />
+				<Suspense fallback={<Loading />}>
+					<Search />
+				</Suspense>
 			</div>
 		</motion.nav>
 	);
