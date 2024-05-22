@@ -17,7 +17,6 @@ import {
 	getAiringToday,
 	getAiringTodayInfinite,
 	getTopRatedTvInfinite,
-	searchContent,
 } from '../assets/api';
 import { MoviePageData } from '../model/Movies';
 
@@ -205,12 +204,5 @@ export const useGenres = () => {
 	return useQuery({
 		queryKey: ['genres'],
 		queryFn: getGenresList,
-	});
-};
-
-export const useSearch = (keyword: string) => {
-	return useQuery({
-		queryKey: ['searchInfo', keyword],
-		queryFn: () => searchContent(keyword),
 	});
 };
