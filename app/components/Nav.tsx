@@ -51,7 +51,6 @@ export function Nav() {
 						</li>
 					</Link>
 				</ul>
-
 				<Search />
 			</div>
 		</motion.nav>

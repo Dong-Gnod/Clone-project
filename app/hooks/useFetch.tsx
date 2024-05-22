@@ -1,10 +1,4 @@
-import {
-	InfiniteData,
-	useInfiniteQuery,
-	useQuery,
-	useSuspenseInfiniteQuery,
-	useSuspenseQuery,
-} from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import {
 	getMovie,
 	getPopularMovie,
@@ -36,21 +30,21 @@ export const useAllMovie = () => {
 };
 
 export const usePopularMovie = () => {
-	return useSuspenseQuery({
+	return useQuery({
 		queryKey: ['popularMovie'],
 		queryFn: getPopularMovie,
 	});
 };
 
 export const useNowPlayMovie = () => {
-	return useSuspenseQuery({
+	return useQuery({
 		queryKey: ['nowPlayMovie'],
 		queryFn: getNowPlayMovie,
 	});
 };
 
 export const useUpcomingMovie = () => {
-	return useSuspenseQuery({
+	return useQuery({
 		queryKey: ['upcomingMovie'],
 		queryFn: getUpcomingMovie,
 	});
@@ -58,7 +52,7 @@ export const useUpcomingMovie = () => {
 
 // Movie Infinite
 export const usePopularInfiniteMovie = () => {
-	return useSuspenseInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
+	return useInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
 		queryKey: ['popularInfiniteMovie'],
 		queryFn: ({ pageParam = 1 }) => getPopularMovieInfinite({ pageParam }),
 		initialPageParam: 1,
@@ -72,7 +66,7 @@ export const usePopularInfiniteMovie = () => {
 };
 
 export const useNowPlayInfiniteMovie = () => {
-	return useSuspenseInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
+	return useInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
 		queryKey: ['nowPlayInfiniteMovie'],
 		queryFn: getNowPlayMovieInfinite,
 		initialPageParam: 1,
@@ -87,7 +81,7 @@ export const useNowPlayInfiniteMovie = () => {
 };
 
 export const useUpcomingInfiniteMovie = () => {
-	return useSuspenseInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
+	return useInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
 		queryKey: ['upcomingInfiniteMovie'],
 		queryFn: getUpcomingMovieInfinite,
 		initialPageParam: 1,
@@ -102,7 +96,7 @@ export const useUpcomingInfiniteMovie = () => {
 };
 
 export const useTopRatedInfiniteMovie = () => {
-	return useSuspenseInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
+	return useInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
 		queryKey: ['topRatedInfinite'],
 		queryFn: getTopRatedMovieInfinite,
 		initialPageParam: 1,
@@ -118,21 +112,21 @@ export const useTopRatedInfiniteMovie = () => {
 
 // Series
 export const usePopularTv = () => {
-	return useSuspenseQuery({
+	return useQuery({
 		queryKey: ['popularTv'],
 		queryFn: getPopularTv,
 	});
 };
 
 export const useOnTheAirTv = () => {
-	return useSuspenseQuery({
+	return useQuery({
 		queryKey: ['onTheAir'],
 		queryFn: getOnTheAir,
 	});
 };
 
 export const useAiringToday = () => {
-	return useSuspenseQuery({
+	return useQuery({
 		queryKey: ['airingToday'],
 		queryFn: getAiringToday,
 	});
@@ -140,7 +134,7 @@ export const useAiringToday = () => {
 
 // Series Infinite
 export const usePopularInfiniteTv = () => {
-	return useSuspenseInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
+	return useInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
 		queryKey: ['popularInfiniteTv'],
 		queryFn: getPopularTvInfinite,
 		initialPageParam: 1,
@@ -155,7 +149,7 @@ export const usePopularInfiniteTv = () => {
 };
 
 export const useOnTheAirInfiniteTv = () => {
-	return useSuspenseInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
+	return useInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
 		queryKey: ['onTheAirInfinite'],
 		queryFn: getOnTheAirInfinite,
 		initialPageParam: 1,
@@ -170,7 +164,7 @@ export const useOnTheAirInfiniteTv = () => {
 };
 
 export const useTodayInfiniteTv = () => {
-	return useSuspenseInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
+	return useInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
 		queryKey: ['airingTodayInfinite'],
 		queryFn: getAiringTodayInfinite,
 		initialPageParam: 1,
@@ -185,7 +179,7 @@ export const useTodayInfiniteTv = () => {
 };
 
 export const useTopRatedInfiniteTv = () => {
-	return useSuspenseInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
+	return useInfiniteQuery<MoviePageData, Error, InfiniteData<MoviePageData, number>, [string], number>({
 		queryKey: ['topRatedInfiniteTv'],
 		queryFn: getTopRatedTvInfinite,
 		initialPageParam: 1,

@@ -23,11 +23,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 							<Nav />
 						</Suspense>
 					</div>
-					<Suspense fallback={<Loading />}>
-						<InitialContents>
-							<main>{children}</main>
-						</InitialContents>
-					</Suspense>
+
+					<InitialContents>
+						<main>{children}</main>
+					</InitialContents>
 				</RQProvider>
 			</body>
 		</html>
