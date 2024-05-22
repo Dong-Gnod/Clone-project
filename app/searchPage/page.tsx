@@ -31,8 +31,8 @@ export default function SearchPage() {
 	console.log(keyword);
 	const searchItem = data.searchInfo.results;
 	return (
-		<main className="flex flex-col justify-center">
-			<Suspense fallback={<Loading />}>
+		<Suspense fallback={<Loading />}>
+			<main className="flex flex-col justify-center">
 				<div className="w-screen flex flex-col justify-center items-center mt-20">
 					<h1 className="text-6xl font-black text-center border-b-2 p-10 w-3/4 mx-auto">{keyword}</h1>
 					<div className="w-9/12 flex flex-wrap mt-10 gap-5 justify-center mx-auto">
@@ -57,7 +57,7 @@ export default function SearchPage() {
 						)}
 					</div>
 				</div>
-			</Suspense>
-		</main>
+			</main>
+		</Suspense>
 	);
 }
