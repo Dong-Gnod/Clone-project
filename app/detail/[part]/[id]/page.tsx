@@ -81,7 +81,7 @@ export default function Detail() {
 	});
 
 	return (
-		<main className="flex justify-center flex-col w-screen mt-24">
+		<div className="flex justify-center flex-col w-screen mt-24">
 			<div className="flex w-3/4 mx-auto">
 				{!content.poster_path ? (
 					<div className="w-56 h-96 flex justify-center items-center bg-slate-400">
@@ -190,6 +190,6 @@ export default function Detail() {
 					)}
 				</div>
 			</div>
-		</main>
+		</div>
 	);
 }
