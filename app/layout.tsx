@@ -2,7 +2,8 @@ import './globals.css';
 import RQProvider from './components/RQProvider';
 import { Nav } from './components/Nav';
 import InitialContents from './hooks/useHydrate';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
+import Loading from './components/Loading';
 
 export const metadata = {
 	title: 'DFLIX',
@@ -18,7 +19,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 			<body className="flex flex-col justify-between w-screen overflow-x-hidden">
 				<RQProvider>
 					<div className=" bg-black/40">
-						<Nav />
+						<Suspense fallback={<Loading />}>
+							<Nav />
+						</Suspense>
 					</div>
 
 					<InitialContents>
