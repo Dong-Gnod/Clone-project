@@ -2,8 +2,7 @@ import './globals.css';
 import RQProvider from './components/RQProvider';
 import { Nav } from './components/Nav';
 import InitialContents from './hooks/useHydrate';
-import { ReactNode, Suspense } from 'react';
-import Loading from './components/Loading';
+import { ReactNode } from 'react';
 
 export const metadata = {
 	title: 'DFLIX',
