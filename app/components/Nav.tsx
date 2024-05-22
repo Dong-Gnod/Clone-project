@@ -51,9 +51,7 @@ export function Nav() {
 						</li>
 					</Link>
 				</ul>
-				<Suspense fallback={<Loading />}>
-					<Search />
-				</Suspense>
+				<Search />
 			</div>
 		</motion.nav>
 	);
