@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SearchIcon } from '../assets/icons';
 import Link from 'next/link';
 
@@ -8,7 +8,7 @@ export function Search() {
 	const [word, setWord] = useState('');
 	let keyword = '';
 	keyword = word;
-	const inputHandler = (e) => {
+	const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setWord(e.target.value);
 	};
 

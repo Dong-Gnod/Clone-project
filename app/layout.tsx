@@ -2,7 +2,7 @@ import './globals.css';
 import RQProvider from './components/RQProvider';
 import { Nav } from './components/Nav';
 import InitialContents from './hooks/useHydrate';
-import { Suspense } from 'react';
+import { ReactNode, Suspense } from 'react';
 import Loading from './components/Loading';
 
 export const metadata = {
@@ -13,7 +13,7 @@ export const metadata = {
 	},
 };
 
-export default async function RootLayout({ children }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html>
 			<body className="flex flex-col justify-between w-screen overflow-x-hidden">
@@ -23,9 +23,11 @@ export default async function RootLayout({ children }) {
 							<Nav />
 						</Suspense>
 					</div>
-					<InitialContents>
-						<main>{children}</main>
-					</InitialContents>
+					<Suspense fallback={<Loading />}>
+						<InitialContents>
+							<main>{children}</main>
+						</InitialContents>
+					</Suspense>
 				</RQProvider>
 			</body>
 		</html>

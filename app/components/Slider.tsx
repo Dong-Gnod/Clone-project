@@ -1,29 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { register } from 'swiper/element/bundle';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Image from 'next/legacy/image';
+
 register();
 
-export default function Slider({ contents, part }) {
-	const swiperElRef = useRef(null);
+interface Content {
+	id: string;
+	poster_path: string;
+}
 
-	useEffect(() => {
-		swiperElRef.current?.addEventListener('swiperprogress', (e) => {
-			const [swiper, progress] = e.detail;
-			console.log(progress);
-		});
+interface Props {
+	contents: Content[];
+	part: string;
+}
 
-		swiperElRef.current?.addEventListener('swiperslidechange', (e) => {
-			console.log('slide changed');
-		});
-	}, []);
+export default function Slider({ contents, part }: Props) {
+	const swiperElRef = useRef<SwiperRef>(null);
 
 	const slidesPerView = Math.min(contents?.length, 6);
 
@@ -36,7 +36,13 @@ export default function Slider({ contents, part }) {
 				slidesPerView={slidesPerView}
 				navigation={true}
 				pagination={true}
-				spaceBetween={50}>
+				spaceBetween={50}
+				onProgress={(swiper, progress) => {
+					console.log(progress);
+				}}
+				onSlideChange={() => {
+					console.log('slide changed');
+				}}>
 				{contents &&
 					contents.map((content) => {
 						return (

@@ -15,7 +15,7 @@ export function Header() {
 		return <Loading />;
 	}
 
-	const orderMovie = data.movieList.results;
+	const orderMovie = data?.movieList.results;
 	const Index = Math.floor(Math.random() * orderMovie.length);
 	const headerContent = orderMovie[Index];
 

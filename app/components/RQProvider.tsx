@@ -2,9 +2,9 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-function RQProvider({ children }) {
+function RQProvider({ children }: { children: ReactNode }) {
 	const client = new QueryClient({
 		defaultOptions: {
 			queries: {

@@ -1,11 +1,28 @@
-'use client';
-
 import Image from 'next/image';
 import Loading from './Loading';
 import { useQuery } from '@tanstack/react-query';
 import { getVideo, getGenresList } from '../assets/api';
 
-export function Trailer({ id, poster, title, overview, genre, average, part }) {
+interface Trailer {
+	id: string;
+	poster: string;
+	title: string;
+	overview: string;
+	genre: string;
+	average: string;
+	part: string;
+}
+
+interface Video {
+	naem: string;
+	type: string;
+}
+
+interface Genre {
+	id: string;
+	name: string;
+}
+export function Trailer({ id, poster, title, overview, genre, average, part }: Trailer) {
 	const {
 		data: video,
 		error: videoError,
@@ -27,12 +44,12 @@ export function Trailer({ id, poster, title, overview, genre, average, part }) {
 		return <Loading />;
 	}
 	if (videoError || genresError) {
-		return <h1>Error: {videoError ? videoError.message : genresError.message}</h1>;
+		return <h1>Error: {videoError ? videoError.message : genresError?.message}</h1>;
 	}
 
 	const videoList = video?.movieVideo?.results;
-	const genreList = genresData.genres.genres;
-	const trailer = videoList?.find((video) => video.type === 'Teaser');
+	const genreList = genresData?.genres.genres;
+	const trailer = videoList?.find((video: Video) => video.type === 'Teaser');
 
 	return (
 		<>
@@ -54,7 +71,7 @@ export function Trailer({ id, poster, title, overview, genre, average, part }) {
 				<h1 className="font-black text-4xl drop-shadow-2xl mb-3">{title}</h1>
 				<div>
 					{genreList &&
-						genreList.map((gl) => {
+						genreList.map((gl: Genre) => {
 							if (genre.includes(gl.id)) {
 								return (
 									<span key={gl.id} className="mr-2 mb-2">

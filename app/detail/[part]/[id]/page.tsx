@@ -1,16 +1,31 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getVideo, getDetail, getCredits } from '../../../assets/api';
 import Image from 'next/image';
-import Loading from '@/app/components/Loading';
+import Loading from '../../../components/Loading';
+
+interface Video {
+	key: string;
+	type: string;
+}
+interface Genre {
+	id: string;
+	name: string;
+}
+interface Actor {
+	id: string;
+	profile_path: string;
+	character: string;
+	name: string;
+}
 
 export default function Detail() {
 	const params = useParams();
-	const contentsParts = params.part;
-	const contentsids = params.id;
-	const videoKey = [];
+	const part = params.part;
+	const id = params.id;
+	const videoKey: string[] = [];
 
 	const {
 		data: getDetails,
@@ -18,8 +33,8 @@ export default function Detail() {
 		isError: detailStatus,
 		error: detailError,
 	} = useQuery({
-		queryKey: ['contentDetail', contentsParts, contentsids],
-		queryFn: () => getDetail(contentsParts, contentsids),
+		queryKey: ['contentDetail', part, id],
+		queryFn: () => getDetail(part, id),
 	});
 
 	const {
@@ -28,8 +43,8 @@ export default function Detail() {
 		isError: actorStatus,
 		error: actorError,
 	} = useQuery({
-		queryKey: ['creditsList', contentsParts, contentsids],
-		queryFn: () => getCredits(contentsParts, contentsids),
+		queryKey: ['creditsList', part, id],
+		queryFn: () => getCredits(part, id),
 	});
 
 	const {
@@ -38,8 +53,8 @@ export default function Detail() {
 		isError: videoStatus,
 		error: videoError,
 	} = useQuery({
-		queryKey: ['movieVideo', contentsParts, contentsids],
-		queryFn: () => getVideo(contentsParts, contentsids),
+		queryKey: ['movieVideo', part, id],
+		queryFn: () => getVideo({ part, id }),
 	});
 	if (detailsLoading || actorLoading || videoLoading) {
 		return <Loading />;
@@ -56,10 +71,10 @@ export default function Detail() {
 		return <h1>Error {videoError.message}</h1>;
 	}
 
-	const content = getDetails.contentDetail;
-	const actors = getActor.creditsList.cast;
-	const viedos = getPlayVideo.movieVideo.results;
-	viedos?.map((video) => {
+	const content = getDetails?.contentDetail;
+	const actors = getActor?.creditsList.cast;
+	const viedos = getPlayVideo?.movieVideo.results;
+	viedos?.map((video: Video) => {
 		if (video.type === 'Trailer' || video.type === 'Teaser') {
 			return videoKey.push(video.key);
 		}
@@ -79,7 +94,7 @@ export default function Detail() {
 						{content.title ? content.title : content.name}
 					</h1>
 					<div>
-						{content.genres?.map((genre) => {
+						{content.genres?.map((genre: Genre) => {
 							return (
 								<>
 									<span className="mr-2 mb-4">{genre.name}</span>
@@ -96,7 +111,7 @@ export default function Detail() {
 				<h1 className="font-black text-4xl drop-shadow-2xl mb-10 mx-auto">Actor</h1>
 				<div className="flex justify-evenly">
 					{actors?.length
-						? actors.map((actor, index) => {
+						? actors.map((actor: Actor, index: number) => {
 								if (index > 5) return;
 								return (
 									<div key={actor.id} className="flex flex-col justify-center">
@@ -136,7 +151,7 @@ export default function Detail() {
 							src={`https://www.youtube.com/embed/${videoKey[0]}?playlist=${videoKey[0]}`}
 							title="YouTube video player"
 							allow="autoplay; fullscreen;"
-							allowfullscreen></iframe>
+							allowFullScreen></iframe>
 					)}
 
 					{videoKey.length === 0 ? (
@@ -154,7 +169,7 @@ export default function Detail() {
 							src={`https://www.youtube.com/embed/${videoKey[1]}?&playlist=${videoKey[1]}`}
 							title="YouTube video player"
 							allow="autoplay; fullscreen;"
-							allowfullscreen></iframe>
+							allowFullScreen></iframe>
 					)}
 
 					{videoKey.length === 0 ? null : (
@@ -164,7 +179,7 @@ export default function Detail() {
 							src={`https://www.youtube.com/embed/${videoKey[2]}?&playlist=${videoKey[2]}`}
 							title="YouTube video player"
 							allow="autoplay; fullscreen;"
-							allowfullscreen></iframe>
+							allowFullScreen></iframe>
 					)}
 				</div>
 			</div>

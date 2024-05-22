@@ -1,6 +1,13 @@
 import clsx from 'clsx';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function ContentCategory({ part, categories, onCategories }) {
+interface ContentCategory {
+	part: string;
+	categories: string;
+	onCategories: Dispatch<SetStateAction<string>>;
+}
+
+export default function ContentCategory({ part, categories, onCategories }: ContentCategory) {
 	const movieRoute = [
 		{
 			id: 'popularMovie',

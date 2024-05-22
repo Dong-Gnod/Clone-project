@@ -1,42 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { useState } from 'react';
 import { ContentList } from '../components/ContentList';
-import { TopBtn } from '../components/TopBtn.jsx';
+import { TopBtn } from '../components/TopBtn';
 import {
 	usePopularInfiniteTv,
 	useOnTheAirInfiniteTv,
 	useTodayInfiniteTv,
 	useTopRatedInfiniteTv,
-} from '../hooks/useFetch.jsx';
+} from '../hooks/useFetch';
 import Loading from '../components/Loading';
 import InfiniteScroll from 'react-infinite-scroller';
-
-const categoryRoute = [
-	{
-		id: 'popularTv',
-		name: '인기 Tv 프로그램',
-	},
-	{
-		id: 'onTheAir',
-		name: '방영 중인 프로그램',
-	},
-	{
-		id: 'airingToday',
-		name: '오늘 방영 프로그램',
-	},
-	{
-		id: 'topRatedTv',
-		name: '평점 순 프로그램',
-	},
-];
+import ContentCategory from '../components/ContentCategory';
+import { ContentsObject, MoviePageData } from '../model/Movies';
+import { InfiniteData } from '@tanstack/react-query';
 
 export default function SeriesPage() {
 	const [categories, setCategories] = useState('popularTv');
 	const {
 		data: popular,
 		isError: popularStatus,
+		error: popularError,
 		isFetchingNextPage: popularFetching,
 		isLoading: popularLoading,
 		fetchNextPage: popularNextPage,
@@ -46,6 +30,7 @@ export default function SeriesPage() {
 	const {
 		data: onTheAir,
 		isError: onTheAirStatus,
+		error: onTheAirError,
 		isFetchingNextPage: onTheAirFetching,
 		isLoading: onTheAirLoading,
 		fetchNextPage: onTheAirNextPage,
@@ -55,6 +40,7 @@ export default function SeriesPage() {
 	const {
 		data: airingToday,
 		isError: airingTodayStatus,
+		error: airingTodayError,
 		isFetchingNextPage: airingTodayFetching,
 		isLoading: todayLoading,
 		fetchNextPage: airingTodayNextPage,
@@ -64,6 +50,7 @@ export default function SeriesPage() {
 	const {
 		data: topRated,
 		isError: topRatedStatus,
+		error: topRatedError,
 		isFetchingNextPage: topRatedFetching,
 		isLoading: topRatedLoading,
 		fetchNextPage: topRatedNextPage,
@@ -89,36 +76,52 @@ export default function SeriesPage() {
 
 	const hasNext = () => {
 		if (categories === 'popularTv') {
-			popularHasNextPage;
+			return popularHasNextPage;
 		}
 		if (categories === 'onTheAir') {
-			onTheAirHasNextPage;
+			return onTheAirHasNextPage;
 		}
 
 		if (categories === 'airingToday') {
-			airingTodayHasNextPage;
+			return airingTodayHasNextPage;
 		}
 
 		if (categories === 'topRatedTv') {
-			topRatedHasNextPage;
+			return topRatedHasNextPage;
 		}
 	};
 
+	const data = popular || onTheAir || airingToday || topRated;
 	const dataLoading = popularLoading && onTheAirLoading && todayLoading && topRatedLoading;
 	const dataError = popularStatus || onTheAirStatus || airingTodayStatus || topRatedStatus;
-
+	if (!data) {
+		return <Loading />;
+	}
 	if (dataLoading) {
 		return <Loading />;
 	}
 	if (dataError) {
-		return <h1>Error: 문제가 발생했어요</h1>;
+		return (
+			<>
+				<h1>Error: 문제가 발생했어요</h1>
+				{popularError && <h1>Popular: {popularError.message}</h1>}
+				{onTheAirError && <h1>nowplay: {onTheAirError.message}</h1>}
+				{airingTodayError && <h1>upcoming: {airingTodayError.message}</h1>}
+				{topRatedError && <h1>topRated: {topRatedError.message}</h1>}
+			</>
+		);
 	}
-	const popularTvList = popular?.pages;
-	const onTvList = onTheAir?.pages;
-	const todayTvList = airingToday?.pages;
-	const topRatedTvList = topRated?.pages;
 
-	const contentList = {
+	const changeData = (data: InfiniteData<MoviePageData> | undefined) => {
+		return data?.pages.flatMap((page: MoviePageData) => page?.results) || [];
+	};
+
+	const popularTvList = changeData(popular);
+	const onTvList = changeData(onTheAir);
+	const todayTvList = changeData(airingToday);
+	const topRatedTvList = changeData(topRated);
+
+	const contentList: ContentsObject = {
 		popularTv: popularTvList,
 		onTheAir: onTvList,
 		airingToday: todayTvList,
@@ -128,24 +131,13 @@ export default function SeriesPage() {
 	return (
 		<div className="w-screen flex flex-col justify-center mt-20">
 			<ul className="flex w-dvw justify-center font-black text-xl">
-				{categoryRoute.map((category) => {
-					return (
-						<button
-							key={category.id}
-							onClick={() => setCategories(category.id)}
-							className={`mr-8 pb-2 hover:border-b-4 hover:border-solid hover:border-red-600 ${clsx({
-								['border-b-4 border-solid border-red-600']: categories === category.id,
-							})}`}>
-							<li key={category.id}>{category.name}</li>
-						</button>
-					);
-				})}
+				<ContentCategory part={'series'} categories={categories} onCategories={setCategories} />
 			</ul>
 			<div className="mt-10">
 				<InfiniteScroll
 					pageStart={1}
 					loadMore={loadMore}
-					hasMore={hasNext}
+					hasMore={hasNext()}
 					className="w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
 					<ContentList category={contentList[categories]} part={'series'} />
 				</InfiniteScroll>

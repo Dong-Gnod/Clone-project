@@ -5,10 +5,11 @@ import logo from '../../public/logo.png';
 import Link from 'next/link';
 import { Search } from './Search';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Suspense } from 'react';
-import Loading from './Loading';
+import clsx from 'clsx';
+import { useState } from 'react';
 
 export function Nav() {
+	const [active, isActive] = useState('');
 	const { scrollY } = useScroll();
 	const backgroundColor = useTransform(scrollY, [0, 80], ['rgba(0,0,0,0)', 'rgba(0,0,0,1)']);
 
@@ -23,18 +24,35 @@ export function Nav() {
 
 				<ul className="text-lg flex justify-start w-full font-black">
 					<Link href="/">
-						<li className="ml-5 text-sm">홈</li>
+						<li
+							className={`ml-5 text-sm hover:-translate-y-2 hover:text-red-600 duration-300 ${clsx({
+								['text-red-600']: active === 'home',
+							})}`}
+							onClick={() => isActive('home')}>
+							홈
+						</li>
 					</Link>
 					<Link href="/moviePage">
-						<li className="ml-5 text-sm">영화</li>
+						<li
+							className={`ml-5 text-sm hover:-translate-y-2 hover:text-red-600 duration-300 ${clsx({
+								['text-red-600']: active === 'movie',
+							})}`}
+							onClick={() => isActive('movie')}>
+							영화
+						</li>
 					</Link>
 					<Link href="/seriesPage">
-						<li className="ml-5 text-sm">시리즈</li>
+						<li
+							className={`ml-5 text-sm hover:-translate-y-2 hover:text-red-600 duration-300 ${clsx({
+								['text-red-600']: active === 'series',
+							})}`}
+							onClick={() => isActive('series')}>
+							시리즈
+						</li>
 					</Link>
 				</ul>
-				<Suspense fallback={<Loading />}>
-					<Search />
-				</Suspense>
+
+				<Search />
 			</div>
 		</motion.nav>
 	);
