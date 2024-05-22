@@ -107,10 +107,10 @@ export default function MoviePage() {
 		return (
 			<>
 				<h1>Error: 문제가 발생했어요</h1>
-				{popularIsError && <h1>Popular: {popularError.message}</h1>}
-				{nowplayIsError && <h1>nowplay: {nowplayError.message}</h1>}
-				{upcomingIsError && <h1>upcoming: {upcomingError.message}</h1>}
-				{topRatedIsError && <h1>topRated: {topRatedError.message}</h1>}
+				{popularIsError && <h1>Popular: {popularError?.message}</h1>}
+				{nowplayIsError && <h1>nowplay: {nowplayError?.message}</h1>}
+				{upcomingIsError && <h1>upcoming: {upcomingError?.message}</h1>}
+				{topRatedIsError && <h1>topRated: {topRatedError?.message}</h1>}
 			</>
 		);
 	}
