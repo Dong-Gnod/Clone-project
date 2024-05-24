@@ -27,6 +27,7 @@ export function Search() {
 						pathname: '/searchPage',
 						query: { content: keyword },
 					}}
+					onClick={() => setWord('')}
 					className="flex items-center justify-center">
 					<button className="ml-2 text-red-600 font-black">
 						<SearchIcon />
