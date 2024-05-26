@@ -20,8 +20,6 @@ TMDB API
 
 ---
 
-React.js, Next.js, React Query, Typescript, clsx, swiper, framer-motion, tailwindCSS
-
 -   Next.js - React 공식 홈페이지의 추천과 편한 라우팅, 내장된 SSR기능을 경험해보기 위해 사용하였습니다.
 
 -   React Query - api에서 데이터를 가져오고 캐시에 추가하는데 사용하였고 무한 스크롤에 사용하였습니다.
