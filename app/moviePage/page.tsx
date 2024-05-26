@@ -149,7 +149,7 @@ export default function MoviePage() {
 			<ContentCategory part={'movie'} categories={categories} onCategories={setCategories} />
 			<div className="mt-10 w-9/12 flex flex-wrap gap-5 justify-center mx-auto">
 				<ContentList category={contentList[categories]} part={'movie'} />
-				<div ref={ref} className="h-12"></div>
+				<div ref={ref} style={{ height: '50px' }}></div>
 				<TopBtn />
 			</div>
 		</div>
