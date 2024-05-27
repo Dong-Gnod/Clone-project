@@ -36,7 +36,10 @@ export default function SearchResult() {
 					searchItem.map((item: Search) => {
 						if (!item.poster_path) return;
 						return (
-							<Link key={item.id} href={`detail/${item.media_type}/${item.id}`}>
+							<Link
+								key={item.id}
+								href={`detail/${item.media_type}/${item.id}`}
+								className="transition-all duration-300 hover:scale-150">
 								<div key={item.id}>
 									<Image
 										src={`https://image.tmdb.org/t/p/original/${item.poster_path}`}
