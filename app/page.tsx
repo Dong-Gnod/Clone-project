@@ -14,7 +14,6 @@ import Loading from './components/Loading';
 import React from 'react';
 
 export default function Home() {
-	const pageParam = 1;
 	const { data: popMovie, isError: popMovieError, isLoading: popMovieLoading } = usePopularMovie();
 	const { data: nowPlay, isError: nowPlayError, isLoading: nowPlayLoading } = useNowPlayMovie();
 	const { data: upcoming, isError: upcomingError, isLoading: upcomingLoading } = useUpcomingMovie();
