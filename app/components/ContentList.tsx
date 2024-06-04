@@ -24,6 +24,7 @@ export function ContentList({ category, part }: ContentProp) {
 	return (
 		<>
 			{contents?.map((content: Content) => {
+				if (!content.poster_path) return;
 				return (
 					<Link key={content?.id} href={`detail/${part}/${content?.id}`}>
 						<div className="w-48 transition-all duration-300 hover:scale-150">
